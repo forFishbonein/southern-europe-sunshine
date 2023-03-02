@@ -1,0 +1,135 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+ .main-header-area {
+ height: 70px;
+}
+}
+@media only screen and (max-width: 767px) {
+ .main-header-area {
+ height: 70px;
+}
+}
+
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+ .main-header-area .getfund-navbar {
+ height: 70px;
+}
+}
+@media only screen and (max-width: 768px) {
+.ListriBox figure {
+    height: 160px !important;
+}
+.ListriBox ul li:first-child{
+    margin-right: 8px !important;
+}
+.feat-item {
+
+    margin-bottom: 30px !important;
+}
+.list-room-rati {
+
+    margin: -60px 0 0 0 !important;
+
+}
+
+}
+@media only screen and (max-width: 767px) {
+ .main-header-area .getfund-navbar {
+ height: 70px;
+ padding: 0.5em 0;
+}
+.ListriBox figure {
+    height: 160px !important;
+}
+}
+
+@media only screen and (max-width: 991px) {
+ .main-header-area .getfundnav ul li a {
+ color: #fff;
+}
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+ .main-header-area .nav-brand {
+ margin-right: 0;
+}
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+ .is-sticky .main-header-area {
+ height: 70px;
+}
+ .light .getfundnav ul li .dropdown, .light .getfundnav ul li .megamenu, .light.breakpoint-on .getfundnav > ul > li > a, .light.breakpoint-on .getfund-navbar .getfund-menu {
+ background-color: #000000;
+}
+}
+@media only screen and (max-width: 767px) {
+ .is-sticky .main-header-area {
+ height: 70px;
+}
+ .light .getfundnav ul li .dropdown, .light .getfundnav ul li .megamenu, .light.breakpoint-on .getfundnav > ul > li > a, .light.breakpoint-on .getfund-navbar .getfund-menu {
+ background-color: #000000;
+}
+}
+
+@media only screen and (max-width: 992px) {
+ 
+a.box_cat_home {
+    margin: 0 0 25px 0 !important;
+}
+}
+
+@media only screen and (max-width: 991px) {
+ .main-header-area .nav-brand img {
+ height: auto;
+}
+ .getfundnav ul li.right-side {
+ margin-left: 0;
+}
+ .getfundnav ul li.right-side {
+ margin-left: 0;
+ margin-top: 15px;
+}
+ .getfundnav ul li.right-side ul li {
+ padding-left: 0;
+}
+ .getfundnav ul li.right-side ul li .btn {
+ padding: 2px 22px;
+}
+.main-header-area .getfundnav ul li a {
+    color: #fff !important;
+}
+.Footer-nav {
+    margin: 30px 0 0px 0;
+}
+.paymentM img{
+	width:auto;
+}
+a.box_cat_home {
+    margin: 0 0 25px 0;
+}
+}
+@media only screen and (max-width: 576px){
+.topbar .list-inline {
+    text-align: center;
+	padding: 0 0 10px 0;
+}	
+.topbar .socials-top{
+    text-align: center !important;
+}
+
+.main-banner h1 {
+    font-size: 26px !important;
+
+}
+.list-room-rati {
+
+    margin: 10px 0 0 0 !important;
+
+}	
+	
+}
