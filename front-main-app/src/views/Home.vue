@@ -228,9 +228,22 @@
       </div>
     </div>
   </section>
-  <div class="featured-area featured-sub">
-    <div class="container-fluid">
-      <div class="row grid">
+  <div class="Categories pt80 pb80">
+    <div class="container">
+      <div class="row mb-5">
+        <div class="col-md-8">
+          <p class="subtitle text-secondary nopadding">
+            Stay and eat like a local
+          </p>
+          <h1 class="paddtop1 font-weight lspace-sm">主题旅行</h1>
+        </div>
+        <div class="col-md-4 d-lg-flex align-items-center justify-content-end">
+          <a href="" class="blist text-sm ml-2">
+            See all Categories<i class="fas fa-angle-double-right ml-2"></i
+          ></a>
+        </div>
+      </div>
+      <div class="row">
         <div class="col-lg-4 items col-md-6 col-sm-6 col-12">
           <div class="featured-wrap">
             <div class="featured-img">
