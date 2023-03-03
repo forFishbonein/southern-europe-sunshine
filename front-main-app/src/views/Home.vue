@@ -139,7 +139,7 @@
           <p class="subtitle text-secondary nopadding">
             Stay and eat like a local
           </p>
-          <h1 class="paddtop1 font-weight lspace-sm">Most Popular guides</h1>
+          <h1 class="paddtop1 font-weight lspace-sm">出行国家</h1>
         </div>
         <div class="col-md-4 d-lg-flex align-items-center justify-content-end">
           <a href="" class="blist text-sm ml-2">
@@ -161,9 +161,7 @@
                   class="bg-image"
                 />
                 <div class="card-body overlay-content">
-                  <h6 class="card-title text-shadow text-uppercase">
-                    New York
-                  </h6>
+                  <h6 class="card-title text-shadow text-uppercase">西班牙</h6>
                   <p class="card-text text-sm">The big apple</p>
                 </div>
               </div>
@@ -177,7 +175,7 @@
                   class="bg-image"
                 />
                 <div class="card-body overlay-content">
-                  <h6 class="card-title text-shadow text-uppercase">Paris</h6>
+                  <h6 class="card-title text-shadow text-uppercase">葡萄牙</h6>
                   <p class="card-text text-sm">Artist capital of Europe</p>
                 </div>
               </div>
@@ -191,9 +189,7 @@
                   class="bg-image"
                 />
                 <div class="card-body overlay-content">
-                  <h6 class="card-title text-shadow text-uppercase">
-                    Barcelona
-                  </h6>
+                  <h6 class="card-title text-shadow text-uppercase">南法</h6>
                   <p class="card-text text-sm">Dali, Gaudi, Barrio</p>
                 </div>
               </div>
@@ -207,9 +203,7 @@
                   class="bg-image"
                 />
                 <div class="card-body overlay-content">
-                  <h6 class="card-title text-shadow text-uppercase">
-                    New York
-                  </h6>
+                  <h6 class="card-title text-shadow text-uppercase">安道尔</h6>
                   <p class="card-text text-sm">City of hundred towers</p>
                 </div>
               </div>
@@ -242,7 +236,7 @@
             <div class="featured-img">
               <img src="/images/featured/1.jpg" alt="" />
               <div class="featured-content">
-                <a href="room-single.html">Delicious Food</a>
+                <a href="room-single.html">美食</a>
               </div>
             </div>
           </div>
@@ -252,7 +246,7 @@
             <div class="featured-img">
               <img src="/images/featured/2.jpg" alt="" />
               <div class="featured-content">
-                <a href="room-single.html">Swimming Pool</a>
+                <a href="room-single.html">建筑</a>
               </div>
             </div>
           </div>
@@ -262,7 +256,7 @@
             <div class="featured-img">
               <img src="/images/featured/3.jpg" alt="" />
               <div class="featured-content">
-                <a href="room-single.html">Spa salon</a>
+                <a href="room-single.html">红酒</a>
               </div>
             </div>
           </div>
@@ -272,7 +266,7 @@
             <div class="featured-img">
               <img src="images/featured/4.jpg" alt="" />
               <div class="featured-content">
-                <a href="room-single.html">Game Room</a>
+                <a href="room-single.html">古堡</a>
               </div>
             </div>
           </div>
@@ -282,7 +276,7 @@
             <div class="featured-img">
               <img src="images/featured/5.jpg" alt="" />
               <div class="featured-content">
-                <a href="room-single.html">Airport Taxi</a>
+                <a href="room-single.html">高尔夫</a>
               </div>
             </div>
           </div>
@@ -292,7 +286,7 @@
             <div class="featured-img">
               <img src="images/featured/6.jpg" alt="" />
               <div class="featured-content">
-                <a href="room-single.html">Breakfast</a>
+                <a href="room-single.html">节日</a>
               </div>
             </div>
           </div>
