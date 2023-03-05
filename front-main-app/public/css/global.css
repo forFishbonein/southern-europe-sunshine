@@ -18,6 +18,14 @@ This file contains the common styles of this theme.
  * Typography.less
  * -----------------------------------------------
 */
+:root {
+	/* 修改element-plus的默认颜色 */
+	--el-color-primary: #c60b1e !important;
+	--el-color-primary-light-3: #CC0033 !important;
+	--el-color-primary-dark-2: #C63A48 !important;
+	--el-color-primary-light-9: rgb(238, 238, 238) !important;
+}
+
 ::selection {
 	background: #333333;
 	color: #fff;

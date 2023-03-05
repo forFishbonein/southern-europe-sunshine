@@ -8,9 +8,9 @@
         <!-- getfund Menu -->
         <nav class="getfund-navbar justify-content-between" id="listingNav">
           <!-- Logo -->
-          <a class="nav-brand" href="index.html"
-            ><img src="images/logo.jpg" alt="logo"
-          /></a>
+          <router-link class="nav-brand" to="/home"
+            ><img src="/images/logo.jpg" alt="logo"
+          /></router-link>
 
           <!-- Navbar Toggler -->
           <div class="getfund-navbar-toggler">
@@ -32,131 +32,63 @@
             <div class="getfundnav">
               <ul id="responsive">
                 <li>
-                  <a class="current sf-with-ul" href="#">首页</a>
-                  <ul class="dropdown">
-                    <li><a href="index.html">Home 1</a></li>
-                    <li><a href="index-2.html">Home 2</a></li>
-                    <li><a href="index-3.html">Home 3</a></li>
-                    <li><a href="index-4.html">Home 4 - Map</a></li>
-                  </ul>
+                  <router-link
+                    class="current sf-with-ul"
+                    to="/home"
+                    active-class="active-nav"
+                    >首页</router-link
+                  >
                 </li>
                 <li>
-                  <a class="sf-with-ul" href="#">出行国家</a>
-                  <ul class="dropdown">
-                    <li>
-                      <a class="sf-with-ul" href="#">List Layout</a>
-                      <ul class="dropdown">
-                        <li>
-                          <a href="listings-list-with-sidebar.html"
-                            >With Sidebar</a
-                          >
-                        </li>
-                        <li>
-                          <a href="listings-list-full-width.html">Full Width</a>
-                        </li>
-                        <li>
-                          <a href="listings-list-full-width-with-map.html"
-                            >Full Width + Map</a
-                          >
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a class="sf-with-ul" href="#">主题旅行</a>
-                      <ul class="dropdown">
-                        <li>
-                          <a href="listings-grid-with-sidebar-1.html"
-                            >With Sidebar 1</a
-                          >
-                        </li>
-                        <li>
-                          <a href="listings-grid-full-width.html">Full Width</a>
-                        </li>
-                        <li>
-                          <a href="listings-grid-full-width-with-map.html"
-                            >Full Width + Map</a
-                          >
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a class="sf-with-ul" href="#">Half Screen Map</a>
-                      <ul class="dropdown">
-                        <li>
-                          <a href="listings-half-screen-map-list.html"
-                            >List Layout</a
-                          >
-                        </li>
-                        <li>
-                          <a href="listings-half-screen-map-grid-1.html"
-                            >Grid Layout 1</a
-                          >
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a class="sf-with-ul" href="#">Single Listings</a>
-                      <ul class="dropdown">
-                        <li>
-                          <a href="listings-single-page.html"
-                            >Single Listing 1</a
-                          >
-                        </li>
-                        <li>
-                          <a href="listings-single-page-2.html"
-                            >Single Listing 2</a
-                          >
-                        </li>
-                        <li>
-                          <a href="listings-single-page-3.html"
-                            >Single Listing 3</a
-                          >
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
+                  <router-link
+                    class="sf-with-ul"
+                    to="/country"
+                    active-class="active-nav"
+                    >出行国家</router-link
+                  >
                 </li>
                 <li>
-                  <a class="sf-with-ul" href="#">主题旅行</a>
-                  <ul class="dropdown">
-                    <li><a href="pages-faq.html">FAQ</a></li>
-                    <li><a href="pages-testimonials.html">Testimonials</a></li>
-                    <li><a href="pages-blog.html">Blog</a></li>
-                    <li><a href="pages-blog-details.html">Blog details</a></li>
-                    <li><a href="pages-contact.html">Contact</a></li>
-                  </ul>
+                  <router-link
+                    class="sf-with-ul"
+                    to="/themeTravel"
+                    active-class="active-nav"
+                    >主题旅行</router-link
+                  >
                 </li>
                 <li>
-                  <a class="sf-with-ul" href="#0">当地玩乐</a>
-                  <ul class="dropdown">
-                    <li><a href="add-listings.html">Add Listing</a></li>
-                    <li><a href="edit-listings.html">Edit Listing</a></li>
-                    <li><a href="booking-list.html">Booking List</a></li>
-
-                    <li><a href="listings.html">My Listings</a></li>
-                    <li><a href="profile.html">My Profile</a></li>
-                    <li><a href="oders.html">My Orders</a></li>
-                  </ul>
+                  <router-link
+                    class="sf-with-ul"
+                    to="/localPlay"
+                    active-class="active-nav"
+                    >当地玩乐</router-link
+                  >
                 </li>
                 <li>
-                  <a class="sf-with-ul" href="#0">接送机服务</a>
-                  <ul class="dropdown">
-                    <li><a href="404.html">404 page</a></li>
-                    <li><a href="pricing-tables.html">Pricing tables</a></li>
-                    <li><a href="login.html">Login</a></li>
-                    <li><a href="register.html">Register</a></li>
-                    <li><a href="coming-soon.html">Coming Soon</a></li>
-                  </ul>
+                  <router-link
+                    class="sf-with-ul"
+                    to="/localTeam"
+                    active-class="active-nav"
+                    >当地参团</router-link
+                  >
                 </li>
                 <li>
-                  <a class="sf-with-ul" href="#0">关于我们</a>
-                  <ul class="dropdown">
-                    <li><a href="404.html">404 page</a></li>
-                    <li><a href="pricing-tables.html">Pricing tables</a></li>
-                    <li><a href="login.html">Login</a></li>
-                    <li><a href="register.html">Register</a></li>
-                    <li><a href="coming-soon.html">Coming Soon</a></li>
-                  </ul>
+                  <a class="sf-with-ul" href="#0">签证保险</a>
+                </li>
+                <li>
+                  <router-link
+                    class="sf-with-ul"
+                    to="/news"
+                    active-class="active-nav"
+                    >西葡资讯</router-link
+                  >
+                </li>
+                <li>
+                  <router-link
+                    class="sf-with-ul"
+                    to="/contact"
+                    active-class="active-nav"
+                    >联系我们</router-link
+                  >
                 </li>
                 <li class="right-side">
                   <ul>
@@ -179,6 +111,15 @@
 </template>
 
 <style lang="scss" scoped>
+#responsive {
+  li {
+    margin-left: 8px;
+    margin-right: 8px;
+    a {
+      font-size: 15px;
+    }
+  }
+}
 .nav-brand {
   max-width: 240px;
   img {
@@ -186,5 +127,8 @@
     width: 240px !important;
     height: 75px !important;
   }
+}
+.active-nav {
+  color: #c60b1e !important;
 }
 </style>

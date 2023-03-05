@@ -1,4 +1,49 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref, reactive, toRefs } from "vue";
+import { useRouter } from "vue-router";
+// import { citysInfoType, planInfoType } from "@/apis/interface/myInterface";
+const router = useRouter();
+const planInfo = reactive({
+  fromCity: "",
+  backCity: "",
+  arriveCountry: "",
+});
+
+const createPlan = () => {
+  console.log(planInfo);
+  router.push({
+    name: "TrvalPlan",
+    params: {
+      fromCity: planInfo.fromCity,
+      backCity: planInfo.backCity,
+      arriveCountry: planInfo.arriveCountry,
+    },
+  });
+};
+
+// 保证每次进入HOME页面都会刷新一次的工具方法：
+// const refresh = () => {
+//   //refreshFlag为true代表刷新过
+//   if (!store.refreshFlag) {
+//     // alert("刷新");
+//     //还没刷新过
+//     store.refreshFlag = true; //表示已经刷新了
+//     // console.log(store.refreshFlag);
+//     location.reload(); //那就刷新一下
+//     // setTimeout(function () {
+//     //   location.reload();
+//     // }, 1000);
+//     return;
+//   } else {
+//     //已经刷新过了
+//     store.refreshFlag = false; //表示还没有刷新
+//     // console.log(store.refreshFlag);
+
+//     return; //那就不刷新了
+//   }
+// };
+// refresh();
+</script>
 <script lang="ts">
 /* 控制日历弹出 */
 //@ts-ignore
@@ -46,7 +91,7 @@
           <div class="row h-100 align-items-center">
             <div class="col-lg-12 col-md-12">
               <div class="hero-content">
-                <h1 class="wow fadeInUp">FIND NEARBY RESTAUTRANT</h1>
+                <h1 class="wow fadeInUp">开启南欧奇幻之旅!</h1>
                 <p>
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
                   do
@@ -58,14 +103,15 @@
           <div class="row h-100 align-items-center">
             <div class="col-lg-12 col-md-12">
               <div class="search-bar mt-5 p-3 p-lg-1 pl-lg-4">
-                <form action="#">
+                <form autocomplete="off" @submit.prevent="createPlan">
                   <div class="row">
                     <div class="col-lg-4 d-flex align-items-center form-group">
                       <input
                         type="text"
                         name="search"
-                        placeholder="What are you searching for?"
+                        placeholder="你从哪里出发?"
                         class="form-control border-0 shadow-0"
+                        v-model="planInfo.fromCity"
                       />
                     </div>
                     <div class="col-lg-3 d-flex align-items-center form-group">
@@ -79,7 +125,8 @@
                         <input
                           type="text"
                           name="location"
-                          placeholder="Location"
+                          placeholder="返回地"
+                          v-model="planInfo.backCity"
                           id="location"
                           class="form-control border-0 shadow-0"
                         />
@@ -90,18 +137,19 @@
                     >
                       <div class="bootstrap-select">
                         <select
-                          title="Categories"
+                          title="目的地"
                           data-style="btn-form-control"
                           class="selectpicker"
                           tabindex="-98"
+                          v-model="planInfo.arriveCountry"
                         >
                           <option class="bs-title-option" value="">
-                            Restaurants
+                            请选择国家
                           </option>
-                          <option value="small">Restaurants</option>
-                          <option value="medium">Hotels</option>
-                          <option value="large">Cafes</option>
-                          <option value="x-large">Garages</option>
+                          <option value="西班牙">西班牙</option>
+                          <option value="葡萄牙">葡萄牙</option>
+                          <option value="安道尔">南法</option>
+                          <option value="南法">安道尔</option>
                         </select>
                         <div class="dropdown-menu">
                           <div
@@ -120,7 +168,7 @@
                         type="submit"
                         class="btn btn-primary btn-block rounded-xl h-100"
                       >
-                        Search
+                        Ok
                       </button>
                     </div>
                   </div>
@@ -136,14 +184,12 @@
     <div class="container">
       <div class="row mb-5">
         <div class="col-md-8">
-          <p class="subtitle text-secondary nopadding">
-            Stay and eat like a local
-          </p>
+          <p class="subtitle text-secondary nopadding">Country Of Travel</p>
           <h1 class="paddtop1 font-weight lspace-sm">出行国家</h1>
         </div>
         <div class="col-md-4 d-lg-flex align-items-center justify-content-end">
           <a href="" class="blist text-sm ml-2">
-            See all Categories<i class="fas fa-angle-double-right ml-2"></i
+            查看详细信息<i class="fas fa-angle-double-right ml-2"></i
           ></a>
         </div>
       </div>
@@ -162,7 +208,7 @@
                 />
                 <div class="card-body overlay-content">
                   <h6 class="card-title text-shadow text-uppercase">西班牙</h6>
-                  <p class="card-text text-sm">The big apple</p>
+                  <p class="card-text text-sm">Spain</p>
                 </div>
               </div>
             </div>
@@ -176,7 +222,7 @@
                 />
                 <div class="card-body overlay-content">
                   <h6 class="card-title text-shadow text-uppercase">葡萄牙</h6>
-                  <p class="card-text text-sm">Artist capital of Europe</p>
+                  <p class="card-text text-sm">Portugal</p>
                 </div>
               </div>
             </div>
@@ -190,7 +236,7 @@
                 />
                 <div class="card-body overlay-content">
                   <h6 class="card-title text-shadow text-uppercase">南法</h6>
-                  <p class="card-text text-sm">Dali, Gaudi, Barrio</p>
+                  <p class="card-text text-sm">South France</p>
                 </div>
               </div>
             </div>
@@ -204,21 +250,7 @@
                 />
                 <div class="card-body overlay-content">
                   <h6 class="card-title text-shadow text-uppercase">安道尔</h6>
-                  <p class="card-text text-sm">City of hundred towers</p>
-                </div>
-              </div>
-            </div>
-            <div class="swiper-slide h-auto px-2">
-              <div class="card card-poster gradient-overlay mb-4 mb-lg-0">
-                <a href="#" class="tile-link"></a
-                ><img
-                  src="/images/photo/5.jpg"
-                  alt="Card image"
-                  class="bg-image"
-                />
-                <div class="card-body overlay-content">
-                  <h6 class="card-title text-shadow text-uppercase">Canada</h6>
-                  <p class="card-text text-sm">Artist capital of Europe</p>
+                  <p class="card-text text-sm">Andorra</p>
                 </div>
               </div>
             </div>
@@ -228,18 +260,16 @@
       </div>
     </div>
   </section>
-  <div class="Categories pt80 pb80">
+  <div class="Categories pt80 pb80 theme-travel">
     <div class="container">
       <div class="row mb-5">
         <div class="col-md-8">
-          <p class="subtitle text-secondary nopadding">
-            Stay and eat like a local
-          </p>
+          <p class="subtitle text-secondary nopadding">Theme Travel</p>
           <h1 class="paddtop1 font-weight lspace-sm">主题旅行</h1>
         </div>
         <div class="col-md-4 d-lg-flex align-items-center justify-content-end">
           <a href="" class="blist text-sm ml-2">
-            See all Categories<i class="fas fa-angle-double-right ml-2"></i
+            查看所有分类<i class="fas fa-angle-double-right ml-2"></i
           ></a>
         </div>
       </div>
@@ -1111,4 +1141,8 @@
   </section>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.theme-travel {
+  padding-top: 0;
+}
+</style>

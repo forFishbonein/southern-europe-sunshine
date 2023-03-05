@@ -27,7 +27,6 @@ onMounted(() => {
   </div> -->
   <div class="page-wrapper">
     <BaseHeader></BaseHeader>
-    <!-- <div>草</div> -->
     <router-view v-slot="{ Component }">
       <keep-alive v-if="route.meta.keepAlive">
         <component :is="Component" />
