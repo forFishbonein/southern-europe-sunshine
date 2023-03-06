@@ -7,7 +7,7 @@
         <div class="row">
           <div class="col-lg-4 col-sm-4 col-xs-12">
             <div class="Footer-nav">
-              <h3>Our company</h3>
+              <h3>公司简介</h3>
               <p>
                 Lorem ipsum dolor sit amet consectetuer adipiscing elit
                 Suspendisse et justo Praesent mattis commodo augue Aliquam
@@ -25,7 +25,7 @@
               <ul class="footer-link">
                 <li>
                   <a href="#"
-                    ><i class="fas fa-long-arrow-alt-right"></i> About us</a
+                    ><i class="fas fa-long-arrow-alt-right"></i> 关于我们</a
                   >
                 </li>
                 <li>
@@ -35,7 +35,7 @@
                 </li>
                 <li>
                   <a href="#"
-                    ><i class="fas fa-long-arrow-alt-right"></i> Help</a
+                    ><i class="fas fa-long-arrow-alt-right"></i> 帮助</a
                   >
                 </li>
                 <li>
@@ -45,13 +45,12 @@
                 </li>
                 <li>
                   <a href="#"
-                    ><i class="fas fa-long-arrow-alt-right"></i> Create
-                    account</a
+                    ><i class="fas fa-long-arrow-alt-right"></i> 注册账号</a
                   >
                 </li>
                 <li>
                   <a href="#"
-                    ><i class="fas fa-long-arrow-alt-right"></i> Contacts</a
+                    ><i class="fas fa-long-arrow-alt-right"></i> 联系我们</a
                   >
                 </li>
               </ul>

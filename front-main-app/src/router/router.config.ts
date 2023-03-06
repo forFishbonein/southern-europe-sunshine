@@ -95,7 +95,7 @@ export const routes: Array<RouteRecordRaw> = [
             name: "ItemDetails",
             component: () => import("@/views/themeTravel/ItemDetails.vue"),
             meta: {
-              title: "玩乐详情页",
+              title: "相关玩乐详情页",
               keepAlive: false,
               showTab: true,
             },

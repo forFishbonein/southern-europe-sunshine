@@ -18,11 +18,11 @@ watch(selectTheme, (newValue, oldValue) => {
       <div class="row">
         <div class="col-md-12">
           <ol class="text-white justify-content-center no-border mb-0">
-            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-            <li class="breadcrumb-item active">Edit Listing</li>
+            <li class="breadcrumb-item"><a href="index.html">首页</a></li>
+            <li class="breadcrumb-item active">主题旅行</li>
           </ol>
           <div class="breadcromb-box">
-            <h3>Edit Listing</h3>
+            <h3>主题旅行</h3>
           </div>
         </div>
       </div>

@@ -28,7 +28,7 @@
         <div class="col-lg-2 col-sm-6 col-xs-12">
           <router-link to="/localPlay/items/1" class="box_cat_home">
             <img src="/images/cicon1.png" alt="" />
-            <h3>Shops</h3>
+            <h3>LAGOS-海船出游</h3>
             <ul>
               <li><strong>2548</strong>Listings</li>
             </ul>
@@ -37,7 +37,7 @@
         <div class="col-lg-2 col-sm-6 col-xs-12">
           <router-link to="/localPlay/items/2" class="box_cat_home">
             <img src="/images/cicon2.png" alt="" />
-            <h3>Restaurant</h3>
+            <h3>TAPS之旅</h3>
             <ul>
               <li><strong>2548</strong>Listings</li>
             </ul>
@@ -46,7 +46,7 @@
         <div class="col-lg-2 col-sm-6 col-xs-12">
           <router-link to="/localPlay/items/3" class="box_cat_home">
             <img src="/images/cicon3.png" alt="" />
-            <h3>Hotels</h3>
+            <h3>游艇PARTY</h3>
             <ul>
               <li><strong>2548</strong>Listings</li>
             </ul>
@@ -55,7 +55,7 @@
         <div class="col-lg-2 col-sm-6 col-xs-12">
           <router-link to="/localPlay/items/4" class="box_cat_home">
             <img src="/images/cicon4.png" alt="" />
-            <h3>Gym</h3>
+            <h3>网红旅拍</h3>
             <ul>
               <li><strong>2548</strong>Listings</li>
             </ul>

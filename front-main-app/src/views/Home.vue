@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, reactive, toRefs } from "vue";
 import { useRouter } from "vue-router";
+import { utilStore } from "@/store/util";
+const store = utilStore();
 // import { citysInfoType, planInfoType } from "@/apis/interface/myInterface";
 const router = useRouter();
 const planInfo = reactive({
@@ -22,27 +24,27 @@ const createPlan = () => {
 };
 
 // 保证每次进入HOME页面都会刷新一次的工具方法：
-// const refresh = () => {
-//   //refreshFlag为true代表刷新过
-//   if (!store.refreshFlag) {
-//     // alert("刷新");
-//     //还没刷新过
-//     store.refreshFlag = true; //表示已经刷新了
-//     // console.log(store.refreshFlag);
-//     location.reload(); //那就刷新一下
-//     // setTimeout(function () {
-//     //   location.reload();
-//     // }, 1000);
-//     return;
-//   } else {
-//     //已经刷新过了
-//     store.refreshFlag = false; //表示还没有刷新
-//     // console.log(store.refreshFlag);
+const refresh = () => {
+  //refreshFlag为true代表刷新过
+  if (!store.refreshFlag) {
+    // alert("刷新");
+    //还没刷新过
+    store.refreshFlag = true; //表示已经刷新了
+    // console.log(store.refreshFlag);
+    location.reload(); //那就刷新一下
+    // setTimeout(function () {
+    //   location.reload();
+    // }, 1000);
+    return;
+  } else {
+    //已经刷新过了
+    store.refreshFlag = false; //表示还没有刷新
+    // console.log(store.refreshFlag);
 
-//     return; //那就不刷新了
-//   }
-// };
-// refresh();
+    return; //那就不刷新了
+  }
+};
+refresh();
 </script>
 <script lang="ts">
 /* 控制日历弹出 */
@@ -200,7 +202,10 @@ const createPlan = () => {
             <!-- Slides-->
             <div class="swiper-slide h-auto px-2">
               <div class="card card-poster gradient-overlay mb-4 mb-lg-0">
-                <a href="#" class="tile-link"></a
+                <router-link
+                  to="/country/countryDetail/1"
+                  class="tile-link"
+                ></router-link
                 ><img
                   src="/images/photo/1.jpg"
                   alt="Card image"
@@ -214,7 +219,10 @@ const createPlan = () => {
             </div>
             <div class="swiper-slide h-auto px-2">
               <div class="card card-poster gradient-overlay mb-4 mb-lg-0">
-                <a href="#" class="tile-link"></a
+                <router-link
+                  to="/country/countryDetail/2"
+                  class="tile-link"
+                ></router-link
                 ><img
                   src="/images/photo/2.jpg"
                   alt="Card image"
@@ -228,7 +236,10 @@ const createPlan = () => {
             </div>
             <div class="swiper-slide h-auto px-2">
               <div class="card card-poster gradient-overlay mb-4 mb-lg-0">
-                <a href="#" class="tile-link"></a
+                <router-link
+                  to="/country/countryDetail/3"
+                  class="tile-link"
+                ></router-link
                 ><img
                   src="/images/photo/3.jpg"
                   alt="Card image"
@@ -242,7 +253,10 @@ const createPlan = () => {
             </div>
             <div class="swiper-slide h-auto px-2">
               <div class="card card-poster gradient-overlay mb-4 mb-lg-0">
-                <a href="#" class="tile-link"></a
+                <router-link
+                  to="/country/countryDetail/4"
+                  class="tile-link"
+                ></router-link
                 ><img
                   src="/images/photo/4.jpg"
                   alt="Card image"

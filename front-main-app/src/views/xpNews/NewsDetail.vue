@@ -1,8 +1,16 @@
 <script setup lang="ts"></script>
-
 <template>
   <section class="Blog-list pt80 pb80 blog-single-section">
     <div class="container">
+      <div class="bread-container">
+        <el-breadcrumb separator="/">
+          <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: '/news' }"
+            >西葡资讯</el-breadcrumb-item
+          >
+          <el-breadcrumb-item>详情页</el-breadcrumb-item>
+        </el-breadcrumb>
+      </div>
       <div class="row">
         <div class="col-md-8 col-xs-12">
           <div class="blog-content">
@@ -19,10 +27,7 @@
                   <a href="#"><i class="fas fa-comments"></i>3</a>
                 </li>
               </ul>
-              <h2>
-                Comprehensive learning platform for serious consultants and
-                skilled professionals who want to grow
-              </h2>
+              <h2>西甲第23轮巴萨1:0小胜皇马，梅西任意球绝杀</h2>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
@@ -205,4 +210,9 @@
   </section>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.bread-container {
+  margin-bottom: 30px;
+  margin-left: 0px;
+}
+</style>
