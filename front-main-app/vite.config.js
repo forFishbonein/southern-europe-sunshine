@@ -25,6 +25,8 @@ export default defineConfig({
   server: {
     //启动的ip
     host: "0.0.0.0",
+    hrm: true,
+    usePolling: true,
     // hmr:{
     //   overlay:false
     // }

@@ -72,7 +72,9 @@
                   >
                 </li>
                 <li>
-                  <a class="sf-with-ul" href="#0">签证保险</a>
+                  <router-link class="sf-with-ul" to="/visaInsurance"
+                    >签证保险</router-link
+                  >
                 </li>
                 <li>
                   <router-link

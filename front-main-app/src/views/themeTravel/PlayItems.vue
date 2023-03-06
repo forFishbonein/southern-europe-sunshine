@@ -10,14 +10,10 @@
               <div class="row ListriBox">
                 <div class="col-md-5 col-sm-6 col-xs-12 Nopadding">
                   <figure>
-                    <a
-                      href="listings-single-page-3.html"
-                      class="wishlist_bt"
-                    ></a>
-                    <a href="listings-single-page-3.html"
+                    <router-link to="/themeTravel/item/1"
                       ><img src="/images/hotel1.jpg" class="img-fluid" alt="" />
-                      <div class="read_more"><span>Read more</span></div>
-                    </a>
+                      <div class="read_more"><span>查看详情</span></div>
+                    </router-link>
                   </figure>
                 </div>
                 <div class="col-md-7 col-sm-6 col-xs-12 Nopadding">
@@ -28,17 +24,29 @@
                       >
                     </h3>
                     <p>给您提供全方面的精致服务，让您充分体验当地特色美食</p>
-                    <a class="address" href="">Get directions</a>
                   </div>
-                  <ul>
-                    <li><span class="Ropen">Now Open</span></li>
-                    <li>
-                      <div class="R_retings">
-                        <span>Blue Hill<em>122 Reviews</em></span
-                        ><strong>8.2</strong>
-                      </div>
-                    </li>
-                  </ul>
+                  <div class="route-container">
+                    <div class="R_retings">
+                      <span>Day1<em>停留8h</em></span
+                      ><strong>马德里</strong>
+                    </div>
+                    <div class="R_retings">
+                      <span>Day1<em>停留8h</em></span
+                      ><strong>马德里</strong>
+                    </div>
+                    <div class="R_retings">
+                      <span>Day1<em>停留8h</em></span
+                      ><strong>马德里</strong>
+                    </div>
+                    <div class="R_retings">
+                      <span>Day1<em>停留8h</em></span
+                      ><strong>马德里</strong>
+                    </div>
+                    <div class="R_retings">
+                      <span>Day1<em>停留8h</em></span
+                      ><strong>马德里</strong>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -233,5 +241,25 @@
 <style lang="scss" scoped>
 .ListingList {
   padding-top: 50px;
+}
+.route-container {
+  width: 100%;
+  height: 50px;
+  padding: 15px 25px;
+  border-top: 1px solid #ededed;
+}
+.R_retings {
+  float: left;
+  margin-right: 10px;
+  margin-bottom: 5px;
+  strong {
+    background-color: #c63a48;
+    padding: 7px;
+    font-size: 14px;
+  }
+}
+.ListriBoxmain {
+  width: 100%;
+  height: 120px;
 }
 </style>

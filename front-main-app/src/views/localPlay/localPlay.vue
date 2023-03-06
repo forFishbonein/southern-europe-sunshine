@@ -1,212 +1,81 @@
 <script setup lang="ts"></script>
 
 <template>
-  <section class="Campaigns pt80 pb80">
+  <section class="how-we-do features pt80 pb80" id="about">
     <div class="container">
       <div class="row">
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="ListriBox">
-            <figure>
-              <a href="listings-single-page-3.html" class="wishlist_bt"></a>
-              <a href="listings-single-page-3.html"
-                ><img src="images/hotel1.jpg" class="img-fluid" alt="" />
-                <div class="read_more"><span>Read more</span></div>
-              </a>
-            </figure>
-            <div class="ListriBoxmain">
-              <h3>
-                <a href="listings-single-page-3.html">Blue Hill Restaurant</a>
-              </h3>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              </p>
-              <a class="address" href="">Get directions</a>
-            </div>
-            <ul>
-              <li><span class="Ropen">Now Open</span></li>
-              <li>
-                <div class="R_retings">
-                  <span>Blue Hill<em>122 Reviews</em></span
-                  ><strong>8.2</strong>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="ListriBox">
-            <figure>
-              <a href="listings-single-page-3.html" class="wishlist_bt"></a>
-              <a href="listings-single-page-3.html"
-                ><img src="images/hotel2.jpg" class="img-fluid" alt="" />
-                <div class="read_more"><span>Read more</span></div>
-              </a>
-            </figure>
-            <div class="ListriBoxmain">
-              <h3>
-                <a href="listings-single-page-3.html">Blue Hill Restaurant</a>
-              </h3>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              </p>
-              <a class="address" href="">Get directions</a>
-            </div>
-            <ul>
-              <li><span class="Rclosed">Closed</span></li>
-              <li>
-                <div class="R_retings">
-                  <span>Blue Hill<em>122 Reviews</em></span
-                  ><strong>8.2</strong>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="ListriBox">
-            <figure>
-              <a href="listings-single-page-3.html" class="wishlist_bt"></a>
-              <a href="listings-single-page-3.html"
-                ><img src="images/hotel3.jpg" class="img-fluid" alt="" />
-                <div class="read_more"><span>Read more</span></div>
-              </a>
-            </figure>
-            <div class="ListriBoxmain">
-              <h3>
-                <a href="listings-single-page-3.html">Blue Hill Restaurant</a>
-              </h3>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              </p>
-              <a class="address" href="">Get directions</a>
-            </div>
-            <ul>
-              <li><span class="Ropen">Now Open</span></li>
-              <li>
-                <div class="R_retings">
-                  <span>Blue Hill<em>122 Reviews</em></span
-                  ><strong>8.2</strong>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="ListriBox">
-            <figure>
-              <a href="listings-single-page-3.html" class="wishlist_bt"></a>
-              <a href="listings-single-page-3.html"
-                ><img src="images/hotel4.jpg" class="img-fluid" alt="" />
-                <div class="read_more"><span>Read more</span></div>
-              </a>
-            </figure>
-            <div class="ListriBoxmain">
-              <h3>
-                <a href="listings-single-page-3.html">Blue Hill Restaurant</a>
-              </h3>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              </p>
-              <a class="address" href="">Get directions</a>
-            </div>
-            <ul>
-              <li><span class="Ropen">Now Open</span></li>
-              <li>
-                <div class="R_retings">
-                  <span>Blue Hill<em>122 Reviews</em></span
-                  ><strong>8.2</strong>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="ListriBox">
-            <figure>
-              <a href="listings-single-page-3.html" class="wishlist_bt"></a>
-              <a href="listings-single-page-3.html"
-                ><img src="images/hotel5.jpg" class="img-fluid" alt="" />
-                <div class="read_more"><span>Read more</span></div>
-              </a>
-            </figure>
-            <div class="ListriBoxmain">
-              <h3>
-                <a href="listings-single-page-3.html">Blue Hill Restaurant</a>
-              </h3>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              </p>
-              <a class="address" href="">Get directions</a>
-            </div>
-            <ul>
-              <li><span class="Rclosed">Closed</span></li>
-              <li>
-                <div class="R_retings">
-                  <span>Blue Hill<em>122 Reviews</em></span
-                  ><strong>8.2</strong>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="ListriBox">
-            <figure>
-              <a href="listings-single-page-3.html" class="wishlist_bt"></a>
-              <a href="listings-single-page-3.html"
-                ><img src="images/hotel6.jpg" class="img-fluid" alt="" />
-                <div class="read_more"><span>Read more</span></div>
-              </a>
-            </figure>
-            <div class="ListriBoxmain">
-              <h3>
-                <a href="listings-single-page-3.html">Blue Hill Restaurant</a>
-              </h3>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              </p>
-              <a class="address" href="">Get directions</a>
-            </div>
-            <ul>
-              <li><span class="Ropen">Now Open</span></li>
-              <li>
-                <div class="R_retings">
-                  <span>Blue Hill<em>122 Reviews</em></span
-                  ><strong>8.2</strong>
-                </div>
-              </li>
-            </ul>
+        <div class="col-md-8 offset-md-2">
+          <div class="section-title text-center">
+            <h2>欢迎来到当地玩乐</h2>
+            <h3>在南欧，我们是生活旅行的<span>引领者</span>！</h3>
+            <p>
+              想要深度体验异域风情，感受人文脉络，那就快跟上我们的步伐!<br />
+              不用说是看建筑，观美景，玩摄影，激情四射的狂欢节就让你酣畅淋漓，缤纷欢乐的音乐节会让你神恰心醉，美食和美酒也令你回味无穷;<br />
+              午后的时光，你还可以浸步老城，信步而行，听老街道娓娓道来一个个故事;<br />
+              亦或是在沙滩上嬉戏打闹，在世界上最明媚的阳光下尽情挥洒热情!<br />
+              来吧，我们的玩乐达人带你一起嗨翻南欧!
+            </p>
           </div>
         </div>
       </div>
-
-      <div class="paginationCommon blogPagination categoryPagination">
-        <nav aria-label="Page navigation">
-          <ul class="pagination">
-            <li>
-              <a href="#" aria-label="Previous">
-                <span aria-hidden="true"
-                  ><i class="fa fa-angle-left" aria-hidden="true"></i
-                ></span>
-              </a>
-            </li>
-            <li class="active"><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li>
-              <a href="#" aria-label="Next">
-                <span aria-hidden="true"
-                  ><i class="fa fa-angle-right" aria-hidden="true"></i
-                ></span>
-              </a>
-            </li>
-          </ul>
-        </nav>
+      <div class="dots-feat"><img src="/images/dots-2.png" alt="dots" /></div>
+      <div class="cercil"></div>
+    </div>
+  </section>
+  <section class="Categories pt50 pb50">
+    <div class="container">
+      <div class="row cate-button">
+        <div class="col-lg-2 col-sm-6 col-xs-12">
+          <router-link to="/localPlay/items/1" class="box_cat_home">
+            <img src="/images/cicon1.png" alt="" />
+            <h3>Shops</h3>
+            <ul>
+              <li><strong>2548</strong>Listings</li>
+            </ul>
+          </router-link>
+        </div>
+        <div class="col-lg-2 col-sm-6 col-xs-12">
+          <router-link to="/localPlay/items/2" class="box_cat_home">
+            <img src="/images/cicon2.png" alt="" />
+            <h3>Restaurant</h3>
+            <ul>
+              <li><strong>2548</strong>Listings</li>
+            </ul>
+          </router-link>
+        </div>
+        <div class="col-lg-2 col-sm-6 col-xs-12">
+          <router-link to="/localPlay/items/3" class="box_cat_home">
+            <img src="/images/cicon3.png" alt="" />
+            <h3>Hotels</h3>
+            <ul>
+              <li><strong>2548</strong>Listings</li>
+            </ul>
+          </router-link>
+        </div>
+        <div class="col-lg-2 col-sm-6 col-xs-12">
+          <router-link to="/localPlay/items/4" class="box_cat_home">
+            <img src="/images/cicon4.png" alt="" />
+            <h3>Gym</h3>
+            <ul>
+              <li><strong>2548</strong>Listings</li>
+            </ul>
+          </router-link>
+        </div>
       </div>
     </div>
   </section>
+  <router-view />
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.how-we-do {
+  padding-bottom: 50px;
+}
+.Categories {
+  border-top: 1px #dcdfe6 dashed;
+}
+.cate-button {
+  display: flex;
+  justify-content: space-around;
+}
+</style>

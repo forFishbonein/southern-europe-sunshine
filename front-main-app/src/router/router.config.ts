@@ -13,10 +13,13 @@ import TravelPlan from "@/views/makePlan/TravelPlan.vue";
 import TravelPlanResult from "@/views/makePlan/TravelPlanResult.vue";
 import AllCountry from "@/views/country/AllCountry.vue";
 import ThemeTravel from "@/views/themeTravel/ThemeTravel.vue";
-import localPlay from "@/views/localPlay/localPlay.vue";
-import localTeam from "@/views/localTeam/localTeam.vue";
+import LocalPlay from "@/views/localPlay/LocalPlay.vue";
+import LocalTeam from "@/views/localTeam/LocalTeam.vue";
 import News from "@/views/xpNews/News.vue";
 import ContactUs from "@/views/contact/ContactUs.vue";
+import VisaInsurance from "@/views/visaInsurance/VisaInsurance.vue";
+import Visa from "@/views/visaInsurance/Visa.vue";
+import Insurance from "@/views/visaInsurance/Insurance.vue";
 // import PassLogin from "@/components/passOrCode/PassLogin.vue";
 // import CodeLogin from "@/components/passOrCode/CodeLogin.vue";
 // import PersonalIndex from "@/views/personal/Index.vue";
@@ -102,14 +105,107 @@ export const routes: Array<RouteRecordRaw> = [
       {
         path: "/localPlay",
         name: "LocalPlay",
-        component: localPlay,
+        component: LocalPlay,
         meta: { title: "当地玩乐页", keepAlive: false, showTab: true },
+        redirect: "/localPlay/items/1",
+        children: [
+          {
+            path: "items/:localId",
+            name: "LocalItems",
+            component: () => import("@/views/localPlay/LocalItems.vue"),
+            meta: {
+              title: "当地的相关玩乐列表页",
+              keepAlive: false,
+              showTab: true,
+            },
+          },
+        ],
       },
       {
         path: "/localTeam",
-        name: "localTeam",
-        component: localTeam,
+        name: "LocalTeam",
+        component: LocalTeam,
         meta: { title: "当地参团页", keepAlive: false, showTab: true },
+      },
+      {
+        path: "/visaInsurance",
+        name: "VisaInsurance",
+        component: VisaInsurance,
+        meta: { title: "签证保险页", keepAlive: false, showTab: true },
+        redirect: "/visaInsurance/visa",
+        children: [
+          {
+            path: "visa",
+            name: "Visa",
+            component: () => import("@/views/visaInsurance/visa/Visa.vue"),
+            meta: {
+              title: "签证页",
+              keepAlive: false,
+              showTab: true,
+            },
+            redirect: "/visaInsurance/visa/list",
+            children: [
+              {
+                path: "list",
+                name: "VisaList",
+                component: () =>
+                  import("@/views/visaInsurance/visa/VisaList.vue"),
+                meta: {
+                  title: "签证列表页",
+                  keepAlive: false,
+                  showTab: true,
+                },
+              },
+              {
+                path: "detail/:visaId",
+                name: "VisaDetail",
+                component: () =>
+                  import("@/visaInsurance/insurance/VisaDetail.vue"),
+                meta: {
+                  title: "签证详情页",
+                  keepAlive: false,
+                  showTab: true,
+                },
+              },
+            ],
+          },
+          {
+            path: "insurance",
+            name: "Insurance",
+            component: () =>
+              import("@/views/visaInsurance/insurance/Insurance.vue"),
+            meta: {
+              title: "保险页",
+              keepAlive: false,
+              showTab: true,
+            },
+            redirect: "/visaInsurance/insurance/list",
+            children: [
+              {
+                path: "list",
+                name: "InsuranceList",
+                component: () =>
+                  import("@/views/visaInsurance/insurance/InsuranceList.vue"),
+                meta: {
+                  title: "保险列表页",
+                  keepAlive: false,
+                  showTab: true,
+                },
+              },
+              {
+                path: "detail/:insuranceId",
+                name: "InsuranceDetail",
+                component: () =>
+                  import("@/visaInsurance/insurance/InsuranceDetail.vue"),
+                meta: {
+                  title: "保险详情页",
+                  keepAlive: false,
+                  showTab: true,
+                },
+              },
+            ],
+          },
+        ],
       },
       {
         path: "/news",
