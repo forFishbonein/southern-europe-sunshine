@@ -1,7 +1,15 @@
 <script setup lang="ts">
-import { ref } from "vue";
-
+import { ref, watch } from "vue";
+import { useRouter } from "vue-router";
+const router = useRouter();
 const selectTheme = ref("1");
+watch(selectTheme, (newValue, oldValue) => {
+  if (Number(newValue) === 1) {
+    router.push("/themeTravel/items/1");
+  } else if (Number(newValue) === 2) {
+    router.push("/themeTravel/items/2");
+  }
+});
 </script>
 
 <template>
@@ -26,7 +34,7 @@ const selectTheme = ref("1");
         <el-radio-group v-model="selectTheme" size="large">
           <div>
             <el-radio-button label="1">美食</el-radio-button>
-            <el-radio-button label="Washington"></el-radio-button>
+            <el-radio-button label="2">红酒</el-radio-button>
             <el-radio-button label="Los Angeles"></el-radio-button>
             <el-radio-button label="Chicago"></el-radio-button>
             <el-radio-button label="New York" />
