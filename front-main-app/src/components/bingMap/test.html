@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>sdsloadmultipleboundariesHTML</title>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+    <style type='text/css'>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Segoe UI', Helvetica, Arial, Sans-Serif;
+        }
+
+        #myMap {
+            width: 100%;
+            height: 100%;
+            float: left;
+        }
+
+        .bm_bottomLeftOverlay {
+            display: none !important;
+            visibility: hide !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='myMap'></div>
+    <script type='text/javascript'>
+        var h = [30.320730, 30.203730, 30.20730, 30.320730];
+        var s = [120.106659, 120.100659, 120.000659, 120.006659];
+        var infobox, tooltip;
+        var htmltext = '<div style="border:0px;padding:3px;border-radius:10px;border:1px solid #00F;display:inline-block;height:1%;width:90px; color: rgb(255, 255, 255); background: rgb(200, 118, 145);">{title}</div>';
+        function loadMapScenario() {
+            var map = new Microsoft.Maps.Map(document.getElementById('myMap'), {
+                /* 如果已经在URL中传递，则无需设置凭据 */
+                zoom: 10,
+                center: new Microsoft.Maps.Location(30.320730, 120.106659)
+            });
+            //创建位置数组以获得边界
+            var places = ['余杭区', '西湖区', '上城区', '江干区', '拱墅区', '下城区', '滨江区', '萧山区'];
+            // • AdminDivision1：国家/地区级别的第一个行政级别，例如州或省。
+            // • AdminDivision2：国家/地区级别的第二个行政级别，例如县。
+            // • CountryRegion：国家或地区。
+            // • Neighborhood：人口稠密的地方的一部分，通常是众所周知的地方，但边界模糊。
+            // • PopulatedPlace：人类居住的集中区域，如城市，城镇或村庄。
+            // • Postcode1：最小的邮政编码类别，例如zip code。 （大概是国际邮政编码之类的）
+            // • Postcode2：Postcode1之后的下一个最大邮政编码类别，它是通过聚合Postcode1区域创建的。
+            // • Postcode3：通过聚合Postcode2区域创建的Postcode2之后的下一个最大邮政编码类别。
+            // • Postcode4：通过聚合Postcode3区域创建的Postcode3之后的下一个最大邮政编码类别。
+            var geoDataRequestOptions = {
+                entityType: 'PopulatedPlace',//人类居住的集中区域，如城市，城镇或村庄。
+                getAllPolygons: true
+            };
+            Microsoft.Maps.loadModule('Microsoft.Maps.SpatialDataService', function () {
+                //使用GeoData API管理器获取边界
+                Microsoft.Maps.SpatialDataService.GeoDataAPIManager.getBoundary(places, geoDataRequestOptions,
+                    map,
+                    function (data) {
+                        if (data.results && data.results.length > 0) {
+                            var poly = data.results[0].Polygons[0];
+                            map.entities.push(poly);
+                            //设置事件
+                            Microsoft.Maps.Events.addHandler(poly, 'mouseover', PolygonsMouseover);
+                            Microsoft.Maps.Events.addHandler(poly, 'mouseout', PolygonsMouseout);
+                            Microsoft.Maps.Events.addHandler(poly, 'click', PolygonsClick);
+                        }
+                    },
+                    function errCallback(callbackState, networkStatus, statusMessage) {
+                        console.log(callbackState);
+                        console.log(networkStatus);
+                        console.log(statusMessage);
+                    });
+            });
+            //鼠标悬停在多边形上触发
+            function PolygonsMouseover(e) {
+                e.target.setOptions({
+                    fillColor: 'rgba(255, 20, 147, 0.4)', strokeColor: 'rgba(0, 100, 200, 1)',
+                    strokeThickness: 1
+                });
+            }
+            //鼠标移除多边形覆盖区域时触发
+            function PolygonsMouseout(e) {
+                e.target.setOptions({
+                    fillColor: "rgba(90, 255, 150, 0.4)", strokeColor: "rgba(0, 100, 200, 1)",
+                    strokeThickness: 1
+                });
+            }
+            //鼠标点击覆盖区域
+            function PolygonsClick(e) {
+                //视图定位设置
+                map.setView({ center: e.location, zoom: 12 });
+                zoomMap();
+            }
+            //完成地图视图更新后，触发该事件。 当视图没变，但视图帧发生变化时也会触发该事件。
+            Microsoft.Maps.Events.addHandler(map, 'viewchangeend', zoomMap);
+
+            //视图变化监控
+            function zoomMap() {
+                //区域折线覆盖物显示隐藏
+                var poly_arr = map.entities._primitives;
+                for (var i = 0; i < poly_arr.length; i++) {
+                    var poly_objeck = poly_arr[i];
+                    if (map.getZoom() > 11) {
+                        if (poly_objeck.geometryType == 1) {
+                            poly_objeck.setOptions({ visible: true });
+                            // var lat = new Microsoft.Maps.Location(poly_objeck.geometry.y, poly_objeck.geometry.x);
+                            // //提示信息初始化
+                            // tooltip = new Microsoft.Maps.Infobox(lat, {
+                            //     showPointer: false,
+                            //     showCloseButton: false,
+                            //     offset: new Microsoft.Maps.Point(-55, 15),
+                            //     htmlContent: htmltext.replace('{title}', "酒店"+(i+1)),
+                            //     visible: true
+                            // });
+                            // tooltip.setMap(map);
+                        } else if (poly_objeck.geometryType == 3) {
+                            poly_objeck.setOptions({ visible: false });
+                        }
+                    } else {
+                        if (poly_objeck.geometryType == 1) {
+                            poly_objeck.setOptions({ visible: false });
+                        } else if (poly_objeck.geometryType == 3) {
+                            poly_objeck.setOptions({ visible: true });
+                        }
+                    }
+                }
+            }
+            //信息窗口初始化
+            infobox = new Microsoft.Maps.Infobox(map.getCenter(), {
+                visible: false
+            });
+            infobox.setMap(map);
+            //标记
+            for (var i = 0; i < h.length; i++) {
+                var Location = new Microsoft.Maps.Location(h[i], s[i]);
+                //标记初始化
+                var pin = new Microsoft.Maps.Pushpin(Location);
+                // {title : "我是地址"+i,subTitle: 'City Center',text: ''+i}
+                // 设置标记信息
+                pin.metadata = {
+                    title: '小保健 ' + (i + 1),
+                    description: 'Discription' + (i + 1),
+                    visible: true
+                };
+                // 给标记设置点击事件触发函数显示对应窗口信息
+                Microsoft.Maps.Events.addHandler(pin, 'click', pushpinClicked);
+
+                //鼠标停留在点标记上时，触发该事件
+                Microsoft.Maps.Events.addHandler(pin, 'mouseover', function (e) {
+                    e.target.setOptions({ color: 'red' });
+                });
+                //鼠标悬停在点标记上方，并单击鼠标左键时，触发该事件。
+                Microsoft.Maps.Events.addHandler(pin, 'mousedown', function (e) {
+                    e.target.setOptions({ color: 'blue' });
+                });
+                //当鼠标移除点标记覆盖区域时，触发该事件
+                Microsoft.Maps.Events.addHandler(pin, 'mouseout', function (e) {
+                    e.target.setOptions({ color: 'purple' });
+                });
+                //添加标记
+                map.entities.push(pin);
+            }
+            //信息窗口
+            function pushpinClicked(e) {
+                console.log(e);
+                if (e.target.metadata) {
+                    infobox.setOptions({
+                        location: e.target.getLocation(),
+                        title: e.target.metadata.title,
+                        description: e.target.metadata.description,
+                        visible: true//显示
+                    });
+                }
+            }
+            console.log(map);
+            console.log(map.entities._primitives);
+            // //路线
+            // Microsoft.Maps.loadModule('Microsoft.Maps.Directions', function () {
+            //     //Create an instance of the directions manager.
+            //     directionsManager = new Microsoft.Maps.Directions.DirectionsManager(map);
+            //     // //Create waypoints to route between.
+            //     // var seattleWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: 'hangzhou' , location: new Microsoft.Maps.Location(h[2], s[2]) });
+            //     // directionsManager.addWaypoint(seattleWaypoint);
+            //     // var workWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: 'shanghai' , location: new Microsoft.Maps.Location(h[3], s[3])});
+            //     // directionsManager.addWaypoint(workWaypoint);
+            //     //创建两点之间的路线。
+            //     var seattleWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: '余杭区' });
+            //     directionsManager.addWaypoint(seattleWaypoint);
+            //     var workWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: '上城区' });
+            //     directionsManager.addWaypoint(workWaypoint);
+            //
+            //     //将事件处理程序添加到路线管理器。
+            //     // Microsoft.Maps.Events.addHandler(directionsManager, 'directionsError', directionsError);
+            //     Microsoft.Maps.Events.addHandler(directionsManager, 'directionsUpdated', directionsUpdated);
+            //
+            //     directionsManager.calculateDirections();
+            // });
+            // function directionsUpdated(e) {
+            //     //获取当前路线索引。
+            //     var routeIdx = directionsManager.getRequestOptions().routeIndex;
+            //     //获取路线距离，四舍五入到小数点后两位。
+            //     var distance = Math.round(e.routeSummary[routeIdx].distance * 100)/100;
+            //     //获取用于计算路线的距离单位。
+            //     var units = directionsManager.getRequestOptions().distanceUnit;
+            //     var distanceUnits = '';
+            //     if (units == Microsoft.Maps.Directions.DistanceUnit.km) {
+            //         distanceUnits = 'km'
+            //     } else {
+            //         //必须以英里为单位
+            //         distanceUnits = 'miles'
+            //     }
+            //     //时间以秒为单位，转换为分钟并四舍五入。
+            //     var time = Math.round(e.routeSummary[routeIdx].timeWithTraffic / 60);
+            //     console.log('Distance: ' + distance + ' ' + distanceUnits + '   Time with Traffic: ' + time + ' minutes');
+            // }
+        }
+    </script>
+    <script type='text/javascript'
+        src='https://www.bing.com/api/maps/mapcontrol?key=AkPqQjrEeSNHwv78SOc9gpDoPLIVylos653GaNqCFN_DHv_RwvLMmeOtRbrfUoAZ&callback=loadMapScenario&mkt=zh-cn&setlang=zh-cn'
+        async defer></script>
+</body>
+
+</html>

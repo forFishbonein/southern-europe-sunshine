@@ -1,190 +1,259 @@
-<script lang="ts">
-import AMapLoader from "@amap/amap-jsapi-loader"; // 使用加载器加载JSAPI，可以避免异步加载、重复加载等常见错误加载错误
-import { shallowRef } from "@vue/reactivity";
+<script setup lang="ts">
 import { useRouter } from "vue-router";
 import { reactive, ref } from "vue";
 import { onMounted } from "@vue/runtime-core";
 // 引入中文包
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
-export default {
-  props: ["fromCity", "backCity", "arriveCountry"],
-  // 简单功能的实现
-  setup(props, context) {
-    console.log(props);
-    const fromCity = props.fromCity;
-    const backCity = props.backCity;
-    const arriveCountry = props.arriveCountry;
-    const router = useRouter();
-    // let planCityInfo = reactive({
-    //   fromTheCity: fromCity,
-    //   backTheCity: backCity,
-    //   wantCitys: [] as Array<String>,
-    //   goTheDate: "",
-    //   budget: "",
-    // });
-
-    // let citysInfo = ref(["西班牙", "葡萄牙", "安道尔", "南法"]);
-    // 初始化右边的数据
-    // const initWantConutryInfo = () => {
-    //   if (arriveCountry) {
-    //     //要加一下toCity.cityName
-    //     planCityInfo.wantCitys.push(arriveCountry);
-    //     // console.log(planCityInfo.wantCitys);
-    //     // console.log(planCityInfo);
-    //   }
-    // };
-
-    const backToHome = () => {
-      router.push("/");
-    };
-    //@ts-ignore
-    // window._AMapSecurityConfig = {
-    //   securityJsCode: "8971dc628d403fc5523045a0919d8a98",
-    // };
-    /* 高德地图实现 */
-    const map = shallowRef(null);
-    // 初始化地图方法
-    function initMap(toCitys?) {
-      AMapLoader.load({
-        key: "17921af6912991af8e884ca64d0bf583", // 申请好的Web端开发者Key，首次调用 load 时必填
-        version: "2.0", // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
-        plugins: [
-          "AMap.Scale", //工具条，控制地图的缩放、平移等
-          "AMap.ToolBar",
-        ], // 需要使用的的插件列表，如比例尺'AMap.Scale'等
-      })
-        .then((AMap) => {
-          // @ts-ignore
-          let map = new AMap.Map("map", {
-            //设置地图容器id
-            viewMode: "3D", //是否为3D地图模式
-            zoom: 5, //初始化地图级别
-            // center: [1.45, 40.25], //初始化地图中心点位置：马德里附近
-            center: [116.378517, 39.865246], //初始化地图中心点位置：马德里附近
-            dragEnable: true, //禁止鼠标拖拽
-            scrollWheel: true, //鼠标滚轮放大缩小
-            doubleClickZoom: true, //双击放大缩小
-            keyboardEnable: true, //键盘控制放大缩小移动旋转
-          });
-          //@ts-ignore
-          map.setDefaultCursor("pointer"); //使用CSS默认样式定义地图上的鼠标样式（default/pointer/move/crosshair）
-          //@ts-ignore
-          map.addControl(new AMap.Scale()); //异步同时加载多个插件
-          //@ts-ignore
-          map.addControl(new AMap.ToolBar());
-
-          let Obj = {
-            markerList: [],
-            windowList: [],
-          };
-          if (toCitys) {
-            // alert(111);
-            console.log(toCitys);
-            // 封装一下
-            toCitys.forEach((e) => {
-              // var weather = new AMap.Weather();
-              // let info = {};
-              // //执行实时天气信息查询
-              // weather.getLive(e.toCity, function (err, data) {
-              //   console.log(err, data);
-              //   info = data;
-              // });
-              Obj.markerList.push(
-                // @ts-ignore
-                new AMap.Marker({
-                  position: new AMap.LngLat(e.lng, e.lat),
-                  title: e.toCity,
-                })
-              );
-              Obj.windowList.push(
-                // @ts-ignore
-                new AMap.InfoWindow({
-                  //创建信息窗体
-                  isCustom: false, //使用自定义窗体
-                  anchor: "top-right", //信息窗体的三角所在位置
-                  content: `<p style="color:#e8604c;margin:0">目的地：${e.toCity}</p>
-                <p style="color:#e8604c;margin:0">经度：${e.lng}</p>
-                <p style="color:#e8604c;margin:0">纬度：${e.lat}</p>`, //信息窗体的内容可以是任意html片段
-                  offset: new AMap.Pixel(0, 0), //不需要偏移量
-                })
-              );
-            });
-            //@ts-ignore
-            map.add(Obj.markerList); // 地图添加标记
-            // alert(111);
-            for (let i = 0; i < Obj.markerList.length; i++) {
-              // @ts-ignore
-              Obj.markerList[i].on("click", () => {
-                // @ts-ignore
-                Obj.windowList[i].open(map, Obj.markerList[i].getPosition());
-                //@ts-ignore
-                map.on("click", () => {
-                  // @ts-ignore
-                  Obj.windowList[i] && Obj.windowList[i].close();
-                });
-              });
-            }
-          }
-          // @ts-ignore
-          AMapLoader.load({
-            //可多次调用load
-            plugins: ["AMap.MapType"],
-          })
-            .then((AMap) => {
-              map.addControl(new AMap.MapType());
-            })
-            .catch((e) => {
-              console.error(e);
-            });
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    }
-    const tocitys = [
-      {
-        lng: "103.834228",
-        lat: "36.060798",
-        toCity: "北京",
-      },
-      {
-        lng: "116.378517",
-        lat: "39.865246",
-        toCity: "北京",
-      },
-    ];
-    onMounted(() => {
-      initMap(tocitys);
-    });
-    return {
-      map,
-      backToHome,
-    };
-  },
-  // methods: {
-
-  // },
-  // mounted() {
-  //   //DOM初始化完成进行地图初始化
-  //   this.initMap([
-  //     {
-  //       lng: "103.834228",
-  //       lat: "36.060798",
-  //       toCity: "北京",
-  //     },
-  //   ]);
-  // },
-  // created() {
-  //   //@ts-ignore
-  //   window._AMapSecurityConfig = {
-  //     securityJsCode: "8971dc628d403fc5523045a0919d8a98",
-  //   };
-  // },
+import bingMapsLayer from "@/components/bingMap/bingMap.vue";
+import { User, Iphone } from "@element-plus/icons-vue";
+const router = useRouter();
+const getLocationNums = (...data) => {
+  console.log("click");
+  console.log(data);
+  // 这里的data中即子组件bingMap返回的点击获取的经纬度值
 };
+const backToHome = () => {
+  router.push("/");
+};
+const tocitys = [
+  {
+    lng: "-9.15561077008929",
+    lat: "38.71216927583443",
+    toCity: "里斯本头牛场",
+  },
+  {
+    lng: "1.516512095495548",
+    lat: "42.511873844695025",
+    toCity: "安道尔大酒店",
+  },
+];
+const centerPoint = [116.378517, 39.865246];
+const addGood = ref(null);
+//测试标点
+// const marker = () => {
+//   // alert(1);
+//   // @ts-ignore
+//   addGood.value.addMarkers(tocitys, centerPoint);
+// };
+
+//级联选择器选择城市
+const countryAndCity = ref([]);
+
+const props = {
+  expandTrigger: "hover" as const,
+};
+
+const handleChangeCity = (value) => {
+  // console.log(countryAndCity.value);
+  console.log(value);
+  // @ts-ignore //不传第一个参数
+  addGood.value.addMarkers(null, value[1].point);
+  //请求景点和酒店数据
+};
+
+const countryAndCityOptions = [
+  {
+    value: { name: "西班牙", point: [116.378517, 39.865246] },
+    label: "西班牙",
+    children: [
+      {
+        value: {
+          name: "里斯本",
+          img: "/images/home3.jpg",
+          point: [-9.15561077008929, 38.71216927583443],
+        },
+        label: "里斯本",
+      },
+      {
+        value: "navigation",
+        label: "Navigation",
+      },
+    ],
+  },
+  {
+    value: { name: "葡萄牙", point: [-9.15561077008929, 38.71216927583443] },
+    label: "葡萄牙",
+    children: [
+      {
+        value: {
+          name: "里斯本",
+          img: "/images/home3.jpg",
+          point: [-9.15561077008929, 38.71216927583443],
+        },
+        label: "里斯本",
+      },
+      {
+        value: "navigation",
+        label: "Navigation",
+      },
+    ],
+  },
+  {
+    value: "南法",
+    label: "南法",
+    children: [
+      {
+        value: "disciplines",
+        label: "Disciplines",
+      },
+      {
+        value: "navigation",
+        label: "Navigation",
+      },
+    ],
+  },
+  {
+    value: "安道尔",
+    label: "安道尔",
+    children: [
+      {
+        value: "disciplines",
+        label: "Disciplines",
+      },
+      {
+        value: "navigation",
+        label: "Navigation",
+      },
+    ],
+  },
+];
+let wantSceneryAndHotel = [];
+//单选器
+const scenery = ref("");
+const handleChangeScenery = (value) => {
+  // @ts-ignore
+  wantSceneryAndHotel.push(value.point);
+  // @ts-ignore
+  addGood.value.addMarkers(wantSceneryAndHotel, value.point);
+};
+const sceneryOptions = [
+  {
+    value: {
+      name: "里斯本斗牛场",
+      point: [-9.15561077008929, 38.71216927583443],
+    },
+    label: "里斯本斗牛场",
+  },
+  {
+    value: "Option2",
+    label: "Option2",
+  },
+  {
+    value: "Option3",
+    label: "Option3",
+  },
+  {
+    value: "Option4",
+    label: "Option4",
+  },
+  {
+    value: "Option5",
+    label: "Option5",
+  },
+];
+const hotel = ref("");
+const handleChangeHotel = (value) => {
+  // @ts-ignore
+  wantSceneryAndHotel.push(value.point);
+  // @ts-ignore
+  addGood.value.addMarkers(wantSceneryAndHotel, value.point);
+};
+const hotelOptions = [
+  {
+    value: {
+      name: "安道尔大酒店",
+      point: [1.516512095495548, 42.511873844695025],
+    },
+    label: "安道尔大酒店",
+  },
+  {
+    value: {
+      name: "西班牙皇家酒店",
+      point: [-8.15561077008929, 37.71216927583443],
+    },
+    label: "西班牙皇家酒店",
+  },
+  {
+    value: "Option3",
+    label: "Option3",
+  },
+  {
+    value: "Option4",
+    label: "Option4",
+  },
+  {
+    value: "Option5",
+    label: "Option5",
+  },
+];
+//选择日期
+const theDate = ref("");
+// const backDate = ref("");
+const shortcuts = [
+  {
+    text: "Today",
+    value: new Date(),
+  },
+  {
+    text: "Yesterday",
+    value: () => {
+      const date = new Date();
+      date.setTime(date.getTime() - 3600 * 1000 * 24);
+      return date;
+    },
+  },
+  {
+    text: "A week ago",
+    value: () => {
+      const date = new Date();
+      date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+      return date;
+    },
+  },
+];
+//添加到行程的方法
+let oneRouteInfo = {
+  city: "",
+  cityImg: "",
+  scenery: "",
+  hotel: "",
+  date: "",
+};
+let allRoutes = ref([]);
+const addToRoutes = () => {
+  // @ts-ignore
+  oneRouteInfo.city = countryAndCity.value[1].name;
+  // @ts-ignore
+  oneRouteInfo.cityImg = countryAndCity.value[1].img;
+  // @ts-ignore
+  oneRouteInfo.scenery = scenery.value.name;
+  // @ts-ignore
+  oneRouteInfo.hotel = hotel.value.name;
+  oneRouteInfo.date = theDate.value;
+  console.log(oneRouteInfo);
+  // @ts-ignore
+  allRoutes.value.push(oneRouteInfo);
+  alert(90900);
+  console.log(allRoutes);
+  // // @ts-ignore
+  // oneRouteInfo.city = "";
+  // // @ts-ignore
+  // oneRouteInfo.cityImg = "";
+  // oneRouteInfo.scenery = "";
+  // oneRouteInfo.hotel = "";
+  // oneRouteInfo.date = "";
+};
+//联系人
+const contactName = ref("");
+const contactPhone = ref("");
+onMounted(() => {});
 </script>
 
 <template>
-  <div id="map"></div>
+  <bing-maps-layer
+    @getLocationNums="getLocationNums"
+    ref="addGood"
+  ></bing-maps-layer>
   <div class="back-button" @click="backToHome">
     <el-icon><Back /></el-icon>
   </div>
@@ -194,21 +263,115 @@ export default {
     </div>
     <div class="left-body">
       <div class="items">
-        <el-scrollbar height="460px"></el-scrollbar>
+        <el-cascader
+          v-model="countryAndCity"
+          :options="countryAndCityOptions"
+          :props="props"
+          @change="handleChangeCity"
+          placeholder="请选择国家和城市"
+          size="large"
+        />
+        <el-select
+          v-model="scenery"
+          clearable
+          @change="handleChangeScenery"
+          placeholder="请选择景点"
+          size="large"
+        >
+          <el-option
+            v-for="item in sceneryOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+        <el-select
+          v-model="hotel"
+          clearable
+          @change="handleChangeHotel"
+          placeholder="请选择酒店"
+          size="large"
+        >
+          <el-option
+            v-for="item in hotelOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+        <el-config-provider :locale="zhCn">
+          <el-date-picker
+            v-model="theDate"
+            type="datetime"
+            placeholder="选择行程日期"
+            :shortcuts="shortcuts"
+            size="large"
+          />
+        </el-config-provider>
+        <!-- <el-config-provider :locale="zhCn">
+          <el-date-picker
+            v-model="backDate"
+            type="datetime"
+            placeholder="选择返回日期"
+            :shortcuts="shortcuts"
+            size="large"
+          />
+        </el-config-provider> -->
+        <div class="button-to-add">
+          <el-button type="primary" size="large" @click="addToRoutes" plain
+            >加入行程</el-button
+          >
+        </div>
       </div>
     </div>
   </div>
-  <div class="main-right"></div>
+  <div class="main-right">
+    <div class="right-header">
+      <el-input
+        v-model="contactName"
+        class="w-50 m-2"
+        placeholder="联系人姓名"
+        :suffix-icon="User"
+      />
+      <el-input
+        v-model="contactPhone"
+        class="w-50 m-2"
+        placeholder="联系人电话"
+        :suffix-icon="Iphone"
+      />
+    </div>
+    <div class="right-body">
+      <el-scrollbar height="370px">
+        <div class="timeline" v-for="(item, index) in allRoutes" :key="index">
+          <div class="timeline-left">
+            <div class="timeline-left-node"></div>
+            <div class="timeline-left-line"></div>
+          </div>
+          <div class="timeline-card">
+            <div class="timeline-card-title">{{ item.date }}</div>
+            <div class="timeline-card-content">
+              <div class="card-header-content">
+                <div class="header-img"><img :src="item.cityImg" /></div>
+                <div class="header-title">
+                  <strong>今日安排</strong><br /><span>{{ item.city }}</span>
+                </div>
+              </div>
+              <div class="content-words">
+                酒店：{{ item.hotel }} 景点：{{ item.scenery }}
+                哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈
+              </div>
+            </div>
+          </div>
+        </div>
+      </el-scrollbar>
+      <div class="button-to-submit">
+        <el-button type="primary" round>提交行程</el-button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>
-#map {
-  margin: 0px;
-  width: 100%;
-  height: 700px;
-  // height: 100%;
-  padding: 0px;
-}
 .main-left {
   width: 260px;
   height: 75%;
@@ -251,7 +414,7 @@ export default {
   }
   .items {
     margin: 10px auto;
-    width: 90%;
+    width: 80%;
     height: 80%;
     // border: 1px #e8604c solid;
   }
@@ -270,6 +433,20 @@ export default {
   border-radius: 5px;
   box-shadow: 0 2px 27px 6px rgba(0, 0, 0, 0.12);
   background-color: white;
+  .right-header {
+    height: 18%;
+    width: 100%;
+    border-bottom: 2px solid #e8604c;
+    padding: 2px 20px;
+    ::v-deep .el-input {
+      width: 250px !important;
+    }
+  }
+  .right-body {
+    height: 82%;
+    width: 100%;
+    padding: 20px 10px;
+  }
 }
 .back-button {
   position: fixed;
@@ -293,5 +470,114 @@ export default {
 .back-button:hover {
   background-color: rgba(78, 196, 131, 0.8);
   color: #e0e0e0;
+}
+::v-deep .el-input__inner {
+  border: 0 !important;
+}
+::v-deep .el-input {
+  margin-bottom: 20px;
+}
+::v-deep .el-button {
+  font-weight: 800;
+  font-size: 17px;
+}
+.button-to-add {
+  width: 205px;
+  margin: 0 auto;
+  position: absolute;
+  bottom: 15px;
+  display: flex;
+  justify-content: center;
+}
+.button-to-submit {
+  width: 280px;
+  margin: 0 auto;
+  position: absolute;
+  bottom: 15px;
+  display: flex;
+  justify-content: center;
+}
+// ::v-deep .el-scrollbar {
+//   padding: 5px !important;
+// }
+.timeline {
+  padding-left: 20px;
+  display: flex;
+  width: 100%;
+  &-left {
+    margin-right: 5px;
+
+    &-node {
+      z-index: 5;
+      position: relative;
+      bottom: 1px;
+      left: -5px;
+      width: 15px;
+      height: 15px;
+      background-color: #ffffff;
+      border: 2px solid #c60b1e;
+      border-radius: 50%;
+    }
+
+    &-line {
+      position: relative;
+      bottom: 15px;
+      height: 100%;
+      border-left: 3px solid #e4e7ed;
+    }
+  }
+
+  &-card {
+    height: 100%;
+
+    &-title {
+      font-size: 15px;
+      color: rgb(0, 0, 0);
+      margin-bottom: 10px;
+      color: rgb(172, 172, 172);
+    }
+
+    &-content {
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px 1px lightgray;
+      margin-bottom: 20px;
+      width: 220px;
+      height: auto;
+      .card-header-content {
+        width: 200px;
+        height: 70px;
+        background-color: rgba(0, 0, 0, 0.03);
+        padding: 5px;
+        .header-img {
+          width: 80px;
+          height: 60px;
+          img {
+            width: 100%;
+            height: 100%;
+          }
+          float: left;
+        }
+        .header-title {
+          padding-left: 10px;
+          width: 100px;
+          height: 70px;
+          float: right;
+          span {
+            font-size: 14px;
+          }
+        }
+      }
+      .content-words {
+        padding: 10px;
+        font-size: 14px;
+      }
+      &:hover {
+        cursor: pointer;
+        position: relative;
+        bottom: 4px;
+      }
+    }
+  }
 }
 </style>
