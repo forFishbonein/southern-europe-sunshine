@@ -1,4 +1,12 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useRouter, useRoute } from "vue-router";
+import emitter from "@/mitt/event";
+const route = useRoute();
+const themeId = route.params.themeId;
+if (themeId && themeId !== "") {
+  emitter.emit("synOptions", themeId);
+}
+</script>
 
 <template>
   <section class="Campaigns pt80 pb80 ListingList">

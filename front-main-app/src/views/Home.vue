@@ -189,9 +189,9 @@ onMounted(() => {
           <h1 class="paddtop1 font-weight lspace-sm">出行国家</h1>
         </div>
         <div class="col-md-4 d-lg-flex align-items-center justify-content-end">
-          <a href="" class="blist text-sm ml-2">
+          <router-link to="/country" class="blist text-sm ml-2">
             查看详细信息<i class="fas fa-angle-double-right ml-2"></i
-          ></a>
+          ></router-link>
         </div>
       </div>
       <div class="row">
@@ -281,9 +281,9 @@ onMounted(() => {
           <h1 class="paddtop1 font-weight lspace-sm">主题旅行</h1>
         </div>
         <div class="col-md-4 d-lg-flex align-items-center justify-content-end">
-          <a href="" class="blist text-sm ml-2">
+          <router-link to="/themeTravel" class="blist text-sm ml-2">
             查看所有分类<i class="fas fa-angle-double-right ml-2"></i
-          ></a>
+          ></router-link>
         </div>
       </div>
       <div class="row">
@@ -292,7 +292,7 @@ onMounted(() => {
             <div class="featured-img">
               <img src="/images/featured/1.jpg" alt="" />
               <div class="featured-content">
-                <a href="room-single.html">美食</a>
+                <router-link to="/themeTravel/items/1">美食</router-link>
               </div>
             </div>
           </div>
@@ -302,7 +302,7 @@ onMounted(() => {
             <div class="featured-img">
               <img src="/images/featured/2.jpg" alt="" />
               <div class="featured-content">
-                <a href="room-single.html">建筑</a>
+                <router-link to="/themeTravel/items/2">建筑</router-link>
               </div>
             </div>
           </div>
@@ -312,7 +312,7 @@ onMounted(() => {
             <div class="featured-img">
               <img src="/images/featured/3.jpg" alt="" />
               <div class="featured-content">
-                <a href="room-single.html">红酒</a>
+                <router-link to="/themeTravel/items/3">红酒</router-link>
               </div>
             </div>
           </div>
