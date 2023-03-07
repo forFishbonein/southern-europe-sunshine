@@ -1,4 +1,33 @@
-<script setup lang="ts"></script>
+<script lang="ts" setup>
+import { onMounted } from "vue";
+onMounted(() => {
+  // @ts-ignore
+  (function ($) {
+    $(document).ready(function () {
+      /* Header Sticky
+		========================================================*/
+      $(window).on("scroll", function () {
+        // @ts-ignore
+        if ($(this).scrollTop() > 70) {
+          // alert(111);
+          $(".header-sticky").addClass("is-sticky");
+        } else {
+          $(".header-sticky").removeClass("is-sticky");
+        }
+      });
+
+      // Nav Active Code
+      /*==============================================================*/
+      if ($.fn.getfundNav) {
+        $("#listingNav").getfundNav({
+          theme: "light",
+        });
+      }
+    });
+    //@ts-ignore
+  })(jQuery);
+});
+</script>
 
 <template>
   <!-- Start Main Menu Area -->
@@ -139,5 +168,46 @@
 .main-header-area {
   z-index: 99999999;
   position: relative;
+}
+//把.is-sticky有关的css都复制过来，否则识别不到
+.header-sticky.is-sticky {
+  background: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.4);
+  -webkit-animation: 500ms ease-in-out 0s normal none 1 running fadeInDown;
+  animation: 500ms ease-in-out 0s normal none 1 running fadeInDown;
+}
+.is-sticky .main-header-area {
+  width: 100%;
+  z-index: 10000 !important;
+  height: 90px;
+  box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.2);
+  background-color: #fff;
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .is-sticky .main-header-area {
+    height: 70px;
+  }
+  .light .getfundnav ul li .dropdown,
+  .light .getfundnav ul li .megamenu,
+  .light.breakpoint-on .getfundnav > ul > li > a,
+  .light.breakpoint-on .getfund-navbar .getfund-menu {
+    background-color: #000000;
+  }
+}
+@media only screen and (max-width: 767px) {
+  .is-sticky .main-header-area {
+    height: 70px;
+  }
+  .light .getfundnav ul li .dropdown,
+  .light .getfundnav ul li .megamenu,
+  .light.breakpoint-on .getfundnav > ul > li > a,
+  .light.breakpoint-on .getfund-navbar .getfund-menu {
+    background-color: #000000;
+  }
 }
 </style>

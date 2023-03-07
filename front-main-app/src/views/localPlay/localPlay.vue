@@ -78,4 +78,8 @@
   display: flex;
   justify-content: space-around;
 }
+.box_cat_home {
+  width: 160px;
+  height: 200px;
+}
 </style>

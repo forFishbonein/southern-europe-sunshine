@@ -370,7 +370,7 @@ onMounted(() => {
             `<i data-v-f86fb796="" class="el-icon" style="--color:#e0e0e0;"><svg data-v-f86fb796="" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M384 192v640l384-320.064z"></path></svg></i>`
           );
           $(".main-left").css("transform", "translateX(-85%)");
-          $(".main-right").css("transform", "translateX(110%)");
+          $(".main-right").css("transform", "translateX(130%)");
         } else {
           // @ts-ignore
           $(this).html(
@@ -562,7 +562,7 @@ onMounted(() => {
 }
 .main-left {
   width: 260px;
-  height: 60%;
+  height: 63%;
   position: fixed;
   top: 17%;
   left: 20px;
@@ -615,7 +615,7 @@ onMounted(() => {
   height: 90%;
   position: fixed;
   top: 5%;
-  right: 20px;
+  right: 80px;
   z-index: 1000;
   // height: 75%;
   float: right;
@@ -626,7 +626,7 @@ onMounted(() => {
   transition: all 0.8s linear;
   background-color: rgba(255, 255, 255, 0.8);
   .right-header {
-    height: 27%;
+    height: 29%;
     width: 100%;
     border-bottom: 2px solid #e8604c;
     padding: 2px 20px;

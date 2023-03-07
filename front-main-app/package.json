@@ -16,11 +16,13 @@
     "element-plus": "^2.2.32",
     "pinia": "^2.0.32",
     "mitt": "^3.0.0",
+    "nprogress": "^0.2.0",
     "pinia-plugin-persistedstate": "^3.1.0",
     "vue": "^3.2.45"
   },
   "devDependencies": {
     "@types/node": "^18.14.4",
+    "@types/nprogress": "^0.2.0",
     "@vitejs/plugin-vue": "^4.0.0",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",

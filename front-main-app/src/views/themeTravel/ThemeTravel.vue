@@ -115,4 +115,7 @@ watch(selectTheme, (newValue, oldValue) => {
 ::v-deep .el-radio-button:hover {
   box-shadow: 1px 2px 5px 0 rgba(0, 0, 0, 0.2);
 }
+::v-deep .el-radio-button__inner {
+  font-weight: 600;
+}
 </style>

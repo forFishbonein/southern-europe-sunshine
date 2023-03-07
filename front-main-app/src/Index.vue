@@ -19,12 +19,33 @@ onMounted(() => {
   // alert(1111);
 });
 </script>
-
+<script lang="ts">
+var a_idx = 0;
+(function ($) {
+  $(document).ready(function () {
+    // 监听滚动事件
+    $(window).on("scroll", function () {
+      //判断向下滑动的距离
+      // if ($(window).scrollTop() >= 100) {
+      //   //将顶部导航栏固定
+      //   $(".header").addClass("fixed").fadeIn(1000);
+      // } else {
+      //   $(".header").removeClass("fixed");
+      // }
+      /*注：fadeIn和FadeOut必须同时使用，才可以无限产生效果，如果没有用fadeOut，那么下一次的fadeIn就没有用了*/
+      if ($(window).scrollTop() >= 500) {
+        $(".fixed-button").fadeIn(700).css("display", "flex");
+      } else {
+        $(".fixed-button").fadeOut(300, function () {
+          $(".fixed-button").css("display", "none");
+        });
+      }
+    });
+  });
+  //@ts-ignore
+})(jQuery);
+</script>
 <template>
-  <!-- 加载圈 -->
-  <!-- <div class="preloader">
-    <img class="preloader__image" width="60" src="/images/loader.png" alt="" />
-  </div> -->
   <div class="page-wrapper">
     <BaseHeader></BaseHeader>
     <router-view v-slot="{ Component }">
@@ -38,13 +59,14 @@ onMounted(() => {
   <div class="fixed-button">
     <el-tooltip
       effect="light"
-      content="<span style='color:#e8604c'><strong>智能问答</strong></span>"
+      content="<span style='color:#c60b1e'><strong>人工客服</strong></span>"
       raw-content
       placement="top-start"
     >
-      <el-icon :size="20" @click="goToQuestion"><ChatLineRound /></el-icon>
+      <el-icon :size="20" @click="goToQuestion"><Service /></el-icon>
     </el-tooltip>
   </div>
+  <el-backtop :right="10" :bottom="35" />
 </template>
 
 <style lang="scss" scoped>
@@ -67,15 +89,14 @@ onMounted(() => {
   position: fixed;
   bottom: 100px;
   right: 10px;
-  // border: 1px #e8604c solid;
   z-index: 1000;
   background-color: rgba(255, 255, 255, 0.5);
-  color: #e8604c;
+  color: #c60b1e;
   box-shadow: 0 2px 27px 6px rgba(0, 0, 0, 0.12);
   cursor: pointer;
 }
 .fixed-button:hover {
-  background-color: rgba(232, 96, 76, 0.8);
+  background-color: #c63a48;
   color: #ffffff;
 }
 </style>

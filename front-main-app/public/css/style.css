@@ -142,6 +142,7 @@ Slider css
 */
 
 .main-banner {
+	background: url(../images/banner-img.jpg), url(../images/home1.jpg), url(../images/home2.jpg), url(../images/home3.jpg), url(../images/home4.jpg), ;
 	height: 800px;
 	width: 100%;
 	background-position: center center;
@@ -149,36 +150,36 @@ Slider css
 	background-repeat: no-repeat;
 	position: relative;
 	z-index: 1;
-	background: url(../images/banner-img.jpg) no-repeat fixed center / 100% 100%;
 	/* 必须要写为 center / 100% 100% */
-	animation: carousel 15s infinite linear;
+	animation: carousel 20s infinite linear;
+	-moz-animation: carousel 20s infinite linear;
+	/* Firefox */
+	-webkit-animation: carousel 20s infinite linear;
+	/* Safari and Chrome */
+	-o-animation: carousel 20s infinite linear;
+	/* Opera */
 }
 
 @keyframes carousel {
 
-	0%,
-	20% {
-		background: url("../images/home1.jpg") no-repeat fixed center / 100% 100%;
+	0% {
+		background: url(../images/home1.jpg) no-repeat fixed center / 100% 100%;
 	}
 
-	20%,
-	40% {
-		background: url("../images/home2.jpg") no-repeat fixed center / 100% 100%;
+	25% {
+		background: url(../images/home2.jpg) no-repeat fixed center / 100% 100%;
 	}
 
-	40%,
-	60% {
-		background: url("../images/home3.jpg") no-repeat fixed center / 100% 100%;
+	50% {
+		background: url(../images/home3.jpg) no-repeat fixed center / 100% 100%;
 	}
 
-	60%,
-	80% {
-		background: url("../images/home4.jpg") no-repeat fixed center / 100% 100%;
+	75% {
+		background: url(../images/home4.jpg) no-repeat fixed center / 100% 100%;
 	}
 
-	80%,
 	100% {
-		background: url("../images/banner-img.jpg") no-repeat fixed center / 100% 100%;
+		background: url(../images/banner-img.jpg) no-repeat fixed center / 100% 100%;
 	}
 }
 

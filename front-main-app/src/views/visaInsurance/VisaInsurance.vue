@@ -18,7 +18,9 @@ watch(selection, (newValue, oldValue) => {
       <div class="row">
         <div class="col-md-12">
           <ol class="text-white justify-content-center no-border mb-0">
-            <li class="breadcrumb-item"><a href="index.html">首页</a></li>
+            <li class="breadcrumb-item">
+              <router-link to="/home">首页</router-link>
+            </li>
             <li class="breadcrumb-item active">签证保险</li>
           </ol>
           <div class="breadcromb-box">
@@ -42,4 +44,13 @@ watch(selection, (newValue, oldValue) => {
   <router-view />
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+::v-deep .el-radio {
+  box-shadow: 0 2px 27px 6px rgba(0, 0, 0, 0.1);
+}
+::v-deep .el-radio-group {
+  > .is-checked {
+    border: 2px solid #c60b1e;
+  }
+}
+</style>

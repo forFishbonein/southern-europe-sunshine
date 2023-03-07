@@ -12,6 +12,7 @@ declare module '@vue/runtime-core' {
     BaseFooter: typeof import('./src/components/common/BaseFooter.vue')['default']
     BaseHeader: typeof import('./src/components/common/BaseHeader.vue')['default']
     BingMap: typeof import('./src/components/bingMap/bingMap.vue')['default']
+    ElBacktop: typeof import('element-plus/es')['ElBacktop']
     ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
     ElBreadcrumbItem: typeof import('element-plus/es')['ElBreadcrumbItem']
     ElButton: typeof import('element-plus/es')['ElButton']
