@@ -26,7 +26,7 @@ import { routes } from "./router.config";
 // 3. 创建路由实例
 const router = createRouter({
   // history: createWebHashHistory(import.meta.env.VITE_PUBLIC_PATH),
-  history: createWebHistory(import.meta.env.VITE_PUBLIC_PATH),
+  history: createWebHashHistory(import.meta.env.VITE_PUBLIC_PATH),
   routes,
   strict: true,
   scrollBehavior: () => ({ left: 0, top: 0 }),

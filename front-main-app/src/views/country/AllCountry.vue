@@ -1,25 +1,25 @@
 <script setup lang="ts">
 import { ref, reactive, toRefs } from "vue";
 let countryEnName = ref("Spain");
-let countryImg = ref("/images/home2.jpg");
+let countryImg = ref("./images/home2.jpg");
 let countryName = ref("西班牙王国");
 const selectConutry = (countryId) => {
   if (countryId === 1) {
     countryName.value = "西班牙王国";
     countryEnName.value = "Spain";
-    countryImg.value = "/images/home2.jpg";
+    countryImg.value = "./images/home2.jpg";
   } else if (countryId === 2) {
     countryName.value = "葡萄牙共和国";
     countryEnName.value = "Portgual";
-    countryImg.value = "/images/home3.jpg";
+    countryImg.value = "./images/home3.jpg";
   } else if (countryId === 3) {
     countryName.value = "南法";
     countryEnName.value = "South France";
-    countryImg.value = "/images/home4.jpg";
+    countryImg.value = "./images/home4.jpg";
   } else if (countryId === 4) {
     countryName.value = "安道尔公国";
     countryEnName.value = "Andorra";
-    countryImg.value = "/images/home1.jpg";
+    countryImg.value = "./images/home1.jpg";
   }
 };
 </script>

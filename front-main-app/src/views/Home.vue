@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import { ref, reactive, toRefs } from "vue";
 import { useRouter } from "vue-router";
-import { utilStore } from "@/store/util";
-const store = utilStore();
+// import { utilStore } from "@/store/util";
+import { onMounted } from "@vue/runtime-core";
+// const store = utilStore();
 // import { citysInfoType, planInfoType } from "@/apis/interface/myInterface";
 const router = useRouter();
 const planInfo = reactive({
   fromCity: "",
   backCity: "",
-  arriveCountry: "",
+  arriveCity: "",
 });
 
 const createPlan = () => {
@@ -18,71 +19,70 @@ const createPlan = () => {
     params: {
       fromCity: planInfo.fromCity,
       backCity: planInfo.backCity,
-      arriveCountry: planInfo.arriveCountry,
+      arriveCity: planInfo.arriveCity,
     },
   });
 };
 
 // 保证每次进入HOME页面都会刷新一次的工具方法：
-const refresh = () => {
-  //refreshFlag为true代表刷新过
-  if (!store.refreshFlag) {
-    // alert("刷新");
-    //还没刷新过
-    store.refreshFlag = true; //表示已经刷新了
-    // console.log(store.refreshFlag);
-    location.reload(); //那就刷新一下
-    // setTimeout(function () {
-    //   location.reload();
-    // }, 1000);
-    return;
-  } else {
-    //已经刷新过了
-    store.refreshFlag = false; //表示还没有刷新
-    // console.log(store.refreshFlag);
+// const refresh = () => {
+//   //refreshFlag为true代表刷新过
+//   if (!store.refreshFlag) {
+//     // alert("刷新");
+//     //还没刷新过
+//     store.refreshFlag = true; //表示已经刷新了
+//     // console.log(store.refreshFlag);
+//     location.reload(); //那就刷新一下
+//     // setTimeout(function () {
+//     //   location.reload();
+//     // }, 1000);
+//     return;
+//   } else {
+//     //已经刷新过了
+//     store.refreshFlag = false; //表示还没有刷新
+//     // console.log(store.refreshFlag);
 
-    return; //那就不刷新了
-  }
-};
-refresh();
-</script>
-<script lang="ts">
-/* 控制日历弹出 */
-//@ts-ignore
-(function ($) {
-  $(document).ready(function () {
-    // =====================================================
-    //      Items slider
-    // =====================================================
-    //@ts-ignore
-    var guidesSlider = new Swiper(".guides-slider", {
-      slidesPerView: 4,
-      spaceBetween: 15,
-      loop: true,
-      roundLengths: true,
-      breakpoints: {
-        1200: {
-          slidesPerView: 4,
-        },
-        991: {
-          slidesPerView: 3,
-        },
-        768: {
-          slidesPerView: 2,
-        },
-        400: {
-          slidesPerView: 1,
-        },
-      },
-      pagination: {
-        el: ".swiper-pagination",
-        clickable: true,
-        dynamicBullets: true,
-      },
-    });
-  });
+//     return; //那就不刷新了
+//   }
+// };
+// refresh();
+onMounted(() => {
   //@ts-ignore
-})(jQuery);
+  (function ($) {
+    $(document).ready(function () {
+      // =====================================================
+      //      Items slider
+      // =====================================================
+      //@ts-ignore
+      var guidesSlider = new Swiper(".guides-slider", {
+        slidesPerView: 4,
+        spaceBetween: 15,
+        loop: true,
+        roundLengths: true,
+        breakpoints: {
+          1200: {
+            slidesPerView: 4,
+          },
+          991: {
+            slidesPerView: 3,
+          },
+          768: {
+            slidesPerView: 2,
+          },
+          400: {
+            slidesPerView: 1,
+          },
+        },
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+          dynamicBullets: true,
+        },
+      });
+    });
+    //@ts-ignore
+  })(jQuery);
+});
 </script>
 
 <template>
@@ -94,10 +94,7 @@ refresh();
             <div class="col-lg-12 col-md-12">
               <div class="hero-content">
                 <h1 class="wow fadeInUp">开启南欧奇幻之旅!</h1>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-                  do
-                </p>
+                <p>Start the fantastic journey of southern Europe!</p>
               </div>
             </div>
             <div class="col-lg-6 col-md-12"></div>
@@ -143,15 +140,17 @@ refresh();
                           data-style="btn-form-control"
                           class="selectpicker"
                           tabindex="-98"
-                          v-model="planInfo.arriveCountry"
+                          v-model="planInfo.arriveCity"
                         >
                           <option class="bs-title-option" value="">
-                            请选择国家
+                            热门城市
                           </option>
-                          <option value="西班牙">西班牙</option>
-                          <option value="葡萄牙">葡萄牙</option>
-                          <option value="安道尔">南法</option>
-                          <option value="南法">安道尔</option>
+                          <option value="西班牙+马德里">西班牙•马德里</option>
+                          <option value="葡萄牙+里斯本">葡萄牙•里斯本</option>
+                          <option value="南法+巴黎">南法•巴黎</option>
+                          <option value="安道尔+安道尔城">
+                            安道尔•安道尔城
+                          </option>
                         </select>
                         <div class="dropdown-menu">
                           <div
@@ -170,7 +169,7 @@ refresh();
                         type="submit"
                         class="btn btn-primary btn-block rounded-xl h-100"
                       >
-                        Ok
+                        确定
                       </button>
                     </div>
                   </div>
@@ -321,7 +320,7 @@ refresh();
         <div class="col-lg-4 items col-md-6 col-sm-6 col-12">
           <div class="featured-wrap">
             <div class="featured-img">
-              <img src="images/featured/4.jpg" alt="" />
+              <img src="/images/featured/4.jpg" alt="" />
               <div class="featured-content">
                 <a href="room-single.html">古堡</a>
               </div>
@@ -331,7 +330,7 @@ refresh();
         <div class="col-lg-4 items col-md-6 col-sm-6 col-12">
           <div class="featured-wrap">
             <div class="featured-img">
-              <img src="images/featured/5.jpg" alt="" />
+              <img src="/images/featured/5.jpg" alt="" />
               <div class="featured-content">
                 <a href="room-single.html">高尔夫</a>
               </div>
@@ -341,7 +340,7 @@ refresh();
         <div class="col-lg-4 items col-md-6 col-sm-6 col-12">
           <div class="featured-wrap">
             <div class="featured-img">
-              <img src="images/featured/6.jpg" alt="" />
+              <img src="/images/featured/6.jpg" alt="" />
               <div class="featured-content">
                 <a href="room-single.html">节日</a>
               </div>
@@ -372,7 +371,7 @@ refresh();
             <figure>
               <a href="listings-single-page-3.html" class="wishlist_bt"></a>
               <a href="listings-single-page-3.html"
-                ><img src="images/hotel1.jpg" class="img-fluid" alt="" />
+                ><img src="/images/hotel1.jpg" class="img-fluid" alt="" />
                 <div class="read_more"><span>Read more</span></div>
               </a>
             </figure>
@@ -401,7 +400,7 @@ refresh();
             <figure>
               <a href="listings-single-page-3.html" class="wishlist_bt"></a>
               <a href="listings-single-page-3.html"
-                ><img src="images/hotel2.jpg" class="img-fluid" alt="" />
+                ><img src="/images/hotel2.jpg" class="img-fluid" alt="" />
                 <div class="read_more"><span>Read more</span></div>
               </a>
             </figure>
@@ -430,7 +429,7 @@ refresh();
             <figure>
               <a href="listings-single-page-3.html" class="wishlist_bt"></a>
               <a href="listings-single-page-3.html"
-                ><img src="images/hotel3.jpg" class="img-fluid" alt="" />
+                ><img src="/images/hotel3.jpg" class="img-fluid" alt="" />
                 <div class="read_more"><span>Read more</span></div>
               </a>
             </figure>
@@ -459,7 +458,7 @@ refresh();
             <figure>
               <a href="listings-single-page-3.html" class="wishlist_bt"></a>
               <a href="listings-single-page-3.html"
-                ><img src="images/hotel4.jpg" class="img-fluid" alt="" />
+                ><img src="/images/hotel4.jpg" class="img-fluid" alt="" />
                 <div class="read_more"><span>Read more</span></div>
               </a>
             </figure>
@@ -488,7 +487,7 @@ refresh();
             <figure>
               <a href="listings-single-page-3.html" class="wishlist_bt"></a>
               <a href="listings-single-page-3.html"
-                ><img src="images/hotel5.jpg" class="img-fluid" alt="" />
+                ><img src="/images/hotel5.jpg" class="img-fluid" alt="" />
                 <div class="read_more"><span>Read more</span></div>
               </a>
             </figure>
@@ -517,7 +516,7 @@ refresh();
             <figure>
               <a href="listings-single-page-3.html" class="wishlist_bt"></a>
               <a href="listings-single-page-3.html"
-                ><img src="images/hotel6.jpg" class="img-fluid" alt="" />
+                ><img src="/images/hotel6.jpg" class="img-fluid" alt="" />
                 <div class="read_more"><span>Read more</span></div>
               </a>
             </figure>
@@ -591,7 +590,7 @@ refresh();
           </div>
         </div>
       </div>
-      <div class="dots-feat"><img src="images/dots-2.png" alt="dots" /></div>
+      <div class="dots-feat"><img src="/images/dots-2.png" alt="dots" /></div>
       <div class="cercil"></div>
     </div>
   </section>
@@ -621,7 +620,7 @@ refresh();
                 <figure>
                   <a href="listings-single-page-3.html" class="wishlist_bt"></a>
                   <a href="listings-single-page-3.html"
-                    ><img src="images/room1.jpg" class="img-fluid" alt="" />
+                    ><img src="/images/room1.jpg" class="img-fluid" alt="" />
                     <div class="read_more"><span>Read more</span></div>
                   </a>
                 </figure>
@@ -663,7 +662,7 @@ refresh();
                 <figure>
                   <a href="listings-single-page-3.html" class="wishlist_bt"></a>
                   <a href="listings-single-page-3.html"
-                    ><img src="images/room2.jpg" class="img-fluid" alt="" />
+                    ><img src="/images/room2.jpg" class="img-fluid" alt="" />
                     <div class="read_more"><span>Read more</span></div>
                   </a>
                 </figure>
@@ -705,7 +704,7 @@ refresh();
                 <figure>
                   <a href="listings-single-page-3.html" class="wishlist_bt"></a>
                   <a href="listings-single-page-3.html"
-                    ><img src="images/room3.jpg" class="img-fluid" alt="" />
+                    ><img src="/images/room3.jpg" class="img-fluid" alt="" />
                     <div class="read_more"><span>Read more</span></div>
                   </a>
                 </figure>
@@ -747,7 +746,7 @@ refresh();
                 <figure>
                   <a href="listings-single-page-3.html" class="wishlist_bt"></a>
                   <a href="listings-single-page-3.html"
-                    ><img src="images/room4.jpg" class="img-fluid" alt="" />
+                    ><img src="/images/room4.jpg" class="img-fluid" alt="" />
                     <div class="read_more"><span>Read more</span></div>
                   </a>
                 </figure>
@@ -789,7 +788,7 @@ refresh();
                 <figure>
                   <a href="listings-single-page-3.html" class="wishlist_bt"></a>
                   <a href="listings-single-page-3.html"
-                    ><img src="images/room5.jpg" class="img-fluid" alt="" />
+                    ><img src="/images/room5.jpg" class="img-fluid" alt="" />
                     <div class="read_more"><span>Read more</span></div>
                   </a>
                 </figure>
@@ -831,7 +830,7 @@ refresh();
                 <figure>
                   <a href="listings-single-page-3.html" class="wishlist_bt"></a>
                   <a href="listings-single-page-3.html"
-                    ><img src="images/room6.jpg" class="img-fluid" alt="" />
+                    ><img src="/images/room6.jpg" class="img-fluid" alt="" />
                     <div class="read_more"><span>Read more</span></div>
                   </a>
                 </figure>
@@ -900,7 +899,7 @@ refresh();
                   <div class="testimonial card rounded-lg shadow border-0">
                     <div class="testimonial-avatar">
                       <img
-                        src="images/avatar/avatar-3.jpg"
+                        src="/images/avatar/avatar-3.jpg"
                         alt="..."
                         class="img-fluid"
                       />
@@ -922,7 +921,7 @@ refresh();
                   <div class="testimonial card rounded-lg shadow border-0">
                     <div class="testimonial-avatar">
                       <img
-                        src="images/avatar/avatar-3.jpg"
+                        src="/images/avatar/avatar-3.jpg"
                         alt="..."
                         class="img-fluid"
                       />
@@ -944,7 +943,7 @@ refresh();
                   <div class="testimonial card rounded-lg shadow border-0">
                     <div class="testimonial-avatar">
                       <img
-                        src="images/avatar/avatar-3.jpg"
+                        src="/images/avatar/avatar-3.jpg"
                         alt="..."
                         class="img-fluid"
                       />
@@ -966,7 +965,7 @@ refresh();
                   <div class="testimonial card rounded-lg shadow border-0">
                     <div class="testimonial-avatar">
                       <img
-                        src="images/avatar/avatar-3.jpg"
+                        src="/images/avatar/avatar-3.jpg"
                         alt="..."
                         class="img-fluid"
                       />
@@ -988,7 +987,7 @@ refresh();
                   <div class="testimonial card rounded-lg shadow border-0">
                     <div class="testimonial-avatar">
                       <img
-                        src="images/avatar/avatar-3.jpg"
+                        src="/images/avatar/avatar-3.jpg"
                         alt="..."
                         class="img-fluid"
                       />
@@ -1010,7 +1009,7 @@ refresh();
                   <div class="testimonial card rounded-lg shadow border-0">
                     <div class="testimonial-avatar">
                       <img
-                        src="images/avatar/avatar-3.jpg"
+                        src="/images/avatar/avatar-3.jpg"
                         alt="..."
                         class="img-fluid"
                       />
@@ -1057,7 +1056,7 @@ refresh();
           <div class="card shadow border-0 h-100">
             <a href="post.html"
               ><img
-                src="images/b1.jpg"
+                src="/images/b1.jpg"
                 alt="..."
                 class="img-fluid card-img-top"
             /></a>
@@ -1085,7 +1084,7 @@ refresh();
           <div class="card shadow border-0 h-100">
             <a href="post.html"
               ><img
-                src="images/b2.jpg"
+                src="/images/b2.jpg"
                 alt="..."
                 class="img-fluid card-img-top"
             /></a>
@@ -1111,7 +1110,7 @@ refresh();
           <div class="card shadow border-0 h-100">
             <a href="post.html"
               ><img
-                src="images/b3.jpg"
+                src="/images/b3.jpg"
                 alt="..."
                 class="img-fluid card-img-top"
             /></a>
@@ -1142,12 +1141,12 @@ refresh();
       <div class="row">
         <div class="col-md-12">
           <ul class="clientlogo-list">
-            <li><img src="images/client-logo1.png" alt="" /></li>
-            <li><img src="images/client-logo2.png" alt="" /></li>
-            <li><img src="images/client-logo3.png" alt="" /></li>
-            <li><img src="images/client-logo4.png" alt="" /></li>
-            <li><img src="images/client-logo5.png" alt="" /></li>
-            <li><img src="images/client-logo6.png" alt="" /></li>
+            <li><img src="/images/client-logo1.png" alt="" /></li>
+            <li><img src="/images/client-logo2.png" alt="" /></li>
+            <li><img src="/images/client-logo3.png" alt="" /></li>
+            <li><img src="/images/client-logo4.png" alt="" /></li>
+            <li><img src="/images/client-logo5.png" alt="" /></li>
+            <li><img src="/images/client-logo6.png" alt="" /></li>
           </ul>
         </div>
       </div>

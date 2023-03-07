@@ -33,15 +33,22 @@ export default {
         _this.initMap(centerPoint, 10);
         // let lngList = [];
         // let latList = [];
-        if (wantTos) {
-          // toCitys.forEach((e) => {
-          //   lngList.push(Number(e.lng));
-          //   latList.push(Number(e.lat));
-          // });
+        let pointList = [];
+        let descriptionList = [];
+        let nameList = [];
+        if (wantTos && wantTos !== "") {
+          wantTos.forEach((e) => {
+            // lngList.push(Number(e.lng));
+            // latList.push(Number(e.lat));
+            pointList.push(e.point);
+            descriptionList.push(e.description);
+            nameList.push(e.name);
+          });
           //   alert(8888);
           console.log("=========");
           // console.log(lngList);
           // console.log(latList);
+          console.log(pointList);
           console.log("=========");
           //信息窗口初始化
           _this.infobox = new Microsoft.Maps.Infobox(_this.map.getCenter(), {
@@ -49,19 +56,22 @@ export default {
           });
           _this.infobox.setMap(_this.map);
           //标记
-          for (var i = 0; i < wantTos.length; i++) {
+          for (var i = 0; i < pointList.length; i++) {
             // var Location = new Microsoft.Maps.Location(latList[i], lngList[i]);
             var Location = new Microsoft.Maps.Location(
-              wantTos[i][1],
-              wantTos[i][0]
+              pointList[i][1],
+              pointList[i][0]
             );
             //标记初始化
             var pin = new Microsoft.Maps.Pushpin(Location);
             // {title : "我是地址"+i,subTitle: 'City Center',text: ''+i}
             // 设置标记信息
             pin.metadata = {
-              title: "马德里 " + (i + 1),
-              description: "Discription" + (i + 1),
+              // title: "马德里 " + (i + 1),
+              // description: "Discription" + (i + 1),
+              // visible: true,
+              title: nameList[i],
+              description: descriptionList[i],
               visible: true,
             };
             // 给标记设置点击事件触发函数显示对应窗口信息
@@ -133,6 +143,16 @@ export default {
       _this.initMap([-3.7360839843750093, 40.419503062300386], 6);
     });
   },
+  mounted() {
+    var worldMapContainer = document.getElementById("localMap");
+    //用于使chart自适应高度和宽度,通过窗体高宽计算容器高宽
+    var resizeWorldMapContainer = function () {
+      worldMapContainer.style.width = window.innerWidth + "px";
+      worldMapContainer.style.height = window.innerHeight + "px";
+    };
+    //设置容器高宽
+    resizeWorldMapContainer();
+  },
 };
 </script>
 
@@ -145,9 +165,10 @@ export default {
 <style lang="scss" scoped>
 .map-container {
   width: 100%;
-  height: 610px;
-  //   height: 100%;
+  height: 100%;
+  // min-height: 100%;
 }
+
 // .bm_bottomLeftOverlay {
 //   display: none !important;
 //   visibility: hide !important;

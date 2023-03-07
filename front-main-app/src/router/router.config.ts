@@ -160,7 +160,7 @@ export const routes: Array<RouteRecordRaw> = [
                 path: "detail/:visaId",
                 name: "VisaDetail",
                 component: () =>
-                  import("@/visaInsurance/insurance/VisaDetail.vue"),
+                  import("@/views/visaInsurance/visa/VisaDetail.vue"),
                 meta: {
                   title: "签证详情页",
                   keepAlive: false,
@@ -196,7 +196,7 @@ export const routes: Array<RouteRecordRaw> = [
                 path: "detail/:insuranceId",
                 name: "InsuranceDetail",
                 component: () =>
-                  import("@/visaInsurance/insurance/InsuranceDetail.vue"),
+                  import("@/views/visaInsurance/insurance/InsuranceDetail.vue"),
                 meta: {
                   title: "保险详情页",
                   keepAlive: false,
@@ -262,126 +262,5 @@ export const routes: Array<RouteRecordRaw> = [
         arriveCity,
       };
     },
-  },
-  {
-    path: "/result",
-    name: "TrvalPlanResult",
-    component: TravelPlanResult,
-    meta: {
-      title: "行程制定结果页",
-      keepAlive: false,
-      showTab: true,
-      requireLogin: true,
-    },
-    // redirect: "/result/route/list", //这里不能重定向，否则下面传的props就没了
-    // 把route对象直接拆出属性
-    props({ params: { fromTheCity, wantCitys, backCity, goTheDate, budget } }) {
-      return {
-        fromTheCity,
-        wantCitys,
-        backCity,
-        goTheDate,
-        budget,
-      };
-    },
-    children: [
-      {
-        path: "route",
-        name: "Route",
-        component: () => import("@/components/planResult/Route/Route.vue"),
-        meta: { title: "路线", keepAlive: false, showTab: true },
-        // redirect: "/result/route/list",
-        children: [
-          {
-            path: "list/:searchCityId",
-            name: "RouteList",
-            component: () =>
-              import("@/components/planResult/Route/RouteList.vue"),
-            meta: {
-              title: "路线列表",
-              keepAlive: false,
-              showTab: true,
-              requireLogin: true,
-            },
-            beforeEnter: (to, from, next) => {
-              // 路由独享守卫
-              // alert(99999);
-              next();
-            },
-            props(route) {
-              return {
-                id: route.params.searchCityId,
-              };
-            },
-          },
-          {
-            path: "detail",
-            name: "RouteDetail",
-            component: () =>
-              import("@/components/planResult/Route/RouteDetail.vue"),
-            meta: {
-              title: "路线详情",
-              keepAlive: false,
-              showTab: true,
-              requireLogin: true,
-            },
-            props(route) {
-              return {
-                routeDetailInfoString: route.params.routeDetailInfo,
-              };
-            },
-          },
-        ],
-      },
-      {
-        path: "scenicSpot",
-        name: "ScenicSpot",
-        component: () =>
-          import("@/components/planResult/ScenicSpot/ScenicSpot.vue"),
-        meta: {
-          title: "景区",
-          keepAlive: false,
-          showTab: true,
-          requireLogin: true,
-        },
-        // redirect: "/result/route/detail",
-        children: [
-          {
-            path: "list/:searchCityId",
-            name: "ScenicSpotList",
-            component: () =>
-              import("@/components/planResult/ScenicSpot/ScenicSpotList.vue"),
-            meta: {
-              title: "景区列表",
-              keepAlive: false,
-              showTab: true,
-              requireLogin: true,
-            },
-            props(route) {
-              return {
-                id: route.params.searchCityId,
-              };
-            },
-          },
-          {
-            path: "detail",
-            name: "ScenicSpotDetail",
-            component: () =>
-              import("@/components/planResult/ScenicSpot/ScenicSpotDetail.vue"),
-            meta: {
-              title: "景区详情",
-              keepAlive: false,
-              showTab: true,
-              requireLogin: true,
-            },
-            props(route) {
-              return {
-                sceneryDetailInfoString: route.params.sceneryDetailInfo,
-              };
-            },
-          },
-        ],
-      },
-    ],
   },
 ];

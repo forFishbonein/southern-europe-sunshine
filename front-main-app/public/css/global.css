@@ -25,6 +25,7 @@ This file contains the common styles of this theme.
 	--el-color-primary-light-5: #c60b1e !important;
 	--el-color-primary-dark-2: #C63A48 !important;
 	--el-color-primary-light-9: rgb(238, 238, 238) !important;
+	/* #cc0033 */
 }
 
 ::selection {

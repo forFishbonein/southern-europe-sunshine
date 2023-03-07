@@ -72,7 +72,10 @@
                   >
                 </li>
                 <li>
-                  <router-link class="sf-with-ul" to="/visaInsurance"
+                  <router-link
+                    class="sf-with-ul"
+                    to="/visaInsurance"
+                    active-class="active-nav"
                     >签证保险</router-link
                   >
                 </li>
@@ -95,9 +98,9 @@
                 <li class="right-side">
                   <ul>
                     <li>
-                      <a href="add-listings.html" class="btn btn-primary"
+                      <router-link to="/plan" class="btn btn-primary"
                         >定制服务
-                      </a>
+                      </router-link>
                     </li>
                   </ul>
                 </li>
@@ -132,5 +135,9 @@
 }
 .active-nav {
   color: #c60b1e !important;
+}
+.main-header-area {
+  z-index: 99999999;
+  position: relative;
 }
 </style>

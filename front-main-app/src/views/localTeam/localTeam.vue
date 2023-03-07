@@ -64,7 +64,7 @@
             <figure>
               <a href="listings-single-page-3.html" class="wishlist_bt"></a>
               <a href="listings-single-page-3.html"
-                ><img src="images/room4.jpg" class="img-fluid" alt="" />
+                ><img src="/images/room4.jpg" class="img-fluid" alt="" />
                 <div class="read_more"><span>Read more</span></div>
               </a>
             </figure>
@@ -104,7 +104,7 @@
             <figure>
               <a href="listings-single-page-3.html" class="wishlist_bt"></a>
               <a href="listings-single-page-3.html"
-                ><img src="images/room5.jpg" class="img-fluid" alt="" />
+                ><img src="/images/room5.jpg" class="img-fluid" alt="" />
                 <div class="read_more"><span>Read more</span></div>
               </a>
             </figure>
@@ -144,7 +144,7 @@
             <figure>
               <a href="listings-single-page-3.html" class="wishlist_bt"></a>
               <a href="listings-single-page-3.html"
-                ><img src="images/room6.jpg" class="img-fluid" alt="" />
+                ><img src="/images/room6.jpg" class="img-fluid" alt="" />
                 <div class="read_more"><span>Read more</span></div>
               </a>
             </figure>

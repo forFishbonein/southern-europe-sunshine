@@ -158,7 +158,7 @@
               <div class="posts">
                 <div class="post">
                   <div class="img-holder">
-                    <img src="images/b1.jpg" alt="" />
+                    <img src="/images/b1.jpg" alt="" />
                   </div>
                   <div class="details">
                     <h4>
@@ -169,7 +169,7 @@
                 </div>
                 <div class="post">
                   <div class="img-holder">
-                    <img src="images/b2.jpg" alt="" />
+                    <img src="/images/b2.jpg" alt="" />
                   </div>
                   <div class="details">
                     <h4>
@@ -180,7 +180,7 @@
                 </div>
                 <div class="post">
                   <div class="img-holder">
-                    <img src="images/b3.jpg" alt="" />
+                    <img src="/images/b3.jpg" alt="" />
                   </div>
                   <div class="details">
                     <h4>
