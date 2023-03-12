@@ -23,29 +23,6 @@ const createPlan = () => {
     },
   });
 };
-
-// 保证每次进入HOME页面都会刷新一次的工具方法：
-// const refresh = () => {
-//   //refreshFlag为true代表刷新过
-//   if (!store.refreshFlag) {
-//     // alert("刷新");
-//     //还没刷新过
-//     store.refreshFlag = true; //表示已经刷新了
-//     // console.log(store.refreshFlag);
-//     location.reload(); //那就刷新一下
-//     // setTimeout(function () {
-//     //   location.reload();
-//     // }, 1000);
-//     return;
-//   } else {
-//     //已经刷新过了
-//     store.refreshFlag = false; //表示还没有刷新
-//     // console.log(store.refreshFlag);
-
-//     return; //那就不刷新了
-//   }
-// };
-// refresh();
 onMounted(() => {
   //@ts-ignore
   (function ($) {

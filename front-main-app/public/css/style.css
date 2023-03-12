@@ -141,7 +141,9 @@ Slider css
 =========================================
 */
 
+/* 更换主页轮播背景 */
 .main-banner {
+	/* 先进行全部预加载 */
 	background: url(../images/banner-img.jpg), url(../images/home1.jpg), url(../images/home2.jpg), url(../images/home3.jpg), url(../images/home4.jpg), ;
 	height: 800px;
 	width: 100%;
@@ -3539,7 +3541,7 @@ a.box_cat_home:hover ul li {
 }
 
 .resultBar .list-inline li.active a {
-	color: #2196f3;
+	color: #c60b1e;
 }
 
 .paginationCommon.categoryPagination {

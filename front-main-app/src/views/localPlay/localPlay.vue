@@ -26,7 +26,11 @@
     <div class="container">
       <div class="row cate-button">
         <div class="col-lg-2 col-sm-6 col-xs-12">
-          <router-link to="/localPlay/items/1" class="box_cat_home">
+          <router-link
+            to="/localPlay/items/1"
+            class="box_cat_home"
+            active-class="box_cat_home_active"
+          >
             <img src="/images/cicon1.png" alt="" />
             <h3>LAGOS-海船出游</h3>
             <ul>
@@ -35,7 +39,11 @@
           </router-link>
         </div>
         <div class="col-lg-2 col-sm-6 col-xs-12">
-          <router-link to="/localPlay/items/2" class="box_cat_home">
+          <router-link
+            to="/localPlay/items/2"
+            class="box_cat_home"
+            active-class="box_cat_home_active"
+          >
             <img src="/images/cicon2.png" alt="" />
             <h3>TAPS之旅</h3>
             <ul>
@@ -44,7 +52,11 @@
           </router-link>
         </div>
         <div class="col-lg-2 col-sm-6 col-xs-12">
-          <router-link to="/localPlay/items/3" class="box_cat_home">
+          <router-link
+            to="/localPlay/items/3"
+            class="box_cat_home"
+            active-class="box_cat_home_active"
+          >
             <img src="/images/cicon3.png" alt="" />
             <h3>游艇PARTY</h3>
             <ul>
@@ -53,7 +65,11 @@
           </router-link>
         </div>
         <div class="col-lg-2 col-sm-6 col-xs-12">
-          <router-link to="/localPlay/items/4" class="box_cat_home">
+          <router-link
+            to="/localPlay/items/4"
+            class="box_cat_home"
+            active-class="box_cat_home_active"
+          >
             <img src="/images/cicon4.png" alt="" />
             <h3>网红旅拍</h3>
             <ul>
@@ -81,5 +97,20 @@
 .box_cat_home {
   width: 160px;
   height: 200px;
+}
+.box_cat_home_active {
+  background-color: #c60b1e;
+  -webkit-box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.15);
+  strong {
+    color: #fff;
+  }
+  h3 {
+    color: #fff;
+  }
+  ul li {
+    color: #fff;
+  }
 }
 </style>

@@ -46,7 +46,7 @@ const selectConutry = (countryId) => {
     <div class="container">
       <div class="row">
         <div class="col-md-6">
-          <a href="#">
+          <a href="javascript:;">
             <div class="list-mig-like-com">
               <div class="list-mig-lc-img">
                 <img :src="countryImg" alt="" />

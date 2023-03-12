@@ -1,6 +1,7 @@
 import { RouteRecordRaw } from "vue-router";
 import Index from "../Index.vue";
-// import LoginAndRegister from "@views/LoginAndRegister.vue";
+import Login from "@components/login/Login.vue";
+import Register from "@components/login/Register.vue";
 import Home from "@views/Home.vue";
 // import GoTravel from "@views/goTravel/GoTravel.vue";
 // import GroupTravel from "@views/groupTravel/GroupTravel.vue";
@@ -18,6 +19,7 @@ import LocalTeam from "@/views/localTeam/LocalTeam.vue";
 import News from "@/views/xpNews/News.vue";
 import ContactUs from "@/views/contact/ContactUs.vue";
 import VisaInsurance from "@/views/visaInsurance/VisaInsurance.vue";
+import PersonalIndex from "@/views/personal/Index.vue";
 import Visa from "@/views/visaInsurance/Visa.vue";
 import Insurance from "@/views/visaInsurance/Insurance.vue";
 // import PassLogin from "@/components/passOrCode/PassLogin.vue";
@@ -242,8 +244,109 @@ export const routes: Array<RouteRecordRaw> = [
         component: ContactUs,
         meta: { title: "联系我们", keepAlive: false, showTab: true },
       },
+      {
+        path: "/login",
+        name: "Login",
+        component: Login,
+        meta: {
+          title: "登录页",
+          keepAlive: false,
+          showTab: true,
+        },
+      },
+      {
+        path: "/regster",
+        name: "Register",
+        component: Register,
+        meta: {
+          title: "注册页",
+          keepAlive: false,
+          showTab: true,
+        },
+      },
+      {
+        path: "/personal",
+        name: "Personal",
+        component: PersonalIndex,
+        meta: {
+          title: "个人中心",
+          keepAlive: false,
+          showTab: true,
+          requireLogin: true,
+        },
+        redirect: "/personal/center",
+        children: [
+          {
+            path: "center",
+            name: "Center",
+            component: () => import("@/views/personal/Center.vue"),
+            meta: {
+              title: "首页",
+              keepAlive: false,
+              showTab: true,
+              requireLogin: true,
+            },
+          },
+          {
+            path: "myroute",
+            name: "MyRoute",
+            component: () => import("@/views/personal/MyRoute.vue"),
+            meta: {
+              title: "我的行程",
+              keepAlive: false,
+              showTab: true,
+              requireLogin: true,
+            },
+          },
+          {
+            path: "star",
+            name: "Star",
+            component: () => import("@/views/personal/Star.vue"),
+            meta: {
+              title: "我收藏的",
+              keepAlive: false,
+              showTab: true,
+              requireLogin: true,
+            },
+          },
+          {
+            path: "myteam",
+            name: "MyTeam",
+            component: () => import("@/views/personal/myteam/MyTeam.vue"),
+            meta: {
+              title: "我的队伍",
+              keepAlive: false,
+              showTab: true,
+              requireLogin: true,
+            },
+          },
+          {
+            path: "advance",
+            name: "Advance",
+            component: () => import("@/views/personal/Advance.vue"),
+            meta: {
+              title: "我的预定",
+              keepAlive: false,
+              showTab: true,
+              requireLogin: true,
+            },
+          },
+          {
+            path: "setup",
+            name: "Setup",
+            component: () => import("@/views/personal/Setup.vue"),
+            meta: {
+              title: "设置",
+              keepAlive: false,
+              showTab: true,
+              requireLogin: true,
+            },
+          },
+        ],
+      },
     ],
   },
+
   {
     path: "/plan",
     name: "TrvalPlan",

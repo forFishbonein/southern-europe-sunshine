@@ -1,5 +1,26 @@
 <script lang="ts" setup>
 import { onMounted } from "vue";
+import { mainStore } from "@/store/user";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+const router = useRouter();
+let loginFlag = ref(false);
+const store = mainStore();
+const displayText = () => {
+  if (store.token === "") {
+    loginFlag.value = false;
+    return "登录 / 注册";
+  }
+  loginFlag.value = true;
+  return "个人中心";
+};
+const toLoginOrOwnCenter = () => {
+  if (store.token === "") {
+    router.push("/personal");
+  } else {
+    router.push("/personal");
+  }
+};
 onMounted(() => {
   // @ts-ignore
   (function ($) {
@@ -127,9 +148,12 @@ onMounted(() => {
                 <li class="right-side">
                   <ul>
                     <li>
-                      <router-link to="/plan" class="btn btn-primary"
-                        >定制服务
-                      </router-link>
+                      <a
+                        class="btn btn-primary"
+                        @click="toLoginOrOwnCenter"
+                        v-text="displayText()"
+                      >
+                      </a>
                     </li>
                   </ul>
                 </li>

@@ -31,8 +31,13 @@ watch(selection, (newValue, oldValue) => {
     </div>
   </section>
   <div
-    class="row mb-5"
-    style="display: flex; justify-content: center; margin: 15px 20px !important"
+    class="row"
+    style="
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    "
   >
     <div class="col-md-8" style="display: flex; justify-content: center">
       <el-radio-group v-model="selection">
@@ -52,5 +57,8 @@ watch(selection, (newValue, oldValue) => {
   > .is-checked {
     border: 2px solid #c60b1e;
   }
+}
+.row {
+  margin: 0;
 }
 </style>

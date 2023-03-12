@@ -14,7 +14,7 @@ export default {
         resolve(Microsoft);
         return true;
       }
-      // 插入script脚本
+      // 插入script脚本到html页面，相当于<script src="">
       let scriptNode = document.createElement("script");
       scriptNode.setAttribute("type", "text/javascript");
       scriptNode.setAttribute("src", BingMap_URL);

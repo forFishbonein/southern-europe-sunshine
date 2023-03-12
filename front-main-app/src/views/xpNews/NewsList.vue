@@ -47,7 +47,7 @@
           <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
               <div class="row ListriBox">
-                <div class="col-md-3 col-sm-6 col-xs-12 Nopadding">
+                <div class="col-md-2 col-sm-6 col-xs-12 Nopadding">
                   <figure class="img-container">
                     <router-link to="/news/detail/1"
                       ><img src="/images/hotel1.jpg" class="img-fluid" alt="" />
@@ -263,9 +263,13 @@
 .Campaigns {
   padding-bottom: 0px;
 }
+.img-container {
+  width: 180px;
+  height: 180px;
+}
 .ListriBox figure a img {
   // left: 0% !important;
-  top: 45% !important;
+  top: 30% !important;
 }
 .describe {
   margin: 20px 0;

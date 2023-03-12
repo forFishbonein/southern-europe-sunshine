@@ -98,7 +98,23 @@ watch(selectTheme, (newValue, oldValue) => {
   margin-left: 5px;
   margin-right: 5px;
   transition: all 0.2s linear;
+  box-shadow: 1px 2px 5px 0 rgba(0, 0, 0, 0.2);
+  // animation: tittlemove alternate infinite 3s ease-in-out;
+  transition: 0.4s cubic-bezier(1, -2.02, 0.38, 2.05);
+}
+// @keyframes tittlemove {
+//   0% {
+//   }
+//   50% {
+//     transform: translateY(-5px);
+//   }
+//   100% {
+//     transform: translateY(5px);
+//   }
+// }
+::v-deep .el-radio-button:hover {
   box-shadow: 1px 2px 5px 0 rgba(0, 0, 0, 0.5);
+  transform: translate(0px, -5px);
 }
 ::v-deep .el-radio-button__inner {
   border-left: 1px solid #dcdfe6;
@@ -111,9 +127,6 @@ watch(selectTheme, (newValue, oldValue) => {
 .listingDetails {
   padding-top: 50px;
   padding-bottom: 50px;
-}
-::v-deep .el-radio-button:hover {
-  box-shadow: 1px 2px 5px 0 rgba(0, 0, 0, 0.2);
 }
 ::v-deep .el-radio-button__inner {
   font-weight: 600;
