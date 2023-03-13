@@ -625,7 +625,7 @@ section {
 	margin-bottom: 30px
 }
 
-.form-group button {
+/* .form-group button {
 	width: auto;
 	padding: 18px 20px
 }
@@ -635,7 +635,7 @@ section {
 		width: 172px;
 		padding: 18px 0
 	}
-}
+} */
 
 .form-control {
 	height: 50px;

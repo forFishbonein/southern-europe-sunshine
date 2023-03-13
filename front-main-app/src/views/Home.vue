@@ -3,6 +3,9 @@ import { ref, reactive, toRefs } from "vue";
 import { useRouter } from "vue-router";
 // import { utilStore } from "@/store/util";
 import { onMounted } from "@vue/runtime-core";
+import { getAllThemeTypeInfo } from "@/apis/theme";
+import { themeTypesType } from "@/apis/interface/resultType";
+const allTypes = ref([] as themeTypesType[]);
 // const store = utilStore();
 // import { citysInfoType, planInfoType } from "@/apis/interface/myInterface";
 const router = useRouter();
@@ -23,7 +26,30 @@ const createPlan = () => {
     },
   });
 };
+const getAllTypes = () => {
+  getAllThemeTypeInfo()
+    .then((res: any) => {
+      if (res.code != 2000) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        allTypes.value = res.data.slice(0, 6);
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
+
 onMounted(() => {
+  getAllTypes();
   //@ts-ignore
   (function ($) {
     $(document).ready(function () {
@@ -264,62 +290,18 @@ onMounted(() => {
         </div>
       </div>
       <div class="row">
-        <div class="col-lg-4 items col-md-6 col-sm-6 col-12">
+        <div
+          class="col-lg-4 items col-md-6 col-sm-6 col-12"
+          v-for="(item, index) in allTypes"
+          :key="index"
+        >
           <div class="featured-wrap">
             <div class="featured-img">
               <img src="/images/featured/1.jpg" alt="" />
               <div class="featured-content">
-                <router-link to="/themeTravel/items/1">美食</router-link>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 items col-md-6 col-sm-6 col-12">
-          <div class="featured-wrap">
-            <div class="featured-img">
-              <img src="/images/featured/2.jpg" alt="" />
-              <div class="featured-content">
-                <router-link to="/themeTravel/items/2">建筑</router-link>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 items col-md-6 col-sm-6 col-12">
-          <div class="featured-wrap">
-            <div class="featured-img">
-              <img src="/images/featured/3.jpg" alt="" />
-              <div class="featured-content">
-                <router-link to="/themeTravel/items/3">红酒</router-link>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 items col-md-6 col-sm-6 col-12">
-          <div class="featured-wrap">
-            <div class="featured-img">
-              <img src="/images/featured/4.jpg" alt="" />
-              <div class="featured-content">
-                <a href="room-single.html">古堡</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 items col-md-6 col-sm-6 col-12">
-          <div class="featured-wrap">
-            <div class="featured-img">
-              <img src="/images/featured/5.jpg" alt="" />
-              <div class="featured-content">
-                <a href="room-single.html">高尔夫</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 items col-md-6 col-sm-6 col-12">
-          <div class="featured-wrap">
-            <div class="featured-img">
-              <img src="/images/featured/6.jpg" alt="" />
-              <div class="featured-content">
-                <a href="room-single.html">节日</a>
+                <router-link :to="`/themeTravel/items/${item.themeTypeId}`">{{
+                  item.typeName
+                }}</router-link>
               </div>
             </div>
           </div>

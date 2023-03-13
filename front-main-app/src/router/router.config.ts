@@ -80,7 +80,7 @@ export const routes: Array<RouteRecordRaw> = [
         name: "ThemeTravel",
         component: ThemeTravel,
         meta: { title: "主题旅行页", keepAlive: false, showTab: true },
-        redirect: "/themeTravel/items/1",
+        redirect: "/themeTravel/items/0",
         children: [
           {
             path: "items/:themeId",
@@ -109,10 +109,10 @@ export const routes: Array<RouteRecordRaw> = [
         name: "LocalPlay",
         component: LocalPlay,
         meta: { title: "当地玩乐页", keepAlive: false, showTab: true },
-        redirect: "/localPlay/items/1",
+        redirect: "/localPlay/items/足球赛事",
         children: [
           {
-            path: "items/:localId",
+            path: "items/:localType",
             name: "LocalItems",
             component: () => import("@/views/localPlay/LocalItems.vue"),
             meta: {
@@ -312,7 +312,7 @@ export const routes: Array<RouteRecordRaw> = [
           {
             path: "myteam",
             name: "MyTeam",
-            component: () => import("@/views/personal/myteam/MyTeam.vue"),
+            component: () => import("@/views/personal/MyTeam.vue"),
             meta: {
               title: "我的队伍",
               keepAlive: false,

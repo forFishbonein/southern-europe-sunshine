@@ -1,10 +1,10 @@
 import { defineStore } from "pinia";
 // import { getToken, removeToken, setToken } from "@/store/util/token";
 // import { getFlag, setFlag } from "@/store/util/flag";
-import { UserInfo } from "@/apis/userService/uInterface";
-import { passLogin, codeLogin, logout } from "@/apis/userService/login";
-import { register } from "@/apis/userService/register";
-import { getUserInfo } from "@/apis/userService/user";
+import { UserInfo } from "@/apis/user/uInterface";
+import { passLogin, codeLogin, logout } from "@/apis/user/login";
+import { register } from "@/apis/user/register";
+import { getUserInfo } from "@/apis/user/user";
 import pinia from "@/store";
 export interface UserState {
   userInfo: UserInfo;

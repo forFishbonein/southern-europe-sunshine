@@ -2,7 +2,32 @@
 import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import emitter from "@/mitt/event";
+import { getAllThemeTypeInfo } from "@/apis/theme";
+import { themeTypesType } from "@/apis/interface/resultType";
 const router = useRouter();
+const allTypes = ref([] as themeTypesType[]);
+const getAllTypes = () => {
+  getAllThemeTypeInfo()
+    .then((res: any) => {
+      if (res.code != 2000) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        allTypes.value = res.data;
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
+getAllTypes();
 const selectTheme = ref("1");
 emitter.on("synOptions", (value) => {
   if (selectTheme.value !== value) {
@@ -11,13 +36,13 @@ emitter.on("synOptions", (value) => {
   }
 });
 watch(selectTheme, (newValue, oldValue) => {
-  if (Number(newValue) === 1) {
-    router.push("/themeTravel/items/1");
-  } else if (Number(newValue) === 2) {
-    router.push("/themeTravel/items/2");
-  } else if (Number(newValue) === 3) {
-    router.push("/themeTravel/items/3");
-  }
+  // if (Number(newValue) === 1) {
+  router.push(`/themeTravel/items/${newValue}`);
+  //   } else if (Number(newValue) === 2) {
+  //     router.push("/themeTravel/items/2");
+  //   } else if (Number(newValue) === 3) {
+  //     router.push("/themeTravel/items/3");
+  //   }
 });
 </script>
 
@@ -42,51 +67,25 @@ watch(selectTheme, (newValue, oldValue) => {
   <section class="pt80 pb80 listingDetails">
     <div class="container">
       <div class="row">
-        <el-radio-group v-model="selectTheme" size="large">
+        <el-radio-group v-model="selectTheme" size="large" class="warp-types">
           <div>
-            <el-radio-button label="1">美食</el-radio-button>
-            <el-radio-button label="2">建筑</el-radio-button>
-            <el-radio-button label="3">红酒</el-radio-button>
-            <el-radio-button label="Chicago"></el-radio-button>
-            <el-radio-button label="New York" />
-            <el-radio-button label="Washington" />
-            <el-radio-button label="Los Angeles" />
-            <el-radio-button label="Chicago" />
+            <el-radio-button label="0" class="item-button-type"
+              >全部</el-radio-button
+            >
+            <el-radio-button
+              v-for="(item, index) in allTypes"
+              :key="index"
+              :label="item.themeTypeId"
+              class="item-button-type"
+              >{{ item.typeName }}</el-radio-button
+            >
           </div>
-          <div style="width: 100%; height: 10px"></div>
-          <!-- <div style="width: 100%; height: 10px"></div> -->
-          <div>
-            <el-radio-button label="New York" />
-            <el-radio-button label="Washington" />
-            <el-radio-button label="Los Angeles" />
-            <el-radio-button label="Chicago" />
-            <el-radio-button label="New York" />
-            <el-radio-button label="Washington" />
-            <el-radio-button label="Los Angeles" />
-            <el-radio-button label="Chicago" />
-          </div>
-          <div style="width: 100%; height: 10px"></div>
-          <!-- <div>
-
-          </div>
-          <div style="width: 100%; height: 10px"></div> -->
-          <div>
-            <el-radio-button label="New York" />
-            <el-radio-button label="Washington" />
-            <el-radio-button label="Los Angeles" />
-            <el-radio-button label="Chicago" />
-            <el-radio-button label="New York" />
-            <el-radio-button label="Washington" />
-            <el-radio-button label="Los Angeles" />
-            <el-radio-button label="Chicago" />
-          </div>
-          <div style="width: 100%; height: 10px"></div>
         </el-radio-group>
       </div>
     </div>
   </section>
 
-  <router-view />
+  <router-view :key="$route.fullPath" />
 </template>
 
 <style lang="scss" scoped>
@@ -130,5 +129,15 @@ watch(selectTheme, (newValue, oldValue) => {
 }
 ::v-deep .el-radio-button__inner {
   font-weight: 600;
+}
+.warp-types {
+  width: 100%;
+  display: flex;
+  justify-content: start;
+  flex-wrap: wrap;
+  .item-button-type {
+    margin-right: 16px;
+    margin-bottom: 12px;
+  }
 }
 </style>

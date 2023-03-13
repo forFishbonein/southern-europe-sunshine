@@ -17,7 +17,38 @@ export default {
   },
 };
 </script>
-
+<script setup lang="ts">
+import { ref, watch, reactive, toRefs, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { getOneThemeDetailInfo } from "@/apis/theme";
+import { themeListInfoType } from "@/apis/interface/resultType";
+const route = useRoute();
+const itemId = route.params.itemId;
+const oneThemeDetailInfo = ref({} as themeListInfoType);
+const getTheOneThemeDetailInfo = () => {
+  getOneThemeDetailInfo(itemId)
+    .then((res: any) => {
+      if (res.code != 2000) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        oneThemeDetailInfo.value = res.data;
+        console.log(oneThemeDetailInfo.value);
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
+getTheOneThemeDetailInfo();
+</script>
 <template>
   <section class="Campaigns pt80 pb80 listingDetails">
     <div class="container">
@@ -41,15 +72,15 @@ export default {
             <!-- Gallery-->
             <!-- <h3 class="mb-4">西班牙美食之旅</h3> -->
             <div class="row gallery ml-n1 mr-n1">
-              <div class="col-lg-4 col-6 px-1 mb-2">
-                <a href="/images/restaurant-1.jpg"
+              <div class="col-lg-4 col-6 px-1 mb-2 center-img">
+                <a href="javascript:;"
                   ><img
-                    src="/images/restaurant-1.jpg"
+                    :src="oneThemeDetailInfo.titlePic"
                     alt="..."
                     class="img-fluid"
                 /></a>
               </div>
-              <div class="col-lg-4 col-6 px-1 mb-2">
+              <!-- <div class="col-lg-4 col-6 px-1 mb-2">
                 <a href="/images/restaurant-2.jpg"
                   ><img
                     src="/images/restaurant-2.jpg"
@@ -64,14 +95,14 @@ export default {
                     alt="..."
                     class="img-fluid"
                 /></a>
-              </div>
+              </div> -->
             </div>
           </div>
           <div class="text-block">
-            <p class="text-primary">
+            <!-- <p class="text-primary">
               <i class="fa-map-marker-alt fa mr-1"></i> 马德里，巴萨，三天两夜
-            </p>
-            <h1>西班牙美食之旅</h1>
+            </p> -->
+            <h1>{{ oneThemeDetailInfo.themeTitle }}</h1>
             <ul class="list-inline text-sm mb-4">
               <li class="list-inline-item mr-3">
                 <i class="fa fa-users mr-1 text-secondary"></i> 适合 4 人
@@ -87,37 +118,7 @@ export default {
               </li>
             </ul>
             <p class="text-muted font-weight-light">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore.
-            </p>
-            <p class="text-muted font-weight-light">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-            <p class="text-muted font-weight-light">Also in the apartment:</p>
-            <ul class="text-muted font-weight-light roomlist">
-              <li>Lorem ipsum dolor sit amet, consectetur</li>
-              <li>dolore eu fugiat nulla pariatur</li>
-              <li>sed do eiusmod tempor incididunt</li>
-              <li>Fresh Sheets and Towels</li>
-              <li>dolore eu fugiat nulla pariatur</li>
-            </ul>
-            <p class="text-muted font-weight-light">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
+              {{ oneThemeDetailInfo.themeContent }}
             </p>
           </div>
           <div class="text-block">
@@ -130,15 +131,18 @@ export default {
                     诚邀您參加VIP购物积分回馈活动，尊享精彩纷呈的购物体验及贵宾礼遇！</span
                   > -->
                   <ul>
-                    <li>
-                      <a><span>1.马德里</span><i></i></a>
+                    <li v-for="(item, index) in oneThemeDetailInfo.cityinfos">
+                      <a
+                        ><span>{{ index + 1 }}.{{ item.cityNameCn }}</span
+                        ><i></i
+                      ></a>
                     </li>
-                    <li>
+                    <!-- <li>
                       <a><span>2.巴塞罗那</span><i></i></a>
                     </li>
                     <li>
                       <a><span>3.塞维利亚</span><i></i></a>
-                    </li>
+                    </li> -->
                   </ul>
                 </div>
               </div>
@@ -154,25 +158,25 @@ export default {
                     <i
                       class="fa fa-wifi text-secondary w-1rem mr-3 text-center"
                     ></i>
-                    <span class="text-sm">Wifi</span>
+                    <span class="text-sm">无线网</span>
                   </li>
                   <li class="mb-2">
                     <i
                       class="fa fa-tv text-secondary w-1rem mr-3 text-center"
                     ></i>
-                    <span class="text-sm">Cable TV</span>
+                    <span class="text-sm">电视</span>
                   </li>
                   <li class="mb-2">
                     <i
                       class="fa fa-snowflake text-secondary w-1rem mr-3 text-center"
                     ></i>
-                    <span class="text-sm">Air conditioning</span>
+                    <span class="text-sm">空调</span>
                   </li>
                   <li class="mb-2">
                     <i
                       class="fa fa-thermometer-three-quarters text-secondary w-1rem mr-3 text-center"
                     ></i>
-                    <span class="text-sm">Heating</span>
+                    <span class="text-sm">供暖</span>
                   </li>
                 </ul>
               </div>
@@ -182,25 +186,25 @@ export default {
                     <i
                       class="fa fa-bath text-secondary w-1rem mr-3 text-center"
                     ></i
-                    ><span class="text-sm">Toiletteries</span>
+                    ><span class="text-sm">卫生间</span>
                   </li>
                   <li class="mb-2">
                     <i
                       class="fa fa-utensils text-secondary w-1rem mr-3 text-center"
                     ></i
-                    ><span class="text-sm">Equipped Kitchen</span>
+                    ><span class="text-sm">设备齐全的厨房</span>
                   </li>
                   <li class="mb-2">
                     <i
                       class="fa fa-laptop text-secondary w-1rem mr-3 text-center"
                     ></i
-                    ><span class="text-sm">Desk for work</span>
+                    ><span class="text-sm">办公桌</span>
                   </li>
                   <li class="mb-2">
                     <i
                       class="fa fa-tshirt text-secondary w-1rem mr-3 text-center"
                     ></i
-                    ><span class="text-sm">Washing machine</span>
+                    ><span class="text-sm">洗衣机</span>
                   </li>
                 </ul>
               </div>
@@ -209,10 +213,10 @@ export default {
         </div>
         <div class="col-lg-4 right_Details">
           <div class="p-4 shadow ml-lg-4 rounded sticky-top" style="top: 100px">
-            <p class="text-muted">
+            <!-- <p class="text-muted">
               <span class="text-primary h2">$800</span>预算
-            </p>
-            <hr class="my-4" />
+            </p> -->
+            <!-- <hr class="my-4" /> -->
             <form
               id="booking-form"
               method="get"
@@ -300,7 +304,7 @@ export default {
   text-align: center;
   float: left;
   margin: 10px 0 0;
-  background: #fff;
+  background: #f8f9fa;
   border-top: 1px solid #c60b1e;
   border-bottom: 1px solid #c60b1e;
   height: 45px;
@@ -324,6 +328,7 @@ export default {
   overflow: hidden;
   text-align: center;
   margin-left: 20px;
+  font-size: 13px;
   font-weight: 800;
 }
 .pointsRule ul li i {
@@ -342,4 +347,9 @@ export default {
   margin-bottom: 30px;
   margin-left: 0px;
 }
+// .center-img {
+//   > a {
+//     margin: 0 auto;
+//   }
+// }
 </style>
