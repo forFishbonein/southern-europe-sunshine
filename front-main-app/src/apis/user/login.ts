@@ -1,30 +1,20 @@
 import httpRequest from "@/request";
-import { passLoginInfo, codeLoginInfo } from "@/apis/user/uInterface";
+import { passLoginInfo } from "@/apis/user/uInterface";
 export const passLogin = (passData: passLoginInfo) => {
-  console.log(passData);
+  // console.log(passData);
   return httpRequest({
     data: passData,
     method: "post",
-    url: "http://localhost:8081/login",
+    url: "/login",
     // loading: false, //显示加载圈
   });
 };
 
-export function codeLogin(codeData: codeLoginInfo) {
-  console.log(codeData);
-  return httpRequest({
-    data: codeData,
-    method: "post",
-    url: "http://localhost:8081/codelogin",
-    // loading: false,
-  });
-}
-
-export function logout(token: string) {
-  return httpRequest({
-    data: token,
-    url: "http://localhost:8081/logout",
-    method: "post",
-    // loading: false,
-  });
-}
+// export function logout(token: string) {
+//   return httpRequest({
+//     data: token,
+//     url: "/logout",
+//     method: "post",
+//     // loading: false,
+//   });
+// }

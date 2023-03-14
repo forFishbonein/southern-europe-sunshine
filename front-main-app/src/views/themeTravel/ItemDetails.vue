@@ -1,9 +1,40 @@
 <script lang="ts">
+// import { ref, watch, reactive, toRefs, onMounted } from "vue";
+// import { useRouter, useRoute } from "vue-router";
+import { getOneThemeDetailInfo } from "@/apis/theme";
+import { themeListInfoType } from "@/apis/interface/resultType";
 export default {
   data() {
     return {
+      // route:useRoute(),
+      itemId: this.$route.params.itemId,
+      oneThemeDetailInfo: {} as themeListInfoType,
       lastPath: "",
     };
+  },
+  methods: {
+    getTheOneThemeDetailInfo() {
+      getOneThemeDetailInfo(this.itemId)
+        .then((res: any) => {
+          if (res.code != 2000) {
+            //@ts-ignore
+            ElMessage({
+              type: "error",
+              message: res.msg,
+            });
+          } else {
+            this.oneThemeDetailInfo = res.data;
+            console.log(this.oneThemeDetailInfo);
+          }
+        })
+        .catch((error) => {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: error.message,
+          });
+        });
+    },
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
@@ -15,13 +46,12 @@ export default {
       // });
     });
   },
+  mounted() {
+    this.getTheOneThemeDetailInfo();
+  },
 };
 </script>
-<script setup lang="ts">
-import { ref, watch, reactive, toRefs, onMounted } from "vue";
-import { useRouter, useRoute } from "vue-router";
-import { getOneThemeDetailInfo } from "@/apis/theme";
-import { themeListInfoType } from "@/apis/interface/resultType";
+<!-- <script setup lang="ts">
 const route = useRoute();
 const itemId = route.params.itemId;
 const oneThemeDetailInfo = ref({} as themeListInfoType);
@@ -48,7 +78,7 @@ const getTheOneThemeDetailInfo = () => {
     });
 };
 getTheOneThemeDetailInfo();
-</script>
+</script> -->
 <template>
   <section class="Campaigns pt80 pb80 listingDetails">
     <div class="container">

@@ -22,8 +22,7 @@ const passLogin = () => {
     store
       .passLogin(passData)
       .then((res: any) => {
-        // console.log(res.code != 0);
-        if (res.code != 0) {
+        if (res.code != 2000) {
           //@ts-ignore
           ElMessage({
             type: "error",
@@ -33,7 +32,7 @@ const passLogin = () => {
           //@ts-ignore
           ElMessage({
             type: "success",
-            message: "登录成功",
+            message: "登录成功！",
           });
           router.replace("/");
         }
@@ -49,7 +48,7 @@ const passLogin = () => {
     // @ts-ignore
     ElMessage({
       type: "warning",
-      message: "登录失败",
+      message: "请将信息填写完整！！",
     });
   }
 };
@@ -73,31 +72,33 @@ const passLogin = () => {
                 name="loginUsername"
                 id="loginUsername"
                 type="email"
-                placeholder="name@address.com"
+                placeholder="邮箱"
                 autocomplete="off"
-                required=""
-                data-msg="Please enter your email"
+                required
+                data-msg="请输入你的邮箱"
                 class="form-control"
+                v-model="email"
               />
             </div>
             <div class="form-group mb-4">
               <div class="row">
                 <div class="col"></div>
                 <div class="col-auto">
-                  <a href="#" class="form-text small">忘记密码?</a>
+                  <a href="javascript:;" class="form-text small">忘记密码?</a>
                 </div>
               </div>
               <input
                 name="loginPassword"
                 id="loginPassword"
-                placeholder="Password"
+                placeholder="密码"
                 type="password"
-                required=""
-                data-msg="Please enter your password"
+                required
+                data-msg="请输入你的密码"
                 class="form-control"
+                v-model="password"
               />
             </div>
-            <div class="form-group mb-4">
+            <!-- <div class="form-group mb-4">
               <div class="custom-control custom-checkbox">
                 <input
                   id="loginRemember"
@@ -111,7 +112,7 @@ const passLogin = () => {
                   <span class="text-sm">Remember me for 30 days</span></label
                 >
               </div>
-            </div>
+            </div> -->
             <!-- Submit-->
             <button class="btn btn-lg btn-block btn-primary">登录</button>
             <hr data-content="OR" class="my-3 hr-text letter-spacing-2" />
@@ -138,7 +139,12 @@ const passLogin = () => {
       <div class="col-md-4 col-lg-6 col-xl-7 d-none d-md-block">
         <!-- Image-->
         <div
-          style="background-image: url(images/register.jpg)"
+          style="
+            background-image: url(/images/home1.jpg);
+            background-size: cover;
+            width: 100%;
+            background-position: center center !important;
+          "
           class="bg-cover h-100 mr-n3"
         ></div>
       </div>

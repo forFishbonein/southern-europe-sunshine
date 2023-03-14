@@ -16,7 +16,7 @@ const displayText = () => {
 };
 const toLoginOrOwnCenter = () => {
   if (store.token === "") {
-    router.push("/personal");
+    router.push("/login");
   } else {
     router.push("/personal");
   }

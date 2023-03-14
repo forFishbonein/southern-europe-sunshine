@@ -1,8 +1,8 @@
 import httpRequest from "@request/index";
-
+import { UserInfo } from "@/apis/user/uInterface";
 export const getUserInfo = (token: string) => {
   return httpRequest({
-    url: "http://localhost:8081/user/token",
+    url: "/token",
     method: "get",
     headers: { Authorization: token },
     loading: false, //这里好像必须开启，不知道为啥！！！这样有token时配合路由监测进主页的时候才不会报错！
@@ -17,11 +17,11 @@ export const getUserInfoById = (userId: string) => {
 };
 
 /* 修改用户信息 */
-export const modifyUserInfo = (data: any) => {
+export const modifyUserInfo = (userInfo: UserInfo) => {
   return httpRequest({
-    url: "http://localhost:8081/user/updateprofile",
-    method: "put",
-    data: data,
+    data: userInfo,
+    method: "post",
+    url: "/user/info",
     // loading: false,
   });
 };

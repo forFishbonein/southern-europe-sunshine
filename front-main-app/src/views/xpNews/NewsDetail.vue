@@ -1,4 +1,35 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from "vue";
+import { getOneNewsInfo } from "@/apis/news";
+import { newsInfoType } from "@/apis/interface/resultType";
+import { useRoute } from "vue-router";
+const route = useRoute();
+const newsId = route.params.newsId;
+const oneNewsDetailInfo = ref({} as newsInfoType);
+const getTheOneThemeDetailInfo = () => {
+  getOneNewsInfo(newsId)
+    .then((res: any) => {
+      if (res.code != 2000) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        oneNewsDetailInfo.value = res.data;
+        console.log(oneNewsDetailInfo.value);
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
+getTheOneThemeDetailInfo();
+</script>
 <template>
   <section class="Blog-list pt80 pb80 blog-single-section">
     <div class="container">
@@ -15,64 +46,25 @@
         <div class="col-md-8 col-xs-12">
           <div class="blog-content">
             <div class="post format-standard-image">
-              <div class="entry-media"><img src="/images/b1.jpg" alt="" /></div>
+              <div class="entry-media">
+                <img :src="oneNewsDetailInfo.titlePic" alt="" />
+              </div>
               <ul class="entry-meta">
                 <li>
-                  <a href="#"><i class="far fa-clock"></i>Feb 20, 2019</a>
+                  <a href="javascript:;"
+                    ><i class="far fa-clock"></i
+                    >{{ oneNewsDetailInfo.createDate }}</a
+                  >
                 </li>
                 <li>
-                  <a href="#"><i class="fas fa-funnel-dollar"></i>Consulting</a>
-                </li>
-                <li>
-                  <a href="#"><i class="fas fa-comments"></i>3</a>
+                  <a href="javascript:;"
+                    ><i class="fas fa-funnel-dollar"></i
+                    >{{ oneNewsDetailInfo.clickRate }}</a
+                  >
                 </li>
               </ul>
-              <h2>西甲第23轮巴萨1:0小胜皇马，梅西任意球绝杀</h2>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip It showed a lady fitted out with a fur hat and
-                fur boa who sat upright, raising a heavy fur muff that covered
-                the whole of her lower
-              </p>
-              <p>
-                His many legs, pitifully thin compared with the size of the rest
-                of him, waved about helplessly as he looked. "What's happened to
-                me?" he thought. It wasn't a dream. His room, a proper human
-                room although a little too small, lay peacefully between its
-                four familiar walls. A collection of textile samples lay spread
-                out on the table - Samsa was a travelling salesman - and above
-                it there hung a picture that he had recently cut out of an
-                illustrated magazine and housed in a nice, gilded frame. It
-                showed a lady fitted out with a fur hat and fur boa who sat
-                upright, raising a heavy fur muff that covered the whole of her
-                lower arm towards the viewer. Gregor then turned to look out the
-                window at the dull weather. Drops
-              </p>
-              <blockquote>
-                Samples lay spread out on the table - Samsa was a travelling
-                salesman - and above it there hung a picture that he had
-                recently cut out of an illustrated magazine and housed in a
-                nice, gilded frame. It showed a lady fitted out with a fur hat
-                and fur boa who sat upright
-                <span class="quoter">- Mic dow</span>
-              </blockquote>
-              <h3>
-                Recently cut out of an illustrated magazine and housed in a
-                nice, gilded frame. It showed a lady fitted out with a fur hat
-                and fur boa
-              </h3>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam Lorem ipsum dolor sit amet, consectetur
-                adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Ut enim ad minim veniam Lorem ipsum dolor
-                sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-                veniam
-              </p>
+              <h2>{{ oneNewsDetailInfo.newsTitle }}</h2>
+              <div v-html="oneNewsDetailInfo.newsContent"></div>
             </div>
             <div class="tag-share">
               <div class="tag">

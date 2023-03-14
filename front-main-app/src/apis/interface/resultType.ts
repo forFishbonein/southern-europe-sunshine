@@ -17,6 +17,11 @@ export interface themeListInfoType {
   remark: string;
   cityinfos: cityInfoType[];
 }
+export interface localTypesType {
+  type: string;
+  count: string;
+}
+
 export interface localListInfoType {
   playId: Number;
   cityId: string;
@@ -55,4 +60,15 @@ export interface conutryInfoType {
   countryCoord: string;
   remark: string;
   nationalPic: string;
+}
+
+export interface newsInfoType {
+  newsId: Number;
+  newsTitle: string;
+  titlePic: string;
+  newsContent: string;
+  type: string;
+  clickRate: Number;
+  createDate: string;
+  remark: string;
 }

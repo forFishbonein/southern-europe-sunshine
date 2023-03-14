@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, reactive } from "vue";
+import { mainStore } from "@/store/user";
+import moment from "moment";
+const store = mainStore();
 const activeIndex = ref("/personal/center");
 const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
@@ -12,11 +15,13 @@ const handleSelect = (key: string, keyPath: string[]) => {
       <div class="row">
         <div class="col-md-12">
           <ol class="text-white justify-content-center no-border mb-0">
-            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-            <li class="breadcrumb-item active">Profile</li>
+            <li class="breadcrumb-item">
+              <router-link to="/home">首页</router-link>
+            </li>
+            <li class="breadcrumb-item active">个人中心</li>
           </ol>
           <div class="breadcromb-box">
-            <h3>Profile</h3>
+            <h3>个人中心</h3>
           </div>
         </div>
       </div>
@@ -29,7 +34,7 @@ const handleSelect = (key: string, keyPath: string[]) => {
           <div class="dashboardBoxBg mb30">
             <div class="profileImage">
               <img
-                src="/images/avatar/avatar-8.jpg"
+                :src="store.userInfo.imageUrl"
                 alt="Image User"
                 class="img-circle"
               />
@@ -37,16 +42,20 @@ const handleSelect = (key: string, keyPath: string[]) => {
                 <div class="upload-area">
                   <input type="file" name="img[]" class="file" />
                   <button class="browse" type="button">
-                    Upload a Picture <i class="icon-listy icon-upload"></i>
+                    更换头像 <i class="icon-listy icon-upload"></i>
                   </button>
                 </div>
               </div>
             </div>
             <div class="profileUserInfo bt profileName">
-              <p>Your Current Plan</p>
-              <h2>Platinum Package</h2>
-              <h5>Next Payment: <span>28/11/2020</span></h5>
-              <a href="#" class="btn btn-primary">Change</a>
+              <!-- <p>Your Current Plan</p> -->
+              <h2>{{ store.userInfo.userName }}</h2>
+              <h5>
+                注册时间:
+                <span>{{
+                  moment(store.userInfo.createDate).format("YYYY-MM-DD")
+                }}</span>
+              </h5>
             </div>
           </div>
         </div>
@@ -64,7 +73,7 @@ const handleSelect = (key: string, keyPath: string[]) => {
               <el-menu-item index="/personal/star">收藏</el-menu-item>
               <el-menu-item index="/personal/myteam">队伍</el-menu-item>
               <el-menu-item index="/personal/advance">预定</el-menu-item>
-              <el-menu-item index="/personal/setup">修改</el-menu-item>
+              <el-menu-item index="/personal/setup">改密</el-menu-item>
             </el-menu>
           </div>
           <form><router-view /></form>
@@ -90,4 +99,10 @@ const handleSelect = (key: string, keyPath: string[]) => {
     // }
   }
 }
+// .btn-primary {
+//   padding: 0;
+//   display: flex;
+//   justify-content: center;
+//   margin: 0 auto;
+// }
 </style>

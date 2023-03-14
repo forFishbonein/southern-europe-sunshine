@@ -1,13 +1,71 @@
 <script lang="ts">
+import { getAllLocalTypeInfo } from "@/apis/local";
 //vue3中swiper的使用：https://blog.csdn.net/work_fei/article/details/125542537?spm=1001.2014.3001.5506
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/swiper-bundle.css";
 import SwiperCore, { Navigation, Pagination, Scrollbar, A11y } from "swiper";
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
+import { localTypesType } from "@/apis/interface/resultType";
 export default {
+  data() {
+    return {
+      allTypes: [] as localTypesType[],
+      resuleTypes: [] as localTypesType[][],
+    };
+  },
+  methods: {
+    getAllTypes() {
+      getAllLocalTypeInfo()
+        .then((res: any) => {
+          if (res.code != 2000) {
+            //@ts-ignore
+            ElMessage({
+              type: "error",
+              message: res.msg,
+            });
+          } else {
+            // alert(111);
+            this.allTypes = res.data;
+            let start = 0;
+            for (let i = 1; i <= Math.ceil(this.allTypes.length / 4); i++) {
+              let list = [] as localTypesType[];
+              if (this.allTypes[start + 3]) {
+                list.push(this.allTypes[start]);
+                list.push(this.allTypes[start + 1]);
+                list.push(this.allTypes[start + 2]);
+                list.push(this.allTypes[start + 3]);
+              } else if (this.allTypes[start + 2]) {
+                list.push(this.allTypes[start]);
+                list.push(this.allTypes[start + 1]);
+                list.push(this.allTypes[start + 2]);
+              } else if (this.allTypes[start + 1]) {
+                list.push(this.allTypes[start]);
+                list.push(this.allTypes[start + 1]);
+              } else {
+                list.push(this.allTypes[start]);
+              }
+              this.resuleTypes.push(list);
+              start += 4;
+            }
+            this.resuleTypes = this.resuleTypes.reverse();
+            console.log(this.resuleTypes);
+          }
+        })
+        .catch((error) => {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: error.message,
+          });
+        });
+    },
+  },
   components: {
     Swiper,
     SwiperSlide,
+  },
+  mounted() {
+    this.getAllTypes();
   },
 };
 </script>
@@ -46,164 +104,24 @@ export default {
           :pagination="{ clickable: true }"
           loop
         >
-          <swiper-slide>
-            <div class="col-lg-2 col-sm-6 col-xs-12">
+          <swiper-slide v-for="(item, index) in resuleTypes" :key="index">
+            <div
+              class="col-lg-2 col-sm-6 col-xs-12"
+              v-for="(i, k) in item"
+              :key="k"
+            >
               <router-link
-                to="/localPlay/items/足球赛事"
+                :to="`/localPlay/items/${i.type}`"
                 class="box_cat_home"
                 active-class="box_cat_home_active"
               >
                 <img src="/images/cicon1.png" alt="" />
-                <h3>足球赛事</h3>
+                <h3>{{ i.type }}</h3>
                 <ul>
-                  <li><strong>2548</strong>Listings</li>
-                </ul>
-              </router-link>
-            </div>
-            <div class="col-lg-2 col-sm-6 col-xs-12">
-              <router-link
-                to="/localPlay/items/景点门票"
-                class="box_cat_home"
-                active-class="box_cat_home_active"
-              >
-                <img src="/images/cicon2.png" alt="" />
-                <h3>TAPS之旅</h3>
-                <ul>
-                  <li><strong>2548</strong>Listings</li>
-                </ul>
-              </router-link>
-            </div>
-            <div class="col-lg-2 col-sm-6 col-xs-12">
-              <router-link
-                to="/localPlay/items/户外体验"
-                class="box_cat_home"
-                active-class="box_cat_home_active"
-              >
-                <img src="/images/cicon3.png" alt="" />
-                <h3>游艇PARTY</h3>
-                <ul>
-                  <li><strong>2548</strong>Listings</li>
-                </ul>
-              </router-link>
-            </div>
-            <div class="col-lg-2 col-sm-6 col-xs-12">
-              <router-link
-                to="/localPlay/items/4"
-                class="box_cat_home"
-                active-class="box_cat_home_active"
-              >
-                <img src="/images/cicon4.png" alt="" />
-                <h3>网红旅拍</h3>
-                <ul>
-                  <li><strong>2548</strong>Listings</li>
-                </ul>
-              </router-link>
-            </div></swiper-slide
-          >
-          <swiper-slide>
-            <div class="col-lg-2 col-sm-6 col-xs-12">
-              <router-link
-                to="/localPlay/items/足球赛事"
-                class="box_cat_home"
-                active-class="box_cat_home_active"
-              >
-                <img src="/images/cicon1.png" alt="" />
-                <h3>足球赛事</h3>
-                <ul>
-                  <li><strong>2548</strong>Listings</li>
-                </ul>
-              </router-link>
-            </div>
-            <div class="col-lg-2 col-sm-6 col-xs-12">
-              <router-link
-                to="/localPlay/items/景点门票"
-                class="box_cat_home"
-                active-class="box_cat_home_active"
-              >
-                <img src="/images/cicon2.png" alt="" />
-                <h3>TAPS之旅</h3>
-                <ul>
-                  <li><strong>2548</strong>Listings</li>
-                </ul>
-              </router-link>
-            </div>
-            <div class="col-lg-2 col-sm-6 col-xs-12">
-              <router-link
-                to="/localPlay/items/户外体验"
-                class="box_cat_home"
-                active-class="box_cat_home_active"
-              >
-                <img src="/images/cicon3.png" alt="" />
-                <h3>游艇PARTY</h3>
-                <ul>
-                  <li><strong>2548</strong>Listings</li>
-                </ul>
-              </router-link>
-            </div>
-            <div class="col-lg-2 col-sm-6 col-xs-12">
-              <router-link
-                to="/localPlay/items/4"
-                class="box_cat_home"
-                active-class="box_cat_home_active"
-              >
-                <img src="/images/cicon4.png" alt="" />
-                <h3>网红旅拍</h3>
-                <ul>
-                  <li><strong>2548</strong>Listings</li>
-                </ul>
-              </router-link>
-            </div></swiper-slide
-          >
-          <swiper-slide>
-            <div class="col-lg-2 col-sm-6 col-xs-12">
-              <router-link
-                to="/localPlay/items/足球赛事"
-                class="box_cat_home"
-                active-class="box_cat_home_active"
-              >
-                <img src="/images/cicon1.png" alt="" />
-                <h3>足球赛事</h3>
-                <ul>
-                  <li><strong>2548</strong>Listings</li>
-                </ul>
-              </router-link>
-            </div>
-            <div class="col-lg-2 col-sm-6 col-xs-12">
-              <router-link
-                to="/localPlay/items/景点门票"
-                class="box_cat_home"
-                active-class="box_cat_home_active"
-              >
-                <img src="/images/cicon2.png" alt="" />
-                <h3>TAPS之旅</h3>
-                <ul>
-                  <li><strong>2548</strong>Listings</li>
-                </ul>
-              </router-link>
-            </div>
-            <div class="col-lg-2 col-sm-6 col-xs-12">
-              <router-link
-                to="/localPlay/items/户外体验"
-                class="box_cat_home"
-                active-class="box_cat_home_active"
-              >
-                <img src="/images/cicon3.png" alt="" />
-                <h3>游艇PARTY</h3>
-                <ul>
-                  <li><strong>2548</strong>Listings</li>
-                </ul>
-              </router-link>
-            </div>
-            <div class="col-lg-2 col-sm-6 col-xs-12">
-              <router-link
-                to="/localPlay/items/4"
-                class="box_cat_home"
-                active-class="box_cat_home_active"
-              >
-                <img src="/images/cicon4.png" alt="" />
-                <h3>网红旅拍</h3>
-                <ul>
-                  <li><strong>2548</strong>Listings</li>
+                  <li>
+                    <strong>{{ i.count }}</strong
+                    >个项目
+                  </li>
                 </ul>
               </router-link>
             </div></swiper-slide

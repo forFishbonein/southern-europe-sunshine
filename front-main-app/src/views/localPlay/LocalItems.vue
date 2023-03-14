@@ -88,6 +88,7 @@ const changeCurrentPage = (p: number) => {
 <template>
   <section class="Campaigns pt80 pb80">
     <div class="container">
+      <div class="type-words">类型：{{ localType }}</div>
       <div class="row">
         <div
           class="col-md-4 col-sm-6 col-xs-12"
@@ -123,7 +124,7 @@ const changeCurrentPage = (p: number) => {
               <li>
                 <div class="R_retings">
                   <span>官方<em>参考价格</em></span
-                  ><strong>{{ item.playType }}</strong>
+                  ><strong>{{ item.playPrice }}元</strong>
                 </div>
               </li>
             </ul>
@@ -220,5 +221,23 @@ const changeCurrentPage = (p: number) => {
   &:hover {
     color: #333;
   }
+}
+.type-words {
+  width: 150px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  background-color: #c60b1e;
+  color: #ffffff;
+  font-weight: 800;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.4s cubic-bezier(1, -2.02, 0.38, 2.05);
+}
+.type-words:hover {
+  box-shadow: 0 2px 27px 6px rgba(0, 0, 0, 0.12);
+  transform: translate(0px, -5px);
 }
 </style>

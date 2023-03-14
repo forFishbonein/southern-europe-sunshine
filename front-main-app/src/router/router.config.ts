@@ -255,7 +255,7 @@ export const routes: Array<RouteRecordRaw> = [
         },
       },
       {
-        path: "/regster",
+        path: "/register",
         name: "Register",
         component: Register,
         meta: {

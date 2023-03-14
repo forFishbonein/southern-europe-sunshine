@@ -1,10 +1,11 @@
 import httpRequest from "@/request";
-// export const getAllThemeTypeInfo = () => {
-//   return httpRequest({
-//     method: "get",
-//     url: "http://localhost:8999/theme/type",
-//   });
-// };
+export const getAllLocalTypeInfo = () => {
+  return httpRequest({
+    method: "get",
+    url: "/localplay/type",
+  });
+};
+
 export const getPageLocalInfo = (localType, page, limit) => {
   return httpRequest({
     method: "post",

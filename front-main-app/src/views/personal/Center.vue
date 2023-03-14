@@ -1,7 +1,45 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref, reactive } from "vue";
+import { modifyUserInfo } from "@/apis/user/user";
+import { UserInfo } from "@/apis/user/uInterface";
+import { mainStore } from "@/store/user";
+import { useRouter } from "vue-router";
+const router = useRouter();
+const store = mainStore();
+let userInfo = reactive(store.userInfo);
+const updateFlag = ref(false);
+const changeTheFlag = () => {
+  if (updateFlag.value === false) {
+    updateFlag.value = true;
+  } else {
+    updateFlag.value = false;
+  }
+};
+const updateTheUserInfo = () => {
+  modifyUserInfo(userInfo)
+    .then((res: any) => {
+      if (res.code != 2000) {
+        // @ts-ignore
+        ElMessage({ type: "error", message: res.msg });
+      } else {
+        // @ts-ignore
+        ElMessage({ type: "success", message: "修改成功，请重新登录！" });
+        updateFlag.value = false;
+        store.logout();
+        setTimeout(() => {
+          router.replace("/login");
+        }, 1000);
+      }
+    })
+    .catch((error) => {
+      // @ts-ignore
+      ElMessage({ type: "error", message: error.message });
+    });
+};
+</script>
 
 <template>
-  <div class="dashboardBoxBg">
+  <!-- <div class="dashboardBoxBg">
     <div class="profileIntro">
       <h2>Your Profile</h2>
       <p>
@@ -9,142 +47,114 @@
         majority have suffered alteration in some form Ipsum available.
       </p>
     </div>
-  </div>
+  </div> -->
   <div class="dashboardBoxBg mt30">
     <div class="profileIntro">
-      <h3>About You</h3>
+      <h3>个人信息</h3>
       <div class="row">
         <div class="form-group col-sm-6 col-xs-12">
-          <label for="firstNameProfile">Fast Name</label>
+          <label for="firstNameProfile">用户名</label>
           <input
             type="text"
             class="form-control"
             id="firstNameProfile"
-            placeholder="Jane"
+            v-model="userInfo.userName"
+            :disabled="updateFlag === false"
           />
         </div>
         <div class="form-group col-sm-6 col-xs-12">
-          <label for="lastNameProfile">Last Name</label>
+          <label for="lastNameProfile">性别</label>
           <input
             type="text"
             class="form-control"
             id="lastNameProfile"
-            placeholder="Doe"
+            v-model="userInfo.sex"
+            :disabled="updateFlag === false"
           />
         </div>
         <div class="form-group col-sm-6 col-xs-12">
-          <label for="emailProfile">Email</label>
+          <label for="emailProfile">邮箱</label>
           <input
             type="text"
             class="form-control"
             id="emailProfile"
-            placeholder="Jane@example.com"
+            v-model="userInfo.email"
+            :disabled="updateFlag === false"
           />
         </div>
         <div class="form-group col-sm-6 col-xs-12">
-          <label for="phoneProfile">Phone</label>
+          <label for="phoneProfile">电话</label>
           <input
             type="text"
             class="form-control"
             id="phoneProfile"
-            placeholder="254 - 265 - 3265"
+            v-model="userInfo.phone"
+            :disabled="updateFlag === false"
+          />
+        </div>
+        <div class="form-group col-sm-6 col-xs-12">
+          <label for="emailProfile">生日</label>
+          <input
+            type="text"
+            class="form-control"
+            id="emailProfile"
+            v-model="userInfo.birthday"
+            :disabled="updateFlag === false"
+          />
+        </div>
+        <div class="form-group col-sm-6 col-xs-12">
+          <label for="phoneProfile">地址</label>
+          <input
+            type="text"
+            class="form-control"
+            id="phoneProfile"
+            v-model="userInfo.address"
+            :disabled="updateFlag === false"
+          />
+        </div>
+        <div class="form-group col-sm-6 col-xs-12">
+          <label for="emailProfile">教育背景</label>
+          <input
+            type="text"
+            class="form-control"
+            id="emailProfile"
+            v-model="userInfo.education"
+            :disabled="updateFlag === false"
           />
         </div>
         <div class="form-group col-md-12 col-xs-12">
-          <label for="aboutYou">About You</label>
+          <label for="aboutYou">兴趣爱好</label>
           <textarea
             class="form-control"
             rows="5"
             id="aboutYou"
-            placeholder="About You"
+            v-model="userInfo.interest"
+            :disabled="updateFlag === false"
           ></textarea>
         </div>
-      </div>
-    </div>
-  </div>
-  <div class="dashboardBoxBg mt30">
-    <div class="profileIntro">
-      <h3>Social Network</h3>
-      <div class="row">
-        <div class="form-group col-sm-6 col-xs-12">
-          <label for="linkedInUrl">Linked in URL</label>
-          <input
-            type="text"
-            class="form-control"
-            id="linkedInUrl"
-            placeholder="http://linkedin.com/"
-          />
-        </div>
-        <div class="form-group col-sm-6 col-xs-12">
-          <label for="facebookUrl">Facebook URL</label>
-          <input
-            type="text"
-            class="form-control"
-            id="facebookUrl"
-            placeholder="http://facebook.com/"
-          />
-        </div>
-        <div class="form-group col-sm-6 col-xs-12">
-          <label for="twitterUrl">Twitter URL</label>
-          <input
-            type="text"
-            class="form-control"
-            id="twitterUrl"
-            placeholder="http://twitter.com/"
-          />
-        </div>
-        <div class="form-group col-sm-6 col-xs-12">
-          <label for="youTubeUrl">You Tube URL</label>
-          <input
-            type="text"
-            class="form-control"
-            id="youTubeUrl"
-            placeholder="http://youtube.com/"
-          />
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="btn-area mt30">
-    <button class="btn btn-primary" type="button">Save Change</button>
-  </div>
-  <div class="dashboardBoxBg mt30">
-    <div class="profileIntro">
-      <h3>Update password</h3>
-      <div class="row">
-        <div class="form-group col-md-12 col-xs-12">
-          <label for="currentPassword">Current Password</label>
-          <input
-            type="password"
-            class="form-control"
-            id="currentPassword"
-            placeholder="********"
-          />
-        </div>
-        <div class="form-group col-md-12 col-xs-12">
-          <label for="newPassword">New Password</label>
-          <input
-            type="password"
-            class="form-control"
-            id="newPassword"
-            placeholder="New Password"
-          />
-        </div>
-        <div class="form-group col-md-12 col-xs-12">
-          <label for="confirmPassword">Confirm Password</label>
-          <input
-            type="password"
-            class="form-control"
-            id="confirmPassword"
-            placeholder="Confirm Password"
-          />
-        </div>
-        <div class="form-group col-md-12 col-xs-12">
-          <button class="btn btn-primary" type="button">Change Password</button>
-        </div>
+        <a
+          href="javascript:;"
+          class="btn btn-primary btn-primary-update"
+          v-if="updateFlag"
+          @click="updateTheUserInfo"
+          >保存修改</a
+        >
+        <a
+          href="javascript:;"
+          class="btn btn-primary btn-primary-update"
+          v-else
+          @click="changeTheFlag"
+          >修改信息</a
+        >
       </div>
     </div>
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.btn-primary-update {
+  margin-left: 20px;
+  height: 2em;
+  line-height: 2em;
+}
+</style>

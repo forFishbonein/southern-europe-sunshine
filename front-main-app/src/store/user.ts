@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 // import { getToken, removeToken, setToken } from "@/store/util/token";
 // import { getFlag, setFlag } from "@/store/util/flag";
 import { UserInfo } from "@/apis/user/uInterface";
-import { passLogin, codeLogin, logout } from "@/apis/user/login";
+import { passLogin, logout } from "@/apis/user/login";
 import { register } from "@/apis/user/register";
 import { getUserInfo } from "@/apis/user/user";
 import pinia from "@/store";
@@ -34,8 +34,8 @@ export const mainStore = defineStore("main", {
       return new Promise((resolve, reject) => {
         try {
           passLogin(passData).then((res) => {
-            console.log(res.data);
-            this.$state.token = res.data;
+            console.log(res.message);
+            this.$state.token = res.message;
             // setToken(res.data);
             resolve(res);
           });
@@ -45,29 +45,11 @@ export const mainStore = defineStore("main", {
         }
       });
     },
-    // codeLogin(codeData: any) {
-    //   return new Promise((resolve, reject) => {
-    //     try {
-    //       codeLogin(codeData).then((res) => {
-    //         console.log(res.data);
-    //         this.$state.token = res.data;
-    //         // setToken(res.data);
-    //         resolve(res);
-    //       });
-    //     } catch (error) {
-    //       console.log(error);
-    //       reject(error);
-    //     }
-    //   });
-    // },
     getUserInfo() {
       return new Promise((resolve, reject) => {
         getUserInfo(this.$state.token)
           .then((res) => {
-            if (res.code === 0) {
-              // console.log("]]]]]]]]]]");
-              // console.log(res.data);
-              // console.log("]]]]]]]]]]");
+            if (res.code === 2000) {
               this.$state.userInfo = res.data;
               // alert("调用store方法获取用户信息");
               // console.log("////////////");
@@ -98,7 +80,8 @@ export const mainStore = defineStore("main", {
         try {
           register(registerData).then((res) => {
             console.log(res.data);
-            this.$state.token = res.data;
+            // 不会返回token
+            // this.$state.token = res.data;
             // setToken(res.data);
             resolve(res);
           });
@@ -127,26 +110,27 @@ export const mainStore = defineStore("main", {
     },
     logout() {
       return new Promise((resolve, reject) => {
-        logout(this.$state.token)
-          .then((res) => {
-            console.log(res);
-            if (res) {
-              //@ts-ignore
-              this.$state.userInfo = {} as UserInfo; //清空对象
-              console.log(this.$state.userInfo);
-              this.$state.token = ""; //重置token
-              // removeToken();
-              this.$state.getUserFlag = false; //改变用户信息标志变量
-              // rstore.getRecommendFlag = false;
-              // rstore.recommendscenerys = [] as theCityScenerysInfoType[];
-              // setFlag(false);
-              resolve(res);
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-            reject(error);
-          });
+        //@ts-ignore
+        this.$state.userInfo = {} as UserInfo; //清空对象
+        console.log(this.$state.userInfo);
+        this.$state.token = ""; //重置token
+        this.$state.getUserFlag = false; //改变用户信息标志变量
+        // logout(this.$state.token)
+        //   .then((res) => {
+        //     console.log(res);
+        //     if (res) {
+        //       //@ts-ignore
+        //       this.$state.userInfo = {} as UserInfo; //清空对象
+        //       console.log(this.$state.userInfo);
+        //       this.$state.token = ""; //重置token
+        //       this.$state.getUserFlag = false; //改变用户信息标志变量
+        //       resolve(res);
+        //     }
+        //   })
+        //   .catch((error) => {
+        //     console.log(error);
+        //     reject(error);
+        //   });
       });
     },
   },
