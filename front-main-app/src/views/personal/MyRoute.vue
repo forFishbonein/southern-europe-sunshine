@@ -1,68 +1,103 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref, reactive, onMounted } from "vue";
+import {
+  totalRouteInfoType,
+  oneRouteDetailInfoType,
+} from "@/apis/interface/plan";
+import { getPlanRoutesByUserId } from "@/apis/plan";
+import { mainStore } from "@/store/user";
+import router from "@/router";
+const store = mainStore();
+let totalRoutesInfoList = ref([] as totalRouteInfoType[]);
+// const routesList = ref([] as oneRouteDetailInfoType[]);
+const getPlansByUserId = () => {
+  getPlanRoutesByUserId(store.userInfo.userid)
+    .then((res: any) => {
+      if (res.code != 2000) {
+        // @ts-ignore
+        ElMessage({ type: "error", message: res.msg });
+      } else {
+        totalRoutesInfoList.value = res.data;
+        console.log(totalRoutesInfoList.value);
+      }
+    })
+    .catch((error) => {
+      // @ts-ignore
+      ElMessage({ type: "error", message: error.message });
+    });
+};
+const goToViewRoutes = (id: string) => {
+  router.push({
+    name: "TrvalPlan",
+    params: {
+      planId: id,
+    },
+  });
+};
+onMounted(() => {
+  getPlansByUserId();
+});
+</script>
 
 <template>
-  <!-- <div
-    class="sidebar__single sidebar__category"
-    v-for="(cell, index1) in userAllPlansInfo"
-    :key="index1"
-  >
-    <h3 class="sidebar__title">行程表{{ index1 + 1 }}</h3>
-    <ul class="sidebar__category-list list-unstyled">
-      <li style="font-size: 16px">总预算:{{ cell.budget }}元</li>
-      <li>
-        <span class="span-style text-amber">行程信息</span>
-        <el-scrollbar max-height="300px">
-          <el-collapse accordion>
-            <el-collapse-item
-              :name="index2"
-              v-for="(item, index2) in cell.subPlans"
-              :key="index2"
-            >
-              <template #title>
-                <div class="plan-note-header">
-                  {{ item.city
-                  }}<el-icon class="header-icon" size="16px">
-                    <Place />
-                  </el-icon>
-                  <span style="margin-left: 10px">预算:</span
-                  >{{ item.budget }}元
-                </div>
-              </template>
-              <ul>
-                <li v-for="(i, index3) in item.days" :key="index3">
-                  第{{ index3 + 1 }}天
-                  <span v-for="(k, index4) in i.route" :key="index4">
-                    {{ k.originName }}({{ k.departTime }}小时)
-                    <el-icon><Right /></el-icon>
-                  </span>
-                  结束
-                  <el-button
-                    type="primary"
-                    size="small"
-                    style="margin-left: 10px"
-                    @click="openTheMapForOneDay(i.route)"
-                    >查看地图</el-button
-                  >
-                </li>
-              </ul>
-            </el-collapse-item>
-          </el-collapse>
-        </el-scrollbar>
-      </li>
-    </ul>
-  </div>
-  <el-dialog v-model="theMapVisible" :show-close="false" align-center>
-    <template #header="{ close, titleId, titleClass }">
-      <div class="my-header">
-        <h4 :id="titleId" :class="titleClass">景区行程地图</h4>
-        <el-button type="danger" @click="close">
-          <el-icon class="el-icon--left"><CircleCloseFilled /></el-icon>
-          关闭
-        </el-button>
+  <el-card class="box-card" v-for="(i, k) in totalRoutesInfoList" :key="k">
+    <template #header>
+      <div class="card-header">
+        <span>{{ i.title }}</span>
+        <el-button class="button" text @click="goToViewRoutes(i.id)"
+          >查看详情</el-button
+        >
       </div>
     </template>
-    <div id="map"></div>
-  </el-dialog> -->
+    <el-descriptions title="基本信息">
+      <el-descriptions-item label="联系人">{{ i.title }}</el-descriptions-item>
+      <el-descriptions-item label="联系电话">{{
+        i.phone
+      }}</el-descriptions-item>
+      <el-descriptions-item label="出发日期">{{
+        i.startDate
+      }}</el-descriptions-item>
+      <el-descriptions-item label="返回日期">{{
+        i.returnDate
+      }}</el-descriptions-item>
+      <el-descriptions-item label="随行人数"
+        >{{ i.num }}人</el-descriptions-item
+      >
+      <el-descriptions-item label="行程天数"
+        >{{ i.days }}天</el-descriptions-item
+      >
+      <el-descriptions-item label="创建日期">{{
+        i.createDate
+      }}</el-descriptions-item>
+    </el-descriptions>
+    <div
+      v-for="(item, index) in i.routeDetailsList"
+      :key="index"
+      class="text item"
+    >
+      时间：{{ item.date }}，城市：{{ item.cityId }}，{{ item.type }}：{{
+        item.itineraryId
+      }}
+    </div>
+  </el-card>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.text {
+  font-size: 14px;
+}
+
+.item {
+  margin-bottom: 18px;
+}
+
+.box-card {
+  width: 100%;
+}
+</style>

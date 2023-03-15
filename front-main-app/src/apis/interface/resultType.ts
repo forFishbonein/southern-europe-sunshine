@@ -46,6 +46,7 @@ export interface cityInfoType {
   cityNameCn: string;
   cityCoordinate: string;
   createDate: string;
+  isDeleted: Number;
   lastModif: string;
   remark: string;
 }

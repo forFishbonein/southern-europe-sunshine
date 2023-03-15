@@ -135,16 +135,12 @@ getTheOneThemeDetailInfo();
             <h1>{{ oneThemeDetailInfo.themeTitle }}</h1>
             <ul class="list-inline text-sm mb-4">
               <li class="list-inline-item mr-3">
-                <i class="fa fa-users mr-1 text-secondary"></i> 适合 4 人
+                <i class="fa fa-users mr-1 text-secondary"></i>
+                点击率：{{ oneThemeDetailInfo.clickRate }}
               </li>
               <li class="list-inline-item mr-3">
-                <i class="fa fa-door-open mr-1 text-secondary"></i> 2 间住宿
-              </li>
-              <li class="list-inline-item mr-3">
-                <i class="fa fa-bed mr-1 text-secondary"></i> 3 张床
-              </li>
-              <li class="list-inline-item mr-3">
-                <i class="fa fa-bath mr-1 text-secondary"></i> 2 个淋浴间
+                <i class="fa fa-door-open mr-1 text-secondary"></i>
+                类型：{{ oneThemeDetailInfo.themeTypeId }}
               </li>
             </ul>
             <p class="text-muted font-weight-light">
@@ -179,7 +175,7 @@ getTheOneThemeDetailInfo();
             </div>
           </div>
           <!-- Amenities-->
-          <div class="text-block">
+          <!-- <div class="text-block">
             <h3 class="mb-4">服务提供</h3>
             <div class="row">
               <div class="col-md-6">
@@ -239,7 +235,7 @@ getTheOneThemeDetailInfo();
                 </ul>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
         <div class="col-lg-4 right_Details">
           <div class="p-4 shadow ml-lg-4 rounded sticky-top" style="top: 100px">

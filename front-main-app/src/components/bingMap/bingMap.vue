@@ -28,27 +28,33 @@ export default {
       );
     },
     addMarkers(wantTos, centerPoint) {
+      // alert(111);
       let _this = this;
       initBingMap.init().then((Microsoft) => {
         _this.initMap(centerPoint, 10);
         // let lngList = [];
         // let latList = [];
         let pointList = [];
-        let descriptionList = [];
+        let enNameList = [];
         let nameList = [];
+        let typeList = [];
         if (wantTos && wantTos !== "") {
           wantTos.forEach((e) => {
             // lngList.push(Number(e.lng));
             // latList.push(Number(e.lat));
             pointList.push(e.point);
-            descriptionList.push(e.description);
+            enNameList.push(e.enName);
             nameList.push(e.name);
+            typeList.push(e.selectType);
           });
           //   alert(8888);
           console.log("=========");
           // console.log(lngList);
           // console.log(latList);
           console.log(pointList);
+          console.log(enNameList);
+          console.log(nameList);
+          console.log(typeList);
           console.log("=========");
           //信息窗口初始化
           _this.infobox = new Microsoft.Maps.Infobox(_this.map.getCenter(), {
@@ -68,10 +74,11 @@ export default {
             // 设置标记信息
             pin.metadata = {
               // title: "马德里 " + (i + 1),
-              // description: "Discription" + (i + 1),
+              // enName: "Discription" + (i + 1),
               // visible: true,
               title: nameList[i],
-              description: descriptionList[i],
+              description:
+                "英文名:" + enNameList[i] + "</br> 类型:" + typeList[i],
               visible: true,
             };
             // 给标记设置点击事件触发函数显示对应窗口信息
@@ -145,7 +152,7 @@ export default {
   },
   mounted() {
     var worldMapContainer = document.getElementById("localMap");
-    //用于使chart自适应高度和宽度,通过窗体高宽计算容器高宽
+    //用于使map自适应高度和宽度,通过窗体高宽计算容器高宽
     var resizeWorldMapContainer = function () {
       worldMapContainer.style.width = window.innerWidth + "px";
       worldMapContainer.style.height = window.innerHeight + "px";

@@ -3,15 +3,7 @@ import Index from "../Index.vue";
 import Login from "@components/login/Login.vue";
 import Register from "@components/login/Register.vue";
 import Home from "@views/Home.vue";
-// import GoTravel from "@views/goTravel/GoTravel.vue";
-// import GroupTravel from "@views/groupTravel/GroupTravel.vue";
-// import ReadTravel from "@/views/readTravel/ReadTravel.vue";
-// import BuyTravel from "@/views/buyTravel/BuyTravel.vue";
-// import Product from "@/views/buyTravel/product/Product.vue";
-// import City from "@/views/goTravel/city/City.vue";
-// import Scenery from "@/views/goTravel/scenery/Scenery.vue";
 import TravelPlan from "@/views/makePlan/TravelPlan.vue";
-import TravelPlanResult from "@/views/makePlan/TravelPlanResult.vue";
 import AllCountry from "@/views/country/AllCountry.vue";
 import ThemeTravel from "@/views/themeTravel/ThemeTravel.vue";
 import LocalPlay from "@/views/localPlay/LocalPlay.vue";
@@ -20,17 +12,8 @@ import News from "@/views/xpNews/News.vue";
 import ContactUs from "@/views/contact/ContactUs.vue";
 import VisaInsurance from "@/views/visaInsurance/VisaInsurance.vue";
 import PersonalIndex from "@/views/personal/Index.vue";
-import Visa from "@/views/visaInsurance/Visa.vue";
-import Insurance from "@/views/visaInsurance/Insurance.vue";
-// import PassLogin from "@/components/passOrCode/PassLogin.vue";
-// import CodeLogin from "@/components/passOrCode/CodeLogin.vue";
-// import PersonalIndex from "@/views/personal/Index.vue";
-// import User from "@/views/user/User.vue";
-// import Search from "@/views/search/Search.vue";
-// import CanvasTravel from "@/views/canvasTravel/CanvasTravel.vue";
-// import NotFound from "@/views/error/NotFound.vue";
-
-// import Note from "@/views/readTravel/note/Note.vue";
+// import Visa from "@/views/visaInsurance/Visa.vue";
+// import Insurance from "@/views/visaInsurance/Insurance.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -358,11 +341,12 @@ export const routes: Array<RouteRecordRaw> = [
       requireLogin: true,
     },
     //把route对象直接拆出属性
-    props({ params: { fromCity, backCity, arriveCity } }) {
+    props({ params: { routeTitle, peopleNum, arriveCity, planId } }) {
       return {
-        fromCity,
-        backCity,
+        routeTitle,
+        peopleNum,
         arriveCity,
+        planId,
       };
     },
   },

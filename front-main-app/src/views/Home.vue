@@ -10,8 +10,8 @@ const allTypes = ref([] as themeTypesType[]);
 // import { citysInfoType, planInfoType } from "@/apis/interface/myInterface";
 const router = useRouter();
 const planInfo = reactive({
-  fromCity: "",
-  backCity: "",
+  routeTitle: "",
+  peopleNum: "",
   arriveCity: "",
 });
 
@@ -20,8 +20,8 @@ const createPlan = () => {
   router.push({
     name: "TrvalPlan",
     params: {
-      fromCity: planInfo.fromCity,
-      backCity: planInfo.backCity,
+      routeTitle: planInfo.routeTitle,
+      peopleNum: planInfo.peopleNum,
       arriveCity: planInfo.arriveCity,
     },
   });
@@ -111,9 +111,9 @@ onMounted(() => {
                       <input
                         type="text"
                         name="search"
-                        placeholder="你从哪里出发?"
+                        placeholder="本次旅行的主题?"
                         class="form-control border-0 shadow-0"
-                        v-model="planInfo.fromCity"
+                        v-model="planInfo.routeTitle"
                       />
                     </div>
                     <div class="col-lg-3 d-flex align-items-center form-group">
@@ -127,8 +127,8 @@ onMounted(() => {
                         <input
                           type="text"
                           name="location"
-                          placeholder="返回地"
-                          v-model="planInfo.backCity"
+                          placeholder="行程人数"
+                          v-model="planInfo.peopleNum"
                           id="location"
                           class="form-control border-0 shadow-0"
                         />

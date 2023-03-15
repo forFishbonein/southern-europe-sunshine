@@ -1,28 +1,102 @@
 <script setup lang="ts">
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { reactive, ref } from "vue";
 import { onMounted } from "@vue/runtime-core";
 // 引入中文包
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import bingMapsLayer from "@/components/bingMap/bingMap.vue";
-import { User, Iphone } from "@element-plus/icons-vue";
+import { conutryInfoType, cityInfoType } from "@/apis/interface/resultType";
+import {
+  totalRouteInfoType,
+  totalRouteInfoTypeVo,
+  oneRouteDetailInfoType,
+  oneRouteDetailInfoTypeVo,
+  scenicInfoType,
+  hotelInfoType,
+} from "@/apis/interface/plan";
+import { getCountrysInfo } from "@/apis/country";
+import {
+  getCityListByCountryId,
+  getScenicListByCityId,
+  getHotelListByCityId,
+  saveTotalRoutes,
+  getOnePlanById,
+} from "@/apis/plan";
+import moment from "moment";
+import { User, Phone } from "@element-plus/icons-vue";
+import { mainStore } from "@/store/user";
+const route = useRoute();
+const store = mainStore();
+// YYYY-MM-DD HH:mm:ss
+// alert(moment("Wed Mar 22 2023 00:00:00 GMT+0800 (中国标准时间)").format("YYYY-MM-DD"));
+// alert(moment("Wed Mar 22 2023 00:00:00 GMT+0800 (中国标准时间)").format("HH:mm:ss"));
 const router = useRouter();
 const props = defineProps<{
-  fromCity: string;
-  backCity: string;
+  routeTitle: string;
+  peopleNum: string;
   arriveCity: string;
+  planId: string;
 }>();
-const fromCity = ref("");
-const backCity = ref("");
-//初始化一些内容
+//初始化一些基本信息内容
 let arriveCountry = "";
 let arriveCity = "";
 if (props.arriveCity && props.arriveCity !== "") {
   arriveCountry = props.arriveCity.split("+")[0];
   arriveCity = props.arriveCity.split("+")[1];
 }
-fromCity.value = props.fromCity;
-backCity.value = props.backCity;
+const routeTitle = ref("");
+const peopleNum = ref("");
+routeTitle.value = props.routeTitle;
+peopleNum.value = props.peopleNum;
+//初始化想去的国家城市选项
+const initCountrySelected = () => {
+  if (
+    arriveCountry &&
+    arriveCity &&
+    arriveCountry !== "" &&
+    arriveCity !== ""
+  ) {
+    // alert(333);
+    // alert(arriveCountry);
+    // alert(arriveCity);
+    console.log(countryAndCityOptions);
+    // console.log(countryAndCity.value);
+    countryAndCityOptions.forEach((e: oneOption) => {
+      if (e.value.name === arriveCountry) {
+        // console.log(countryAndCity.value);
+        // @ts-ignore //更换0的值即可，因为默认为[{},{}]
+        countryAndCity.value[0] = e.value;
+        e.children.forEach((e2) => {
+          if (e2.value.name === arriveCity) {
+            // alert(111);
+            // @ts-ignore
+            countryAndCity.value[1] = e2.value;
+            console.log(countryAndCity.value);
+            return;
+          }
+        });
+      }
+    });
+  }
+  console.log(countryAndCity.value);
+  // @ts-ignore //如果在首页选择了国家城市，那么要初始化一下
+  // 对于列表，判断是否为空只能用.length > 0，不能用!==[]
+  if (
+    JSON.stringify(countryAndCity.value[0]) != "{}" &&
+    JSON.stringify(countryAndCity.value[1]) != "{}"
+  ) {
+    // alert(222);
+    // @ts-ignore //初始化一下中心点
+    bingMapObject.value.addMarkers(
+      "",
+      // @ts-ignore
+      countryAndCity.value[1].point
+    );
+  }
+};
+
+//地图dom子对象
+const bingMapObject = ref(null);
 //得到点击的地图坐标位置
 const lat = ref("");
 const lng = ref("");
@@ -37,234 +111,270 @@ const getLocationNums = (...data) => {
   }
   // 这里的data中即子组件bingMap返回的点击获取的经纬度值
 };
+// 返回首页按钮
 const backToHome = () => {
   router.push("/");
 };
-//地图dom子对象
-const bingMapObject = ref(null);
-//测试标点
-// const marker = () => {
-//   // alert(1);
-//   // @ts-ignore
-//   bingMapObject.value.addMarkers(tocitys, centerPoint);
-// };
 
-//级联选择器选择国家和城市
-//请求选项内容 //TODO
-const countryAndCityOptions = [
-  {
-    value: { name: "西班牙", point: [116.378517, 39.865246] },
-    label: "西班牙",
-    children: [
-      {
-        value: {
-          name: "马德里",
-          img: "./images/home3.jpg",
-          point: [-9.15561077008929, 38.71216927583443],
-        },
-        label: "马德里",
-      },
-      {
-        value: "navigation",
-        label: "Navigation",
-      },
-    ],
-  },
-  {
-    value: { name: "葡萄牙", point: [-9.15561077008929, 38.71216927583443] },
-    label: "葡萄牙",
-    children: [
-      {
-        value: {
-          name: "里斯本",
-          img: "./images/home3.jpg",
-          point: [-9.15561077008929, 38.71216927583443],
-        },
-        label: "里斯本",
-      },
-      {
-        value: "navigation",
-        label: "Navigation",
-      },
-    ],
-  },
-  {
-    value: "南法",
-    label: "南法",
-    children: [
-      {
-        value: {
-          name: "巴黎",
-          img: "./images/home3.jpg",
-          point: [-9.15561077008929, 38.71216927583443],
-        },
-        label: "巴黎",
-      },
-      {
-        value: "navigation",
-        label: "Navigation",
-      },
-    ],
-  },
-  {
-    value: "安道尔",
-    label: "安道尔",
-    children: [
-      {
-        value: {
-          name: "安道尔城",
-          img: "./images/home3.jpg",
-          point: [-9.15561077008929, 38.71216927583443],
-        },
-        label: "安道尔城",
-      },
-      {
-        value: "navigation",
-        label: "Navigation",
-      },
-    ],
-  },
-];
+//级联选择器选择国家和城市开始
+//请求选项内容
+const allCountrysInfo = ref([] as conutryInfoType[]);
+interface oneOption {
+  value: { id: Number; name: string; point: Array<Number> };
+  label: string;
+  children: oneChildren[];
+}
+interface oneChildren {
+  value: {
+    id: Number;
+    name: string;
+    point: Array<Number>;
+  };
+  label: string;
+}
+const countryAndCityOptions = reactive([] as oneOption[]);
+const getAllCityPromise = () => {
+  return new Promise((resolve, reject) => {
+    //进行的次数
+    let num = 0;
+    allCountrysInfo.value.forEach((e) => {
+      getCityListByCountryId(e.ciid)
+        .then((res: any) => {
+          if (res.code != 2000) {
+            //@ts-ignore
+            ElMessage({
+              type: "error",
+              message: res.msg,
+            });
+          } else {
+            // alert(222);
+            console.log(res.data);
+            let tempList1 = [] as cityInfoType[];
+            tempList1 = res.data;
+            let tempList2 = [] as oneChildren[];
+            tempList1.forEach((e2) => {
+              tempList2.push({
+                value: {
+                  id: e2.cityID,
+                  name: e2.cityNameCn,
+                  point:
+                    e2.cityCoordinate && e2.cityCoordinate.length > 0
+                      ? e2.cityCoordinate.split(",").map((item) => Number(item))
+                      : [],
+                },
+                label: e2.cityNameCn,
+              });
+            });
+            countryAndCityOptions.push({
+              value: {
+                id: e.ciid,
+                name: e.countryNameCn,
+                point:
+                  e.countryCoord && e.countryCoord.length > 0
+                    ? e.countryCoord.split(",").map((item) => Number(item))
+                    : [],
+              },
+              label: e.countryNameCn,
+              children: tempList2,
+            });
+            num += 1;
+            if (num === allCountrysInfo.value.length) {
+              resolve(res);
+            }
+          }
+        })
+        .catch((error) => {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: error.message,
+          });
+        });
+    });
+  });
+};
+const getAllCountryAndCityInfo = async () => {
+  await getCountrysInfo()
+    .then((res: any) => {
+      if (res.code != 2000) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        console.log(res.data);
+        // alert(111);
+        allCountrysInfo.value = res.data;
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+  await getAllCityPromise().then((res: any) => {
+    console.log("完成");
+    console.log(countryAndCityOptions);
+    // alert(333);
+  });
+};
+interface oneCityOrCountryInfo {
+  id: string;
+  name: string;
+  point: Array<Number>;
+}
 //国家和城市组合的列表
-const countryAndCity = ref([]);
-//选择方式
+const countryAndCity = ref([
+  {} as oneCityOrCountryInfo,
+  {} as oneCityOrCountryInfo,
+]);
+//或者：
+// const countryAndCity = ref([] as oneCityOrCountryInfo[]);
+//级联选择方式
 const propsSelect = {
   expandTrigger: "hover" as const,
 };
-//进行选择后的回调
+//进行级联选择后的回调
 const handleChangeCity = (value) => {
   // console.log(countryAndCity.value);
   console.log(value);
   // @ts-ignore //不传第一个参数，这样就只是初始化一下中心点
   bingMapObject.value.addMarkers("", value[1].point);
-  //请求景点和酒店的数据 //TODO
+  //请求景点和酒店的数据 //放在单选回调里面了
 };
-//初始化想去的国家选项
-const initCountrySelected = () => {
-  // alert(arriveCountry);
-  // alert(arriveCity);
-  if (
-    arriveCountry &&
-    arriveCity &&
-    arriveCountry !== "" &&
-    arriveCity !== ""
-  ) {
-    countryAndCityOptions.forEach((e) => {
-      // @ts-ignore
-      if (e.value.name === arriveCountry) {
-        // @ts-ignore
-        countryAndCity.value.push(e.value);
-        e.children.forEach((e2) => {
-          // @ts-ignore
-          if (e2.value.name === arriveCity) {
-            // @ts-ignore
-            countryAndCity.value.push(e2.value);
-            console.log(countryAndCity.value);
-            return;
-          }
+//级联选择器选择国家和城市结束
+
+//选择某个城市的景点或者酒店开始
+interface oneCell {
+  value: string;
+  label: string;
+}
+const sceneryOrHotelOptions = ref([] as oneCell[]);
+//单选框
+const selectSceneryOrHotel = ref("");
+const handleSelectChange = async () => {
+  // sceneryOrHotel.value = ""; //必须要清空一下，否则保存的可能有问题（用户可能在保存之前切换了选项
+  if (Number(selectSceneryOrHotel.value) == 1) {
+    let tempList = [] as scenicInfoType[];
+    console.log(countryAndCity.value);
+    await getScenicListByCityId(countryAndCity.value[1].id)
+      .then((res: any) => {
+        if (res.code != 2000) {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: res.msg,
+          });
+        } else {
+          tempList = res.data;
+        }
+      })
+      .catch((error) => {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: error.message,
         });
-      }
+      });
+    //一定要清空一下，不然会追加，而不是重新添加
+    sceneryOrHotelOptions.value = [];
+    tempList.forEach((e) => {
+      sceneryOrHotelOptions.value.push({
+        value: JSON.stringify({
+          id: e.scenicsid,
+          name: e.scenicNameCn,
+          enName: e.scenicNameEn,
+          point:
+            e.scenicCoord && e.scenicCoord.length > 0
+              ? e.scenicCoord.split(",").map((item) => Number(item))
+              : [],
+        }),
+        label: e.scenicNameCn,
+      });
+    });
+  } else if (Number(selectSceneryOrHotel.value) == 2) {
+    let tempList2 = [] as hotelInfoType[];
+    await getHotelListByCityId(countryAndCity.value[1].id)
+      .then((res: any) => {
+        if (res.code != 2000) {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: res.msg,
+          });
+        } else {
+          tempList2 = res.data;
+        }
+      })
+      .catch((error) => {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: error.message,
+        });
+      });
+    sceneryOrHotelOptions.value = [];
+    tempList2.forEach((e) => {
+      sceneryOrHotelOptions.value.push({
+        value: JSON.stringify({
+          id: e.hotelID,
+          name: e.hotelNameCn,
+          enName: e.hotelNameEn,
+          point:
+            e.hotelCoord && e.hotelCoord.length > 0
+              ? e.hotelCoord.split(",").map((item) => Number(item))
+              : [],
+        }),
+        label: e.hotelNameCn,
+      });
     });
   }
 };
-initCountrySelected();
 //所有想去的景点和酒店的坐标列表
-let wantSceneryAndHotel = [];
-//单选器
-//添加景点
+interface markPointInfoType {
+  id: string;
+  name: string;
+  enName: string;
+  selectType: string;
+  point: string;
+}
+let wantSceneryAndHotel = [] as markPointInfoType[];
+
+//添加景点或者酒店
 //写成""即可，后面怎么赋值都可以
-const scenery = ref("");
-const handleChangeScenery = (value) => {
-  const value1 = JSON.parse(value);
-  // @ts-ignore
+const confirmSceneryOrHotelSelected = ref("");
+const sceneryOrHotel = ref("");
+//选中景点或者酒店后的回调
+const handleChangeSceneryOrHotel = (value) => {
+  const value1 = JSON.parse(value); //value就是sceneryOrHotel
+  if (Number(selectSceneryOrHotel.value) == 1) {
+    confirmSceneryOrHotelSelected.value = "景点";
+  } else if (Number(selectSceneryOrHotel.value) == 2) {
+    confirmSceneryOrHotelSelected.value = "酒店";
+  }
   wantSceneryAndHotel.push({
+    id: value1.id,
     name: value1.name,
-    description: value1.description,
+    enName: value1.enName,
+    selectType: confirmSceneryOrHotelSelected.value,
     point: value1.point,
   });
   // @ts-ignore
   bingMapObject.value.addMarkers(wantSceneryAndHotel, value1.point);
+  confirmSceneryOrHotelSelected.value = "";
 };
-const sceneryOptions = [
-  {
-    //value类型必须和上面定义的数据类型一致
-    value: JSON.stringify({
-      name: "里斯本斗牛场",
-      description: "很刺激",
-      point: [-9.15561077008929, 38.71216927583443],
-    }),
-    label: "里斯本斗牛场",
-  },
-  {
-    value: "Option2",
-    label: "Option2",
-  },
-  {
-    value: "Option3",
-    label: "Option3",
-  },
-  {
-    value: "Option4",
-    label: "Option4",
-  },
-  {
-    value: "Option5",
-    label: "Option5",
-  },
-];
-//添加酒店
-const hotel = ref("");
-const handleChangeHotel = (value) => {
-  const value1 = JSON.parse(value);
-  // @ts-ignore
-  wantSceneryAndHotel.push({
-    name: value1.name,
-    description: value1.description,
-    point: value1.point,
-  });
-  // @ts-ignore
-  bingMapObject.value.addMarkers(wantSceneryAndHotel, value1.point);
-};
-const hotelOptions = [
-  {
-    value: JSON.stringify({
-      name: "安道尔大酒店",
-      description: "很舒服",
-      point: [1.516512095495548, 42.511873844695025],
-    }),
-    label: "安道尔大酒店",
-  },
-  {
-    value: JSON.stringify({
-      name: "西班牙皇家酒店",
-      description: "很舒服",
-      point: [-8.15561077008929, 37.71216927583443],
-    }),
-    label: "西班牙皇家酒店",
-  },
-  {
-    value: "Option3",
-    label: "Option3",
-  },
-  {
-    value: "Option4",
-    label: "Option4",
-  },
-  {
-    value: "Option5",
-    label: "Option5",
-  },
-];
 //选择日期
 const theDate = ref("");
-// const backDate = ref("");
 const shortcuts = [
   {
-    text: "Today",
+    text: "今天",
     value: new Date(),
   },
   {
-    text: "Yesterday",
+    text: "昨天",
     value: () => {
       const date = new Date();
       date.setTime(date.getTime() - 3600 * 1000 * 24);
@@ -272,7 +382,7 @@ const shortcuts = [
     },
   },
   {
-    text: "A week ago",
+    text: "一周前",
     value: () => {
       const date = new Date();
       date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
@@ -281,84 +391,417 @@ const shortcuts = [
   },
 ];
 //添加到行程的方法
+//标志
 const addRouteFlag = ref(false);
 //每一个行程
-let oneRouteInfo = {
+interface displayInfoType {
+  country: {
+    id: string;
+  };
   city: {
-    name: "",
-    image: "",
+    id: string;
+    name: string;
+  };
+  sceneryOrHotel: {
+    id: string;
+    name: string;
+    enName: string;
+    type: string;
+    point: Array<Number>;
+  };
+  date: string;
+}
+let oneDisplayInfo: displayInfoType = {
+  country: {
+    id: "",
   },
-  scenery: {
+  city: {
+    id: "",
     name: "",
-    description: "",
   },
-  hotel: {
+  sceneryOrHotel: {
+    id: "",
     name: "",
-    description: "",
+    enName: "",
+    type: "",
+    point: [],
   },
   date: "",
 };
-//所有的行程
-let allRoutes = ref([]);
-const addToRoutes = () => {
-  // @ts-ignore
-  oneRouteInfo.city.name = countryAndCity.value[1].name;
-  // @ts-ignore
-  oneRouteInfo.city.image = countryAndCity.value[1].img;
-  // @ts-ignore
-  oneRouteInfo.scenery.name = JSON.parse(scenery.value).name;
-  // @ts-ignore
-  oneRouteInfo.scenery.description = JSON.parse(scenery.value).description;
-  // @ts-ignore
-  oneRouteInfo.hotel.name = JSON.parse(hotel.value).name;
-  // @ts-ignore
-  oneRouteInfo.hotel.description = JSON.parse(hotel.value).description;
-  oneRouteInfo.date = theDate.value;
-  console.log(oneRouteInfo);
-  // @ts-ignore
-  allRoutes.value.push(oneRouteInfo);
+//所有的要展示的行程
+let allRoutesToDisplay = ref([] as displayInfoType[][]);
+//对象数组排序算法
+const compareTime = (prop: string) => {
+  return function (obj1: displayInfoType, obj2: displayInfoType) {
+    var val1 = new Date(obj1[prop]).getTime();
+    var val2 = new Date(obj2[prop]).getTime();
+    if (!isNaN(Number(val1)) && !isNaN(Number(val2))) {
+      val1 = Number(val1);
+      val2 = Number(val2);
+    }
+    if (val1 < val2) {
+      return -1;
+    } else if (val1 > val2) {
+      return 1;
+    } else {
+      return 0;
+    }
+  };
+};
+const compareDate = (prop: string) => {
+  return function (obj1: displayInfoType, obj2: displayInfoType) {
+    var val1 = new Date(obj1[0][prop]).getTime();
+    var val2 = new Date(obj2[0][prop]).getTime();
+    // alert(333);
+    console.log(val1);
+    console.log(val2);
+    if (!isNaN(Number(val1)) && !isNaN(Number(val2))) {
+      val1 = Number(val1);
+      val2 = Number(val2);
+    }
+    if (val1 < val2) {
+      return -1;
+    } else if (val1 > val2) {
+      return 1;
+    } else {
+      return 0;
+    }
+  };
+};
+//加入到右边的方法
+const addToDisplayRoutes = () => {
+  oneDisplayInfo.country.id = countryAndCity.value[0].id;
+  oneDisplayInfo.city.id = countryAndCity.value[1].id;
+  oneDisplayInfo.city.name = countryAndCity.value[1].name;
+  oneDisplayInfo.sceneryOrHotel.id = JSON.parse(sceneryOrHotel.value).id;
+  oneDisplayInfo.sceneryOrHotel.name = JSON.parse(sceneryOrHotel.value).name;
+  oneDisplayInfo.sceneryOrHotel.point = JSON.parse(sceneryOrHotel.value).point;
+  oneDisplayInfo.sceneryOrHotel.enName = JSON.parse(
+    sceneryOrHotel.value
+  ).enName;
+  oneDisplayInfo.sceneryOrHotel.type = confirmSceneryOrHotelSelected.value;
+  oneDisplayInfo.date = moment(theDate.value).format("YYYY-MM-DD HH:mm:ss");
+  console.log(oneDisplayInfo);
+  // console.log(theDate.value);
+
+  if (allRoutesToDisplay.value.length > 0) {
+    try {
+      allRoutesToDisplay.value.forEach((e) => {
+        let addFlag = false;
+        e.forEach((e2) => {
+          if (
+            new Date(
+              moment(oneDisplayInfo.date).format("YYYY-MM-DD")
+            ).getTime() ===
+              new Date(moment(e2.date).format("YYYY-MM-DD")).getTime() &&
+            addFlag === false
+          ) {
+            e.push(oneDisplayInfo);
+            e.sort(compareTime("date"));
+            // alert(111);
+            addFlag = true;
+            if (addFlag === true) {
+              throw Error(); //直接到error
+            }
+          }
+        });
+        let tempList = [] as displayInfoType[];
+        tempList.push(oneDisplayInfo);
+        allRoutesToDisplay.value.push(tempList);
+        // alert(222);
+        // @ts-ignore //二维数组对象排序
+        allRoutesToDisplay.value.sort(compareDate("date"));
+        addFlag = true;
+        if (addFlag === true) {
+          throw Error(); //直接到error
+        }
+      });
+    } catch (error) {
+      console.log("跳出循环");
+    }
+  } else {
+    //如果是第一次添加
+    let tempList = [] as displayInfoType[];
+    tempList.push(oneDisplayInfo);
+    allRoutesToDisplay.value.push(tempList);
+  }
   if (addRouteFlag.value === false) {
     addRouteFlag.value = true;
   }
-  //重置所有内容！
-  oneRouteInfo = {
+  //必须重置所有内容
+  oneDisplayInfo = {
+    country: {
+      id: "",
+    },
     city: {
+      id: "",
       name: "",
-      image: "",
     },
-    scenery: {
+    sceneryOrHotel: {
+      id: "",
       name: "",
-      description: "",
-    },
-    hotel: {
-      name: "",
-      description: "",
+      enName: "",
+      type: "",
+      point: [],
     },
     date: "",
   };
   countryAndCity.value = [];
-  scenery.value = "";
-  hotel.value = "";
+  sceneryOrHotel.value = "";
   theDate.value = "";
+  selectSceneryOrHotel.value = "";
+  sceneryOrHotelOptions.value = [];
   //重置结束
-  console.log(allRoutes);
+  console.log(allRoutesToDisplay);
 };
+//删除某条行程的方法
+const deleteOneRouteFromDisplayRoutes = (index1, index2) => {
+  allRoutesToDisplay.value[index1].splice(index2, 1); //删除第index1个数组的第index2的元素
+  if (allRoutesToDisplay.value[index1].length === 0) {
+    allRoutesToDisplay.value.splice(index1, 1);
+  }
+  console.log(allRoutesToDisplay.value);
+};
+//其余基本信息
+// 上面有 const routeTitle = ref("");  和 const peopleNum = ref("");
+//预算
+const budget = ref("");
 //联系人
 const contactName = ref("");
+//联系方式
 const contactPhone = ref("");
-onMounted(() => {
-  console.log(countryAndCity.value);
-  // @ts-ignore //如果在首页选择了国家城市，那么要初始化一下
-  // 对于列表，判断是否为空只能用.length > 0，不能用!==[]
-  if (countryAndCity.value && countryAndCity.value.length > 0) {
-    // @ts-ignore //初始化一下中心点
-    bingMapObject.value.addMarkers(
-      "",
-      // @ts-ignore
-      countryAndCity.value[1].point
-    );
+//出发返回时间
+const startAndBackDay = ref([] as string[]);
+const startDay = ref("");
+const backDay = ref("");
+const selectTheDate = () => {
+  // console.log(startAndBackDay.value[0]);
+  // console.log(startAndBackDay.value[1]);
+  startDay.value = moment(startAndBackDay.value[0]).format("YYYY-MM-DD");
+  backDay.value = moment(startAndBackDay.value[1]).format("YYYY-MM-DD");
+};
+//还差days
+//保存全部行程
+const dialogFormVisible = ref(false);
+const totalRoutesInfo = ref({} as totalRouteInfoTypeVo);
+const routesList = ref([] as oneRouteDetailInfoTypeVo[]);
+const openTheConfirmDialog = () => {
+  dialogFormVisible.value = true;
+};
+const saveTheTotalRoutes = () => {
+  let tempList = [] as displayInfoType[];
+  tempList = allRoutesToDisplay.value.flat();
+  tempList.forEach((e) => {
+    routesList.value.push({
+      cityId: e.city.id,
+      countryId: e.country.id,
+      date: e.date,
+      itineraryId: e.sceneryOrHotel.id,
+      type: e.sceneryOrHotel.type,
+      userId: store.userInfo.userid,
+    });
+  });
+  totalRoutesInfo.value.routeDetailsList = routesList.value;
+  //保证一下时间格式
+  startDay.value = moment(startDay.value).format("YYYY-MM-DD");
+  backDay.value = moment(backDay.value).format("YYYY-MM-DD");
+  totalRoutesInfo.value.budget = budget.value;
+  totalRoutesInfo.value.contacts = contactName.value;
+  totalRoutesInfo.value.days =
+    Math.floor(
+      (new Date(backDay.value).getTime() - new Date(startDay.value).getTime()) /
+        (24 * 3600 * 1000)
+    ) + "";
+
+  totalRoutesInfo.value.num = Number(peopleNum.value);
+  totalRoutesInfo.value.phone = contactPhone.value;
+  totalRoutesInfo.value.returnDate = backDay.value;
+  totalRoutesInfo.value.startDate = startDay.value;
+  totalRoutesInfo.value.title = routeTitle.value;
+  totalRoutesInfo.value.userId = store.userInfo.userid;
+  saveTotalRoutes(totalRoutesInfo.value)
+    .then((res: any) => {
+      if (res.code != 2000) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        //@ts-ignore
+        ElMessage({
+          type: "success",
+          message: "保存成功！",
+        });
+        router.push("/personal/myroute");
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
+//查看详情时的初始化
+let planId = "";
+if (props.planId && props.planId !== "") {
+  planId = props.planId;
+}
+const totalViewRouteInfo = ref({} as totalRouteInfoType);
+const getOneViewPlan = async () => {
+  await getOnePlanById(planId)
+    .then((res: any) => {
+      if (res.code != 2000) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        totalViewRouteInfo.value = res.data;
+        console.log(totalViewRouteInfo.value);
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+  budget.value = totalViewRouteInfo.value.budget;
+  contactName.value = totalViewRouteInfo.value.contacts;
+  peopleNum.value = totalViewRouteInfo.value.num + "";
+  contactPhone.value = totalViewRouteInfo.value.phone;
+  startDay.value = new Date(
+    new Date(totalViewRouteInfo.value.startDate).getTime()
+  ).toString();
+  backDay.value = new Date(
+    new Date(totalViewRouteInfo.value.returnDate).getTime()
+  ).toString();
+  // 批量添加元素：在首元素的前面添加startDay和backDay两个元素
+  startAndBackDay.value.splice(0, 0, startDay.value, backDay.value);
+  // startAndBackDay.value.push(startDay.value);
+  // startAndBackDay.value.push(backDay.value);
+  routeTitle.value = totalViewRouteInfo.value.title;
+  if (totalViewRouteInfo.value.routeDetailsList.length > 0) {
+    for (let i = 0; i < totalViewRouteInfo.value.routeDetailsList.length; i++) {
+      if (i === 0) {
+        let tempList = [] as displayInfoType[];
+        let temObj: oneRouteDetailInfoType =
+          totalViewRouteInfo.value.routeDetailsList[i];
+        tempList.push({
+          country: {
+            id: temObj.countryId,
+          },
+          city: {
+            id: temObj.cityId,
+            name: "cityName",
+          },
+          sceneryOrHotel: {
+            id: temObj.itineraryId,
+            name: "122",
+            enName: "enName",
+            type: temObj.type,
+            point: [1, 1],
+          },
+          date: temObj.date,
+        });
+        allRoutesToDisplay.value.push(tempList);
+      } else {
+        try {
+          allRoutesToDisplay.value.forEach((e) => {
+            let addFlag = false;
+            e.forEach((e2) => {
+              if (
+                new Date(
+                  moment(
+                    totalViewRouteInfo.value.routeDetailsList[i].date
+                  ).format("YYYY-MM-DD")
+                ).getTime() ===
+                  new Date(moment(e2.date).format("YYYY-MM-DD")).getTime() &&
+                addFlag === false
+              ) {
+                let temObj: oneRouteDetailInfoType =
+                  totalViewRouteInfo.value.routeDetailsList[i];
+                e.push({
+                  country: {
+                    id: temObj.countryId,
+                  },
+                  city: {
+                    id: temObj.cityId,
+                    name: "cityName",
+                  },
+                  sceneryOrHotel: {
+                    id: temObj.itineraryId,
+                    name: "122",
+                    enName: "enName",
+                    type: temObj.type,
+                    point: [1, 1],
+                  },
+                  date: temObj.date,
+                });
+                e.sort(compareTime("date"));
+                // alert(111);
+                addFlag = true;
+                if (addFlag === true) {
+                  throw Error(); //直接到error
+                }
+              }
+            });
+            let tempList = [] as displayInfoType[];
+            let temObj: oneRouteDetailInfoType =
+              totalViewRouteInfo.value.routeDetailsList[i];
+            tempList.push({
+              country: {
+                id: temObj.countryId,
+              },
+              city: {
+                id: temObj.cityId,
+                name: "cityName",
+              },
+              sceneryOrHotel: {
+                id: temObj.itineraryId,
+                name: "122",
+                enName: "enName",
+                type: temObj.type,
+                point: [1, 1],
+              },
+              date: temObj.date,
+            });
+            allRoutesToDisplay.value.push(tempList);
+            // alert(222);
+            // @ts-ignore //二维数组对象
+            allRoutesToDisplay.value.sort(compareDate("date"));
+            addFlag = true;
+            if (addFlag === true) {
+              throw Error(); //直接到error
+            }
+          });
+        } catch (error) {
+          console.log("跳出循环");
+        }
+      }
+    }
+    addRouteFlag.value = true;
+    console.log("=========");
+    console.log(allRoutesToDisplay.value);
+    console.log("=========");
   }
-  //@ts-ignore
+};
+const initAwaitMethod = async () => {
+  if (props.planId && props.planId !== "") {
+    getOneViewPlan();
+  }
+  await getAllCountryAndCityInfo();
+  initCountrySelected();
+};
+onMounted(() => {
+  //总控初始化方法
+  initAwaitMethod();
+  //@ts-ignore //伸缩控制面板
   (function ($) {
     $(document).ready(function () {
       $(".change-model-button").on("click", function () {
@@ -414,29 +857,23 @@ onMounted(() => {
           placeholder="请选择国家和城市"
           size="large"
         />
+        <el-radio-group
+          v-model="selectSceneryOrHotel"
+          class="ml-4"
+          @change="handleSelectChange"
+        >
+          <el-radio label="1" size="large">景点</el-radio>
+          <el-radio label="2" size="large">酒店</el-radio>
+        </el-radio-group>
         <el-select
-          v-model="scenery"
+          v-model="sceneryOrHotel"
           clearable
-          @change="handleChangeScenery"
-          placeholder="请选择景点"
+          @change="handleChangeSceneryOrHotel"
+          placeholder="请选择"
           size="large"
         >
           <el-option
-            v-for="item in sceneryOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-        <el-select
-          v-model="hotel"
-          clearable
-          @change="handleChangeHotel"
-          placeholder="请选择酒店"
-          size="large"
-        >
-          <el-option
-            v-for="item in hotelOptions"
+            v-for="item in sceneryOrHotelOptions"
             :key="item.value"
             :label="item.label"
             :value="item.value"
@@ -451,17 +888,12 @@ onMounted(() => {
             size="large"
           />
         </el-config-provider>
-        <!-- <el-config-provider :locale="zhCn">
-          <el-date-picker
-            v-model="backDate"
-            type="datetime"
-            placeholder="选择返回日期"
-            :shortcuts="shortcuts"
-            size="large"
-          />
-        </el-config-provider> -->
         <div class="button-to-add">
-          <el-button type="primary" size="large" @click="addToRoutes" plain
+          <el-button
+            type="primary"
+            size="large"
+            @click="addToDisplayRoutes"
+            plain
             >加入行程</el-button
           >
         </div>
@@ -470,72 +902,140 @@ onMounted(() => {
   </div>
   <div class="main-right">
     <div class="right-header">
+      <el-input
+        v-model="routeTitle"
+        class="w-50 m-2 long"
+        placeholder="行程标题"
+      />
+      <el-input
+        v-model="peopleNum"
+        oninput="value=value.replace(/[^\d]/g,'')"
+        class="w-50 m-2 short"
+        placeholder="随行人数"
+      />
+      <el-input
+        v-model="budget"
+        oninput="value=value.replace(/[^\d]/g,'')"
+        class="w-50 m-2 short"
+        placeholder="预算(元)"
+      />
       <div>
-        <el-input
-          v-model="fromCity"
-          class="w-50 m-2 city-go-back"
-          placeholder="出发城市"
-        />
-        <el-input
-          v-model="backCity"
-          class="w-50 m-2 city-go-back"
-          placeholder="返回城市"
+        <el-date-picker
+          v-model="startAndBackDay"
+          type="daterange"
+          range-separator="—"
+          start-placeholder="出发"
+          end-placeholder="返回"
+          size="default"
+          @change="selectTheDate"
         />
       </div>
-
-      <el-input
+      <!-- <el-input
         v-model="contactName"
-        class="w-50 m-2"
-        placeholder="联系人姓名"
-        :suffix-icon="User"
+        class="w-50 m-2 short"
+        placeholder="联系人"
       />
       <el-input
         v-model="contactPhone"
-        class="w-50 m-2"
+        class="w-50 m-2 long"
         placeholder="联系人电话"
         :suffix-icon="Iphone"
-      />
+      /> -->
     </div>
     <div class="right-body">
-      <el-scrollbar min-height="200px" v-if="addRouteFlag">
-        <div class="timeline" v-for="(item, index) in allRoutes" :key="index">
+      <el-scrollbar v-if="addRouteFlag">
+        <div
+          class="timeline"
+          v-for="(item, index) in allRoutesToDisplay"
+          :key="index"
+        >
           <div class="timeline-left">
             <div class="timeline-left-node"></div>
             <div class="timeline-left-line"></div>
           </div>
           <div class="timeline-card">
-            <div class="timeline-card-title">{{ item.date }}</div>
+            <div class="timeline-card-title">
+              Day{{ index + 1 }}
+              {{
+                moment(allRoutesToDisplay[index][0].date).format("YYYY-MM-DD")
+              }}
+            </div>
             <div class="timeline-card-content">
-              <div class="card-header-content">
+              <!-- <div class="card-header-content">
                 <div class="header-img"><img :src="item.city.image" /></div>
                 <div class="header-title">
                   <strong>今日安排</strong><br /><span>{{
                     item.city.name
                   }}</span>
                 </div>
+              </div> -->
+              <div class="one-item" v-for="(i, k) in item" :key="k">
+                <el-icon
+                  :size="23"
+                  :color="`#A8ABB2`"
+                  @click="deleteOneRouteFromDisplayRoutes(index, i)"
+                  ><CircleCloseFilled /></el-icon
+                >安排{{ k + 1 }}: 今日{{ moment(i.date).format("HH:mm") }} 前往
+                {{ i.city.name }}的
+                {{
+                  i.sceneryOrHotel.name + "(" + i.sceneryOrHotel.enName + ")"
+                }}
               </div>
-              <div class="content-words">
-                今天，您想要去的景点：{{ item.scenery.name }}，描述：{{
-                  item.scenery.description
+              <!-- <div class="content-words" v-for="(i, k) in item" :key="k">
+                安排{{ k + 1 }}: 今日{{ moment(i.date).format("HH:mm") }} 前往
+                {{ i.city.name }}的
+                {{
+                  i.sceneryOrHotel.name + "(" + i.sceneryOrHotel.enName + ")"
+                }} -->
+              <!-- 今天，您想要去的景点：{{ item.sceneryOrHotel.name }}，描述：{{
+                  item.sceneryOrHotel.enName
                 }}<br />
-                您想要入住：{{ item.hotel.name }} ，描述：{{
-                  item.hotel.description
+                您想要入住：{{ item.hotel.name }} ，描述：{{ item.hotel.enName
                 }}<br />
-                南欧阳光祝您享受一段美好的旅程！
-              </div>
+                南欧阳光祝您享受一段美好的旅程！ -->
+              <!-- </div> -->
             </div>
           </div>
         </div>
       </el-scrollbar>
-      <el-empty description="您还没有添加行程" :image-size="150" v-else />
+      <el-empty enName="您还没有添加行程" :image-size="150" v-else />
       <div class="button-to-submit">
-        <el-button type="primary" round>提交行程</el-button>
+        <el-button type="primary" round @click="openTheConfirmDialog"
+          >保存行程</el-button
+        >
       </div>
     </div>
   </div>
   <div class="panel-border" v-if="clickFlag">
     <p>{{ lng }}°，{{ lat }}°</p>
   </div>
+  <el-dialog v-model="dialogFormVisible" title="完善信息">
+    <div class="dialog-body">
+      <el-input
+        v-model="contactName"
+        class="w-50 m-2"
+        placeholder="联系人"
+        :suffix-icon="User"
+      />
+    </div>
+    <div class="dialog-body">
+      <el-input
+        v-model="contactPhone"
+        class="w-50 m-2"
+        placeholder="联系方式"
+        :suffix-icon="Phone"
+      />
+    </div>
+
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取消</el-button>
+        <el-button type="primary" @click="saveTheTotalRoutes">
+          确认保存
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <style lang="scss" scoped>
@@ -562,7 +1062,7 @@ onMounted(() => {
 }
 .main-left {
   width: 260px;
-  height: 63%;
+  height: 350px;
   position: fixed;
   top: 17%;
   left: 20px;
@@ -626,16 +1126,26 @@ onMounted(() => {
   transition: all 0.8s linear;
   background-color: rgba(255, 255, 255, 0.8);
   .right-header {
-    height: 29%;
+    height: 150px;
     width: 100%;
     border-bottom: 2px solid #e8604c;
     padding: 2px 20px;
-    .el-input {
+    .long {
       width: 250px !important;
+    }
+    .short {
+      width: 114px !important;
+    }
+    ::v-deep .el-date-editor {
+      width: 245px !important;
+      margin: 8px !important;
+      .el-input__wrapper {
+        width: 245px !important;
+      }
     }
   }
   .right-body {
-    height: 73%;
+    height: 100%;
     width: 100%;
     padding: 20px 10px;
   }
@@ -672,15 +1182,6 @@ onMounted(() => {
 ::v-deep .el-button {
   font-weight: 800;
   font-size: 17px;
-}
-.main-right {
-  .right-header {
-    > div {
-      ::v-deep .city-go-back {
-        width: 114px !important;
-      }
-    }
-  }
 }
 .button-to-add {
   width: 205px;
@@ -823,5 +1324,41 @@ onMounted(() => {
 .change-model-button:hover {
   box-shadow: 0 2px 27px 6px rgba(0, 0, 0, 0.3);
   // background-color: #cc0033;
+}
+.dialog-body {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+.one-item {
+  // border: 1px #cc0033 solid;
+  width: 100%;
+  max-height: 80px;
+  font-size: 15px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  // color: #000000;
+  i {
+    border-radius: 16px;
+    transition: all 0.3s linear;
+    cursor: pointer;
+    margin-right: 5px;
+  }
+  i:hover {
+    box-shadow: 0 12px 5px -10px rgba(0, 0, 0, 0.1),
+      0 0 4px 0 rgba(0, 0, 0, 0.1);
+    color: #cc0033;
+  }
+}
+//滚动的长度！
+::v-deep .el-scrollbar {
+  height: 60%;
+  // .el-scrollbar__view {
+  //   height: 300px;
+  // }
 }
 </style>

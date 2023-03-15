@@ -76,7 +76,7 @@ const handleSelect = (key: string, keyPath: string[]) => {
               <el-menu-item index="/personal/setup">改密</el-menu-item>
             </el-menu>
           </div>
-          <form><router-view /></form>
+          <form><router-view :key="$route.fullPath" /></form>
         </div>
       </div>
     </div>
