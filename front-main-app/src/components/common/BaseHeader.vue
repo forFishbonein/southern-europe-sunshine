@@ -3,6 +3,7 @@ import { onMounted } from "vue";
 import { mainStore } from "@/store/user";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { InfoFilled } from "@element-plus/icons-vue";
 const router = useRouter();
 let loginFlag = ref(false);
 const store = mainStore();
@@ -20,6 +21,10 @@ const toLoginOrOwnCenter = () => {
   } else {
     router.push("/personal");
   }
+};
+const confirmLogout = () => {
+  store.logout();
+  router.replace({ path: "/" });
 };
 onMounted(() => {
   // @ts-ignore
@@ -155,6 +160,24 @@ onMounted(() => {
                       >
                       </a>
                     </li>
+                    <li class="button-con">
+                      <el-popconfirm
+                        confirm-button-text="确定"
+                        cancel-button-text="取消"
+                        :icon="InfoFilled"
+                        icon-color="#c60b1e"
+                        title="您确定要退出登录吗？"
+                        @confirm="confirmLogout"
+                      >
+                        <template #reference>
+                          <div class="logout-button" v-if="loginFlag">
+                            <el-icon size="25px" :color="`#ffffff`"
+                              ><SwitchButton
+                            /></el-icon>
+                          </div>
+                        </template>
+                      </el-popconfirm>
+                    </li>
                   </ul>
                 </li>
               </ul>
@@ -232,6 +255,30 @@ onMounted(() => {
   .light.breakpoint-on .getfundnav > ul > li > a,
   .light.breakpoint-on .getfund-navbar .getfund-menu {
     background-color: #000000;
+  }
+}
+.button-con {
+  margin-left: 15px !important;
+  .logout-button {
+    width: 40px;
+    height: 40px;
+    background-color: #e9e9eb;
+    // background-color: #c60b1e;
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s linear;
+  }
+  .logout-button:hover {
+    background-color: #c63a48;
+  }
+}
+.right-side {
+  ul {
+    display: flex;
+    align-items: center;
   }
 }
 </style>

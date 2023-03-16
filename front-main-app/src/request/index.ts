@@ -24,14 +24,14 @@ service.interceptors.request.use(
   (config: AxiosRequestConfig) => {
     // alert(store.pinia); //最早在这里可以获取
     // 加载动画
-    if (config.loading) {
-      //@ts-ignore
-      ElLoading.service({
-        lock: true,
-        text: "Loading...",
-        background: "rgba(0, 0, 0, 0.05)",
-      });
-    }
+    // if (config.loading) {
+    //   //@ts-ignore
+    //   ElLoading.service({
+    //     lock: true,
+    //     text: "Loading...",
+    //     background: "rgba(0, 0, 0, 0.05)",
+    //   });
+    // }
 
     // 在此处添加请求头等，如添加 token，这样登录之后每次请求都会自动带上token，实际上在apis中就不需要写token了
     // if (store.token) {
@@ -49,12 +49,12 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (response) => {
     //@ts-ignore //并不会创建一个新的loading
-    const loading = ElLoading.service({
-      lock: true,
-      text: "Loading",
-      background: "rgba(0, 0, 0, 0.05)",
-    });
-    loading.close();
+    // const loading = ElLoading.service({
+    //   lock: true,
+    //   text: "Loading",
+    //   background: "rgba(0, 0, 0, 0.05)",
+    // });
+    // loading.close();
 
     // session过期？
     // if (response.headers["session_time_out"] == "timeout") {

@@ -34,13 +34,28 @@ const goToViewRoutes = (id: string) => {
     },
   });
 };
+const getName = (item) => {
+  // alert(111);
+  if (item.type === "酒店") {
+    return item.hotelinfo.hotelNameCn;
+  } else if (item.type === "景点") {
+    return item.scenicspotinfo.scenicNameCn;
+  } else {
+    return "未知";
+  }
+};
 onMounted(() => {
   getPlansByUserId();
 });
 </script>
 
 <template>
-  <el-card class="box-card" v-for="(i, k) in totalRoutesInfoList" :key="k">
+  <el-card
+    class="box-card"
+    v-for="(i, k) in totalRoutesInfoList"
+    :key="k"
+    style="margin-bottom: 30px"
+  >
     <template #header>
       <div class="card-header">
         <span>{{ i.title }}</span>
@@ -71,13 +86,13 @@ onMounted(() => {
       }}</el-descriptions-item>
     </el-descriptions>
     <div
-      v-for="(item, index) in i.routeDetailsList"
+      v-for="(item, index) in i.routeDetailsVoList"
       :key="index"
       class="text item"
     >
-      时间：{{ item.date }}，城市：{{ item.cityId }}，{{ item.type }}：{{
-        item.itineraryId
-      }}
+      时间：{{ item.date }}，城市：{{ item.cityinfoList[0].cityNameCn }}，{{
+        item.type || "未知"
+      }}：{{ getName(item) }}
     </div>
   </el-card>
 </template>

@@ -1,3 +1,4 @@
+import { cityInfoType } from "@/apis/interface/resultType";
 export interface totalRouteInfoType {
   budget: string;
   contacts: string;
@@ -8,7 +9,7 @@ export interface totalRouteInfoType {
   phone: string;
   remark: string;
   returnDate: string;
-  routeDetailsList: oneRouteDetailInfoType[];
+  routeDetailsVoList: oneRouteDetailInfoType2[];
   startDate: string;
   title: string;
   userId: Number;
@@ -47,6 +48,21 @@ export interface oneRouteDetailInfoTypeVo {
   //坐标
   //名字
   //城市名
+}
+export interface oneRouteDetailInfoType2 {
+  cityId: string;
+  countryId: string;
+  createDate: string;
+  date: string;
+  id: string;
+  infoId: string;
+  itineraryId: string;
+  remark: string;
+  type: string;
+  userId: Number;
+  hotelinfo: hotelInfoType;
+  scenicspotinfo: scenicInfoType;
+  cityinfoList: cityInfoType[];
 }
 export interface scenicInfoType {
   scenicsid: Number;

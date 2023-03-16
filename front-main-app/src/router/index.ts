@@ -33,6 +33,10 @@ NProgress.configure({
 
 // 4. 配置路由守卫
 router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    // @ts-ignore
+    document.title = to.meta.title;
+  }
   NProgress.start();
   const store = mainStore(); //移动到了路由守卫里面，否则persist不生效
   // 如果本地存在token;

@@ -38,7 +38,7 @@ export const routes: Array<RouteRecordRaw> = [
         path: "/country",
         name: "Country",
         component: AllCountry,
-        meta: { title: "国家页", keepAlive: false, showTab: true },
+        meta: { title: "出行国家", keepAlive: false, showTab: true },
         redirect: "/country/countryDetail/1",
         children: [
           {
@@ -46,7 +46,7 @@ export const routes: Array<RouteRecordRaw> = [
             name: "CountryDetail",
             component: () => import("@/views/country/CountryDetail.vue"),
             meta: {
-              title: "国家详情页",
+              title: "出行国家",
               keepAlive: false,
               showTab: true,
             },
@@ -62,7 +62,7 @@ export const routes: Array<RouteRecordRaw> = [
         path: "/themeTravel",
         name: "ThemeTravel",
         component: ThemeTravel,
-        meta: { title: "主题旅行页", keepAlive: false, showTab: true },
+        meta: { title: "主题旅行", keepAlive: false, showTab: true },
         redirect: "/themeTravel/items/0",
         children: [
           {
@@ -70,7 +70,7 @@ export const routes: Array<RouteRecordRaw> = [
             name: "PlayItems",
             component: () => import("@/views/themeTravel/PlayItems.vue"),
             meta: {
-              title: "主题的相关玩乐列表页",
+              title: "主题旅行",
               keepAlive: false,
               showTab: true,
             },
@@ -80,7 +80,7 @@ export const routes: Array<RouteRecordRaw> = [
             name: "ItemDetails",
             component: () => import("@/views/themeTravel/ItemDetails.vue"),
             meta: {
-              title: "相关玩乐详情页",
+              title: "主题旅行详情",
               keepAlive: false,
               showTab: true,
             },
@@ -91,7 +91,7 @@ export const routes: Array<RouteRecordRaw> = [
         path: "/localPlay",
         name: "LocalPlay",
         component: LocalPlay,
-        meta: { title: "当地玩乐页", keepAlive: false, showTab: true },
+        meta: { title: "当地玩乐", keepAlive: false, showTab: true },
         redirect: "/localPlay/items/足球赛事",
         children: [
           {
@@ -99,7 +99,7 @@ export const routes: Array<RouteRecordRaw> = [
             name: "LocalItems",
             component: () => import("@/views/localPlay/LocalItems.vue"),
             meta: {
-              title: "当地的相关玩乐列表页",
+              title: "当地玩乐",
               keepAlive: false,
               showTab: true,
             },
@@ -110,13 +110,13 @@ export const routes: Array<RouteRecordRaw> = [
         path: "/localTeam",
         name: "LocalTeam",
         component: LocalTeam,
-        meta: { title: "当地参团页", keepAlive: false, showTab: true },
+        meta: { title: "当地参团", keepAlive: false, showTab: true },
       },
       {
         path: "/visaInsurance",
         name: "VisaInsurance",
         component: VisaInsurance,
-        meta: { title: "签证保险页", keepAlive: false, showTab: true },
+        meta: { title: "签证保险", keepAlive: false, showTab: true },
         redirect: "/visaInsurance/visa",
         children: [
           {
@@ -124,7 +124,7 @@ export const routes: Array<RouteRecordRaw> = [
             name: "Visa",
             component: () => import("@/views/visaInsurance/visa/Visa.vue"),
             meta: {
-              title: "签证页",
+              title: "签证",
               keepAlive: false,
               showTab: true,
             },
@@ -136,7 +136,7 @@ export const routes: Array<RouteRecordRaw> = [
                 component: () =>
                   import("@/views/visaInsurance/visa/VisaList.vue"),
                 meta: {
-                  title: "签证列表页",
+                  title: "签证",
                   keepAlive: false,
                   showTab: true,
                 },
@@ -147,7 +147,7 @@ export const routes: Array<RouteRecordRaw> = [
                 component: () =>
                   import("@/views/visaInsurance/visa/VisaDetail.vue"),
                 meta: {
-                  title: "签证详情页",
+                  title: "签证详情",
                   keepAlive: false,
                   showTab: true,
                 },
@@ -160,7 +160,7 @@ export const routes: Array<RouteRecordRaw> = [
             component: () =>
               import("@/views/visaInsurance/insurance/Insurance.vue"),
             meta: {
-              title: "保险页",
+              title: "保险",
               keepAlive: false,
               showTab: true,
             },
@@ -172,7 +172,7 @@ export const routes: Array<RouteRecordRaw> = [
                 component: () =>
                   import("@/views/visaInsurance/insurance/InsuranceList.vue"),
                 meta: {
-                  title: "保险列表页",
+                  title: "保险",
                   keepAlive: false,
                   showTab: true,
                 },
@@ -183,7 +183,7 @@ export const routes: Array<RouteRecordRaw> = [
                 component: () =>
                   import("@/views/visaInsurance/insurance/InsuranceDetail.vue"),
                 meta: {
-                  title: "保险详情页",
+                  title: "保险详情",
                   keepAlive: false,
                   showTab: true,
                 },
@@ -196,7 +196,7 @@ export const routes: Array<RouteRecordRaw> = [
         path: "/news",
         name: "News",
         component: News,
-        meta: { title: "西葡资讯页", keepAlive: false, showTab: true },
+        meta: { title: "西葡资讯", keepAlive: false, showTab: true },
         redirect: "/news/list",
         children: [
           {
@@ -204,7 +204,7 @@ export const routes: Array<RouteRecordRaw> = [
             name: "NewsList",
             component: () => import("@/views/xpNews/NewsList.vue"),
             meta: {
-              title: "资讯列表页",
+              title: "西葡资讯",
               keepAlive: false,
               showTab: true,
             },
@@ -214,7 +214,7 @@ export const routes: Array<RouteRecordRaw> = [
             name: "NewsDetail",
             component: () => import("@/views/xpNews/NewsDetail.vue"),
             meta: {
-              title: "资讯详情页",
+              title: "资讯详情",
               keepAlive: false,
               showTab: true,
             },
@@ -232,7 +232,7 @@ export const routes: Array<RouteRecordRaw> = [
         name: "Login",
         component: Login,
         meta: {
-          title: "登录页",
+          title: "登录",
           keepAlive: false,
           showTab: true,
         },
@@ -242,7 +242,7 @@ export const routes: Array<RouteRecordRaw> = [
         name: "Register",
         component: Register,
         meta: {
-          title: "注册页",
+          title: "注册",
           keepAlive: false,
           showTab: true,
         },
@@ -264,7 +264,7 @@ export const routes: Array<RouteRecordRaw> = [
             name: "Center",
             component: () => import("@/views/personal/Center.vue"),
             meta: {
-              title: "首页",
+              title: "我的中心",
               keepAlive: false,
               showTab: true,
               requireLogin: true,
@@ -286,7 +286,7 @@ export const routes: Array<RouteRecordRaw> = [
             name: "Star",
             component: () => import("@/views/personal/Star.vue"),
             meta: {
-              title: "我收藏的",
+              title: "我的收藏",
               keepAlive: false,
               showTab: true,
               requireLogin: true,
@@ -335,7 +335,7 @@ export const routes: Array<RouteRecordRaw> = [
     name: "TrvalPlan",
     component: TravelPlan,
     meta: {
-      title: "行程制定地图页",
+      title: "行程制定",
       keepAlive: false,
       showTab: true,
       requireLogin: true,

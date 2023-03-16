@@ -13,6 +13,7 @@ import {
   oneRouteDetailInfoTypeVo,
   scenicInfoType,
   hotelInfoType,
+  oneRouteDetailInfoType2,
 } from "@/apis/interface/plan";
 import { getCountrysInfo } from "@/apis/country";
 import {
@@ -339,7 +340,7 @@ interface markPointInfoType {
   name: string;
   enName: string;
   selectType: string;
-  point: string;
+  point: Array<Number>;
 }
 let wantSceneryAndHotel = [] as markPointInfoType[];
 
@@ -364,7 +365,7 @@ const handleChangeSceneryOrHotel = (value) => {
   });
   // @ts-ignore
   bingMapObject.value.addMarkers(wantSceneryAndHotel, value1.point);
-  confirmSceneryOrHotelSelected.value = "";
+  // confirmSceneryOrHotelSelected.value = "";
 };
 //选择日期
 const theDate = ref("");
@@ -551,6 +552,7 @@ const addToDisplayRoutes = () => {
   theDate.value = "";
   selectSceneryOrHotel.value = "";
   sceneryOrHotelOptions.value = [];
+  confirmSceneryOrHotelSelected.value = "";
   //重置结束
   console.log(allRoutesToDisplay);
 };
@@ -619,6 +621,8 @@ const saveTheTotalRoutes = () => {
   totalRoutesInfo.value.startDate = startDay.value;
   totalRoutesInfo.value.title = routeTitle.value;
   totalRoutesInfo.value.userId = store.userInfo.userid;
+  console.log(totalRoutesInfo.value);
+  // alert(111)
   saveTotalRoutes(totalRoutesInfo.value)
     .then((res: any) => {
       if (res.code != 2000) {
@@ -649,6 +653,36 @@ let planId = "";
 if (props.planId && props.planId !== "") {
   planId = props.planId;
 }
+const getName = (item: oneRouteDetailInfoType2) => {
+  // alert(111);
+  if (item.type === "酒店") {
+    return item.hotelinfo.hotelNameCn;
+  } else if (item.type === "景点") {
+    return item.scenicspotinfo.scenicNameCn;
+  } else {
+    return "未知";
+  }
+};
+const getName2 = (item: oneRouteDetailInfoType2) => {
+  // alert(111);
+  if (item.type === "酒店") {
+    return item.hotelinfo.hotelNameEn;
+  } else if (item.type === "景点") {
+    return item.scenicspotinfo.scenicNameEn;
+  } else {
+    return "Not Know";
+  }
+};
+const getPoint = (item: oneRouteDetailInfoType2) => {
+  // alert(111);
+  if (item.type === "酒店") {
+    return item.hotelinfo.hotelCoord;
+  } else if (item.type === "景点") {
+    return item.scenicspotinfo.scenicCoord;
+  } else {
+    return "";
+  }
+};
 const totalViewRouteInfo = ref({} as totalRouteInfoType);
 const getOneViewPlan = async () => {
   await getOnePlanById(planId)
@@ -686,26 +720,35 @@ const getOneViewPlan = async () => {
   // startAndBackDay.value.push(startDay.value);
   // startAndBackDay.value.push(backDay.value);
   routeTitle.value = totalViewRouteInfo.value.title;
-  if (totalViewRouteInfo.value.routeDetailsList.length > 0) {
-    for (let i = 0; i < totalViewRouteInfo.value.routeDetailsList.length; i++) {
+  if (totalViewRouteInfo.value.routeDetailsVoList.length > 0) {
+    for (
+      let i = 0;
+      i < totalViewRouteInfo.value.routeDetailsVoList.length;
+      i++
+    ) {
       if (i === 0) {
         let tempList = [] as displayInfoType[];
-        let temObj: oneRouteDetailInfoType =
-          totalViewRouteInfo.value.routeDetailsList[i];
+        let temObj: oneRouteDetailInfoType2 =
+          totalViewRouteInfo.value.routeDetailsVoList[i];
         tempList.push({
           country: {
             id: temObj.countryId,
           },
           city: {
             id: temObj.cityId,
-            name: "cityName",
+            name: temObj.cityinfoList[0].cityNameCn,
           },
           sceneryOrHotel: {
             id: temObj.itineraryId,
-            name: "122",
-            enName: "enName",
+            name: getName(temObj),
+            enName: getName2(temObj),
             type: temObj.type,
-            point: [1, 1],
+            point:
+              getPoint(temObj) && getPoint(temObj).length > 0
+                ? getPoint(temObj)
+                    .split(",")
+                    .map((item) => Number(item))
+                : [],
           },
           date: temObj.date,
         });
@@ -718,28 +761,33 @@ const getOneViewPlan = async () => {
               if (
                 new Date(
                   moment(
-                    totalViewRouteInfo.value.routeDetailsList[i].date
+                    totalViewRouteInfo.value.routeDetailsVoList[i].date
                   ).format("YYYY-MM-DD")
                 ).getTime() ===
                   new Date(moment(e2.date).format("YYYY-MM-DD")).getTime() &&
                 addFlag === false
               ) {
-                let temObj: oneRouteDetailInfoType =
-                  totalViewRouteInfo.value.routeDetailsList[i];
+                let temObj: oneRouteDetailInfoType2 =
+                  totalViewRouteInfo.value.routeDetailsVoList[i];
                 e.push({
                   country: {
                     id: temObj.countryId,
                   },
                   city: {
                     id: temObj.cityId,
-                    name: "cityName",
+                    name: temObj.cityinfoList[0].cityNameCn,
                   },
                   sceneryOrHotel: {
                     id: temObj.itineraryId,
-                    name: "122",
-                    enName: "enName",
+                    name: getName(temObj),
+                    enName: getName2(temObj),
                     type: temObj.type,
-                    point: [1, 1],
+                    point:
+                      getPoint(temObj) && getPoint(temObj).length > 0
+                        ? getPoint(temObj)
+                            .split(",")
+                            .map((item) => Number(item))
+                        : [],
                   },
                   date: temObj.date,
                 });
@@ -752,22 +800,27 @@ const getOneViewPlan = async () => {
               }
             });
             let tempList = [] as displayInfoType[];
-            let temObj: oneRouteDetailInfoType =
-              totalViewRouteInfo.value.routeDetailsList[i];
+            let temObj: oneRouteDetailInfoType2 =
+              totalViewRouteInfo.value.routeDetailsVoList[i];
             tempList.push({
               country: {
                 id: temObj.countryId,
               },
               city: {
                 id: temObj.cityId,
-                name: "cityName",
+                name: temObj.cityinfoList[0].cityNameCn,
               },
               sceneryOrHotel: {
                 id: temObj.itineraryId,
-                name: "122",
-                enName: "enName",
+                name: getName(temObj),
+                enName: getName2(temObj),
                 type: temObj.type,
-                point: [1, 1],
+                point:
+                  getPoint(temObj) && getPoint(temObj).length > 0
+                    ? getPoint(temObj)
+                        .split(",")
+                        .map((item) => Number(item))
+                    : [],
               },
               date: temObj.date,
             });
@@ -789,6 +842,24 @@ const getOneViewPlan = async () => {
     console.log("=========");
     console.log(allRoutesToDisplay.value);
     console.log("=========");
+    //初始化标点
+    allRoutesToDisplay.value.forEach((e) => {
+      e.forEach((e2: displayInfoType) => {
+        wantSceneryAndHotel.push({
+          id: e2.sceneryOrHotel.id,
+          name: e2.sceneryOrHotel.name,
+          enName: e2.sceneryOrHotel.enName,
+          selectType: e2.sceneryOrHotel.type,
+          point: e2.sceneryOrHotel.point,
+        });
+      });
+    });
+    console.log(wantSceneryAndHotel);
+    // @ts-ignore
+    bingMapObject.value.addMarkers(
+      wantSceneryAndHotel,
+      [-3.7360839843750093, 40.419503062300386]
+    );
   }
 };
 const initAwaitMethod = async () => {
