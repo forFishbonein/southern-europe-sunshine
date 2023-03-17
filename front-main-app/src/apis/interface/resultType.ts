@@ -4,6 +4,13 @@ export interface themeTypesType {
   createDate: string;
   remark: string;
 }
+export interface themeTypesRankingType {
+  themeTypeId: string;
+  typeName: string;
+  createDate: string;
+  remark: string;
+  themeListInfo: themeListInfoType;
+}
 export interface themeListInfoType {
   themeId: Number;
   themeTypeId: Number;

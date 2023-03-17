@@ -4,8 +4,16 @@ import { useRouter } from "vue-router";
 // import { utilStore } from "@/store/util";
 // test
 import { onMounted } from "@vue/runtime-core";
-import { getAllThemeTypeInfo } from "@/apis/theme";
-import { themeTypesType } from "@/apis/interface/resultType";
+import { getAllThemeTypeInfo, getPageThemeInfo } from "@/apis/theme";
+import {
+  themeTypesType,
+  themeTypesRankingType,
+} from "@/apis/interface/resultType";
+import { getNewsListInfo } from "@/apis/news";
+import { newsInfoType } from "@/apis/interface/resultType";
+import { getInsuranceListInfo } from "@/apis/news";
+import { getVisaListInfo } from "@/apis/news";
+const allTypesAndListInfo = ref([] as themeTypesRankingType[]);
 const allTypes = ref([] as themeTypesType[]);
 // const store = utilStore();
 // import { citysInfoType, planInfoType } from "@/apis/interface/myInterface";
@@ -27,8 +35,45 @@ const createPlan = () => {
     },
   });
 };
-const getAllTypes = () => {
-  getAllThemeTypeInfo()
+const getThemeListInfoByTypeIdPromise = () => {
+  return new Promise((resolve, reject) => {
+    //进行的次数
+    let num = 0;
+    for (let i = 0; i < allTypes.value.length; i++) {
+      getPageThemeInfo(allTypes.value[i].themeTypeId, 1, 1)
+        .then((res: any) => {
+          if (res.code != 2000) {
+            //@ts-ignore
+            ElMessage({
+              type: "error",
+              message: res.msg,
+            });
+          } else {
+            let tempObj = {} as themeTypesRankingType;
+            tempObj.createDate = allTypes.value[i].createDate;
+            tempObj.themeTypeId = allTypes.value[i].themeTypeId;
+            tempObj.remark = allTypes.value[i].remark;
+            tempObj.typeName = allTypes.value[i].typeName;
+            tempObj.themeListInfo = res.data.records[0];
+            allTypesAndListInfo.value.push(tempObj);
+            num += 1;
+            if (num === allTypes.value.length) {
+              resolve(res);
+            }
+          }
+        })
+        .catch((error) => {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: error.message,
+          });
+        });
+    }
+  });
+};
+const getAllTypes = async () => {
+  await getAllThemeTypeInfo()
     .then((res: any) => {
       if (res.code != 2000) {
         //@ts-ignore
@@ -38,6 +83,7 @@ const getAllTypes = () => {
         });
       } else {
         allTypes.value = res.data.slice(0, 6);
+        console.log(allTypes.value);
       }
     })
     .catch((error) => {
@@ -47,6 +93,11 @@ const getAllTypes = () => {
         message: error.message,
       });
     });
+  await getThemeListInfoByTypeIdPromise().then((res: any) => {
+    console.log("完成");
+    console.log(allTypesAndListInfo.value);
+    // alert(333);
+  });
 };
 
 onMounted(() => {
@@ -87,6 +138,213 @@ onMounted(() => {
     //@ts-ignore
   })(jQuery);
 });
+
+/* 分页查询的实现 */
+let newsListInfo = ref([] as newsInfoType[]);
+//为了构造一个响应式对象pageParams
+const pageParams = reactive({
+  total: 0,
+  page: 1,
+  limit: 3,
+});
+//为了把pageParams拆开，直接用在页面上
+const { total, page, limit } = toRefs(pageParams);
+//总页数
+const totalPageNum = ref();
+//按钮数为5个
+const count = 5;
+let start = 0;
+let end = 0;
+const btnArr = ref([]);
+//得到分页数据
+const getTheNewsList = () => {
+  getNewsListInfo(page.value, limit.value)
+    .then((res: any) => {
+      if (res.code != 2000) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        // alert(page.value);
+        newsListInfo.value = res.data.records;
+        total.value = res.data.total;
+        console.log(newsListInfo.value);
+        //处理输出新的按钮列表
+        totalPageNum.value = Math.ceil(total.value / limit.value);
+        //按钮个数和当前页码 ====> 起始按钮 结束按钮 按钮数组
+        // 1.理想情况下：
+        const offset = Math.floor(count / 2);
+        start = page.value - offset;
+        end = start + count - 1;
+        // 2.如果其实页码小于1 需要处理
+        if (start < 1) {
+          start = 1;
+          end =
+            start + count - 1 > totalPageNum.value
+              ? totalPageNum.value
+              : start + count - 1;
+        }
+        // 3.如果结束页码大于总页数
+        if (end > totalPageNum.value) {
+          end = totalPageNum.value;
+          start = end - count + 1 < 1 ? 1 : end - count + 1;
+        }
+        for (let i = start; i <= end; i++) {
+          // @ts-ignore
+          btnArr.value.push(i);
+        }
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
+//开始获取分页数据
+getTheNewsList();
+
+/* 分页查询的实现 */
+let insuranceListInfo = ref([] as newsInfoType[]);
+//为了构造一个响应式对象pageParams
+const pageParams2 = reactive({
+  total2: 0,
+  page2: 1,
+  limit2: 1,
+});
+//为了把pageParams拆开，直接用在页面上
+const { total2, page2, limit2 } = toRefs(pageParams2);
+//总页数
+const totalPageNum2 = ref();
+//按钮数为5个
+const count2 = 5;
+let start2 = 0;
+let end2 = 0;
+const btnArr2 = ref([]);
+//得到分页数据
+const getTheInsuranceList = () => {
+  getInsuranceListInfo(1, page2.value, limit2.value)
+    .then((res: any) => {
+      if (res.code != 2000) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        // alert(page.value);
+        insuranceListInfo.value = res.data.records;
+        total2.value = res.data.total;
+        console.log(insuranceListInfo.value);
+        //处理输出新的按钮列表
+        totalPageNum2.value = Math.ceil(total2.value / limit2.value);
+        //按钮个数和当前页码 ====> 起始按钮 结束按钮 按钮数组
+        // 1.理想情况下：
+        const offset = Math.floor(count / 2);
+        start2 = page.value - offset;
+        end2 = start2 + count - 1;
+        // 2.如果其实页码小于1 需要处理
+        if (start < 1) {
+          start2 = 1;
+          end2 =
+            start2 + count - 1 > totalPageNum.value
+              ? totalPageNum.value
+              : start2 + count - 1;
+        }
+        // 3.如果结束页码大于总页数
+        if (end2 > totalPageNum.value) {
+          end2 = totalPageNum.value;
+          start2 = end2 - count + 1 < 1 ? 1 : end - count + 1;
+        }
+        for (let i = start2; i <= end2; i++) {
+          // @ts-ignore
+          btnArr.value.push(i);
+        }
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
+//开始获取分页数据
+getTheInsuranceList();
+
+/* 分页查询的实现 */
+let visaListInfo = ref([] as newsInfoType[]);
+//为了构造一个响应式对象pageParams
+const pageParams3 = reactive({
+  total3: 0,
+  page3: 1,
+  limit3: 1,
+});
+//为了把pageParams拆开，直接用在页面上
+const { total3, page3, limit3 } = toRefs(pageParams3);
+//总页数
+const totalPageNum3 = ref();
+//按钮数为5个
+const count3 = 5;
+let start3 = 0;
+let end3 = 0;
+const btnArr3 = ref([]);
+//得到分页数据
+const getTheVisaList = () => {
+  getVisaListInfo(0, page.value, limit.value)
+    .then((res: any) => {
+      if (res.code != 2000) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        // alert(page.value);
+        visaListInfo.value = res.data.records;
+        total.value = res.data.total;
+        console.log(visaListInfo.value);
+        //处理输出新的按钮列表
+        totalPageNum.value = Math.ceil(total.value / limit.value);
+        //按钮个数和当前页码 ====> 起始按钮 结束按钮 按钮数组
+        // 1.理想情况下：
+        const offset = Math.floor(count / 2);
+        start = page.value - offset;
+        end = start + count - 1;
+        // 2.如果其实页码小于1 需要处理
+        if (start < 1) {
+          start = 1;
+          end =
+            start + count - 1 > totalPageNum.value
+              ? totalPageNum.value
+              : start + count - 1;
+        }
+        // 3.如果结束页码大于总页数
+        if (end > totalPageNum.value) {
+          end = totalPageNum.value;
+          start = end - count + 1 < 1 ? 1 : end - count + 1;
+        }
+        for (let i = start; i <= end; i++) {
+          // @ts-ignore
+          btnArr.value.push(i);
+        }
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
+//开始获取分页数据
+getTheVisaList();
 </script>
 
 <template>
@@ -277,7 +535,129 @@ onMounted(() => {
       </div>
     </div>
   </section>
-  <div class="Categories pt80 pb80 theme-travel">
+  <section class="Categories pt80 pb80 vertical-container Blog-list">
+    <div class="container">
+      <div class="row mb-5 vertical-wapper">
+        <div class="col-md-6">
+          <p class="subtitle text-secondary nopadding">
+            Spanish and Portuguese News
+          </p>
+          <h1 class="paddtop1 font-weight lspace-sm">西葡资讯</h1>
+          <div>
+            <div
+              class="col-md-12 col-sm-12 col-xs-12 no-padding"
+              v-for="(item, index) in newsListInfo"
+              :key="index"
+            >
+              <div class="row ListriBox">
+                <div class="col-md-3 col-sm-6 col-xs-12 Nopadding">
+                  <figure class="img-container">
+                    <router-link :to="`/news/detail/${item.newsId}`"
+                      ><img :src="item.titlePic" class="img-fluid" alt="" />
+                    </router-link>
+                  </figure>
+                </div>
+                <div class="col-md-9 col-sm-6 col-xs-12 Nopadding">
+                  <div class="ListriBoxmain">
+                    <h2>
+                      <router-link :to="`/news/detail/${item.newsId}`">{{
+                        item.newsTitle
+                      }}</router-link>
+                      <p class="describe">
+                        {{ item.newsContent }}
+                      </p>
+                    </h2>
+                  </div>
+                  <div class="route-container">
+                    <div>{{ item.createDate }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <p class="subtitle text-secondary nopadding">Visa and Insurance</p>
+          <h1 class="paddtop1 font-weight lspace-sm">签证保险</h1>
+          <div class="visa-container">
+            <div
+              class="col-md-6 col-sm-6 col-xs-12 mb-4 container-aaa"
+              v-for="(item, index) in insuranceListInfo"
+              :key="index"
+            >
+              <div class="card shadow border-0 h-100">
+                <!-- <router-link
+                  :to="`/visaInsurance/insurance/detail/${item.newsId}`"
+                  class="img-container"
+                  ><img
+                    :src="item.titlePic"
+                    alt="..."
+                    class="img-fluid card-img-top"
+                /></router-link> -->
+                <div class="card-body">
+                  <h5 class="my-2">
+                    <router-link
+                      :to="`/visaInsurance/insurance/detail/${item.newsId}`"
+                      class="text-dark"
+                      >{{ item.newsTitle }}
+                    </router-link>
+                  </h5>
+                  <p class="text-gray-500 text-gray-500-aaa text-sm my-3">
+                    <i class="far fa-clock mr-2"></i>{{ item.createDate }}
+                  </p>
+                  <p class="my-2 text-muted text-muted-aaa text-sm">
+                    {{ item.newsContent }}
+                  </p>
+                  <router-link
+                    :to="`/visaInsurance/insurance/detail/${item.newsId}`"
+                    class="btn btn-link pl-0"
+                    >查看详情<i class="fa fa-long-arrow-alt-right ml-2"></i
+                  ></router-link>
+                </div>
+              </div>
+            </div>
+            <div
+              class="col-md-6 col-sm-6 col-xs-12 mb-4 container-aaa"
+              v-for="(item, index) in visaListInfo"
+              :key="index"
+            >
+              <div class="card shadow border-0 h-100">
+                <!-- <router-link
+                  :to="`/visaInsurance/visa/detail/${item.newsId}`"
+                  class="img-container"
+                  ><img
+                    :src="item.titlePic"
+                    alt="..."
+                    class="img-fluid card-img-top"
+                /></router-link> -->
+                <div class="card-body">
+                  <h5 class="my-2">
+                    <router-link
+                      :to="`/visaInsurance/visa/detail/${item.newsId}`"
+                      class="text-dark"
+                      >{{ item.newsTitle }}
+                    </router-link>
+                  </h5>
+                  <p class="text-gray-500 text-gray-500-aaa text-sm my-3">
+                    <i class="far fa-clock mr-2"></i>{{ item.createDate }}
+                  </p>
+                  <p class="my-2 text-muted text-muted-aaa text-sm">
+                    {{ item.newsContent }}
+                  </p>
+                  <router-link
+                    :to="`/visaInsurance/visa/detail/${item.newsId}`"
+                    class="btn btn-link pl-0"
+                    >查看详情<i class="fa fa-long-arrow-alt-right ml-2"></i
+                  ></router-link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="Categories pt80 pb80 theme-travel">
     <div class="container">
       <div class="row mb-5">
         <div class="col-md-8">
@@ -290,10 +670,10 @@ onMounted(() => {
           ></router-link>
         </div>
       </div>
-      <div class="row">
+      <div class="row flex-wapper">
         <div
-          class="col-lg-4 items col-md-6 col-sm-6 col-12"
-          v-for="(item, index) in allTypes"
+          class="col-lg-3 items col-md- col-sm-6 col-12 theme-wapper"
+          v-for="(item, index) in allTypesAndListInfo"
           :key="index"
         >
           <div class="featured-wrap">
@@ -306,816 +686,192 @@ onMounted(() => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <section class="Campaigns pt80 pb40">
-    <div class="container">
-      <div class="row mb-5">
-        <div class="col-md-8">
-          <p class="subtitle text-secondary nopadding">
-            Stay and eat like a local
-          </p>
-          <h1 class="paddtop1 font-weight lspace-sm">Most Recents</h1>
-        </div>
-        <div class="col-md-4 d-lg-flex align-items-center justify-content-end">
-          <a href="" class="blist text-sm ml-2">
-            See all deals<i class="fas fa-angle-double-right ml-2"></i
-          ></a>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-          <div class="ListriBox">
-            <figure>
-              <a href="listings-single-page-3.html" class="wishlist_bt"></a>
-              <a href="listings-single-page-3.html"
-                ><img src="/images/hotel1.jpg" class="img-fluid" alt="" />
-                <div class="read_more"><span>Read more</span></div>
-              </a>
-            </figure>
-            <div class="ListriBoxmain">
-              <h3>
-                <a href="listings-single-page-3.html">Blue Hill Restaurant</a>
-              </h3>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              </p>
-              <a class="address" href="">Get directions</a>
-            </div>
-            <ul>
-              <li><span class="Ropen">Now Open</span></li>
-              <li>
-                <div class="R_retings">
-                  <span>Blue Hill<em>122 Reviews</em></span
-                  ><strong>8.2</strong>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-          <div class="ListriBox">
-            <figure>
-              <a href="listings-single-page-3.html" class="wishlist_bt"></a>
-              <a href="listings-single-page-3.html"
-                ><img src="/images/hotel2.jpg" class="img-fluid" alt="" />
-                <div class="read_more"><span>Read more</span></div>
-              </a>
-            </figure>
-            <div class="ListriBoxmain">
-              <h3>
-                <a href="listings-single-page-3.html">Blue Hill Restaurant</a>
-              </h3>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              </p>
-              <a class="address" href="">Get directions</a>
-            </div>
-            <ul>
-              <li><span class="Rclosed">Closed</span></li>
-              <li>
-                <div class="R_retings">
-                  <span>Blue Hill<em>122 Reviews</em></span
-                  ><strong>8.2</strong>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-          <div class="ListriBox">
-            <figure>
-              <a href="listings-single-page-3.html" class="wishlist_bt"></a>
-              <a href="listings-single-page-3.html"
-                ><img src="/images/hotel3.jpg" class="img-fluid" alt="" />
-                <div class="read_more"><span>Read more</span></div>
-              </a>
-            </figure>
-            <div class="ListriBoxmain">
-              <h3>
-                <a href="listings-single-page-3.html">Blue Hill Restaurant</a>
-              </h3>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              </p>
-              <a class="address" href="">Get directions</a>
-            </div>
-            <ul>
-              <li><span class="Ropen">Now Open</span></li>
-              <li>
-                <div class="R_retings">
-                  <span>Blue Hill<em>122 Reviews</em></span
-                  ><strong>8.2</strong>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-          <div class="ListriBox">
-            <figure>
-              <a href="listings-single-page-3.html" class="wishlist_bt"></a>
-              <a href="listings-single-page-3.html"
-                ><img src="/images/hotel4.jpg" class="img-fluid" alt="" />
-                <div class="read_more"><span>Read more</span></div>
-              </a>
-            </figure>
-            <div class="ListriBoxmain">
-              <h3>
-                <a href="listings-single-page-3.html">Blue Hill Restaurant</a>
-              </h3>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              </p>
-              <a class="address" href="">Get directions</a>
-            </div>
-            <ul>
-              <li><span class="Ropen">Now Open</span></li>
-              <li>
-                <div class="R_retings">
-                  <span>Blue Hill<em>122 Reviews</em></span
-                  ><strong>8.2</strong>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-          <div class="ListriBox">
-            <figure>
-              <a href="listings-single-page-3.html" class="wishlist_bt"></a>
-              <a href="listings-single-page-3.html"
-                ><img src="/images/hotel5.jpg" class="img-fluid" alt="" />
-                <div class="read_more"><span>Read more</span></div>
-              </a>
-            </figure>
-            <div class="ListriBoxmain">
-              <h3>
-                <a href="listings-single-page-3.html">Blue Hill Restaurant</a>
-              </h3>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              </p>
-              <a class="address" href="">Get directions</a>
-            </div>
-            <ul>
-              <li><span class="Rclosed">Closed</span></li>
-              <li>
-                <div class="R_retings">
-                  <span>Blue Hill<em>122 Reviews</em></span
-                  ><strong>8.2</strong>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-          <div class="ListriBox">
-            <figure>
-              <a href="listings-single-page-3.html" class="wishlist_bt"></a>
-              <a href="listings-single-page-3.html"
-                ><img src="/images/hotel6.jpg" class="img-fluid" alt="" />
-                <div class="read_more"><span>Read more</span></div>
-              </a>
-            </figure>
-            <div class="ListriBoxmain">
-              <h3>
-                <a href="listings-single-page-3.html">Blue Hill Restaurant</a>
-              </h3>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              </p>
-              <a class="address" href="">Get directions</a>
-            </div>
-            <ul>
-              <li><span class="Ropen">Now Open</span></li>
-              <li>
-                <div class="R_retings">
-                  <span>Blue Hill<em>122 Reviews</em></span
-                  ><strong>8.2</strong>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <section class="how-we-do features pt80 pb80" id="about">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-8 offset-md-2">
-          <div class="section-title text-center">
-            <h2>Welcome To Listri</h2>
-            <h3>Booking with <span>us is easy</span></h3>
+
+          <div class="route-container2" v-if="item.themeListInfo">
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation
+              <span>最热项目</span>
+              <router-link
+                :to="`/themeTravel/item/${item.themeListInfo.themeId}`"
+                class="content-wapper"
+                >{{ item.themeListInfo.themeTitle }}</router-link
+              >
             </p>
-          </div>
-        </div>
-      </div>
-      <div class="row pb-90">
-        <div class="col-md-4">
-          <div class="feat-item">
-            <span class="fab fa-renren"></span>
-            <h4>Find the perfect rental</h4>
-            <p>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry simply dummy text typesetting.
-            </p>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="feat-item">
-            <span class="fas fa-tools"></span>
-            <h4>Book with confidence</h4>
-            <p>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry simply dummy text typesetting.
-            </p>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="feat-item">
-            <span class="fas fa-rocket"></span>
-            <h4>Enjoy your vacation</h4>
-            <p>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry simply dummy text typesetting.
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="dots-feat"><img src="/images/dots-2.png" alt="dots" /></div>
-      <div class="cercil"></div>
-    </div>
-  </section>
-  <section class="Categories Campaigns pt80 pb40">
-    <div class="container">
-      <div class="row mb-5">
-        <div class="col-md-8">
-          <p class="subtitle text-secondary nopadding">
-            Stay and eat like a local
-          </p>
-          <h1 class="paddtop1 font-weight lspace-sm">Popular listings</h1>
-        </div>
-        <div class="col-md-4 d-lg-flex align-items-center justify-content-end">
-          <a href="" class="blist text-sm ml-2">
-            See all listings<i class="fas fa-angle-double-right ml-2"></i
-          ></a>
-        </div>
-      </div>
-      <div class="row">
-        <div class="swiper-container guides-slider-popular">
-          <!-- Additional required wrapper-->
-          <div class="swiper-wrapper">
-            <!-- Slides-->
-
-            <div class="swiper-slide h-auto px-2">
-              <div class="ListriBox">
-                <figure>
-                  <a href="listings-single-page-3.html" class="wishlist_bt"></a>
-                  <a href="listings-single-page-3.html"
-                    ><img src="/images/room1.jpg" class="img-fluid" alt="" />
-                    <div class="read_more"><span>Read more</span></div>
-                  </a>
-                </figure>
-                <div class="ListriBoxmain">
-                  <h3>
-                    <a href="listings-single-page-3.html"
-                      >Modern, Well-Appointed Room</a
-                    >
-                  </h3>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                    sed do
-                  </p>
-                  <a class="address" href="">Get directions</a>
-                </div>
-                <ul>
-                  <li>
-                    <p class="card-text text-muted">
-                      <span class="h4 text-primary">$80</span>/ night
-                    </p>
-                  </li>
-                  <li>
-                    <div class="R_retings">
-                      <div class="list-rat-ch list-room-rati">
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
+            <div class="route-city">
+              <div v-for="(i, k) in item.themeListInfo.cityinfos" :key="k">
+                <span>Day{{ k + 1 }}</span
+                ><strong>{{ i.cityNameCn }}</strong>
               </div>
-            </div>
-
-            <div class="swiper-slide h-auto px-2">
-              <div class="ListriBox">
-                <figure>
-                  <a href="listings-single-page-3.html" class="wishlist_bt"></a>
-                  <a href="listings-single-page-3.html"
-                    ><img src="/images/room2.jpg" class="img-fluid" alt="" />
-                    <div class="read_more"><span>Read more</span></div>
-                  </a>
-                </figure>
-                <div class="ListriBoxmain">
-                  <h3>
-                    <a href="listings-single-page-3.html"
-                      >Modern, Well-Appointed Room</a
-                    >
-                  </h3>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                    sed do
-                  </p>
-                  <a class="address" href="">Get directions</a>
-                </div>
-                <ul>
-                  <li>
-                    <p class="card-text text-muted">
-                      <span class="h4 text-primary">$80</span>/ night
-                    </p>
-                  </li>
-                  <li>
-                    <div class="R_retings">
-                      <div class="list-rat-ch list-room-rati">
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div class="swiper-slide h-auto px-2">
-              <div class="ListriBox">
-                <figure>
-                  <a href="listings-single-page-3.html" class="wishlist_bt"></a>
-                  <a href="listings-single-page-3.html"
-                    ><img src="/images/room3.jpg" class="img-fluid" alt="" />
-                    <div class="read_more"><span>Read more</span></div>
-                  </a>
-                </figure>
-                <div class="ListriBoxmain">
-                  <h3>
-                    <a href="listings-single-page-3.html"
-                      >Modern, Well-Appointed Room</a
-                    >
-                  </h3>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                    sed do
-                  </p>
-                  <a class="address" href="">Get directions</a>
-                </div>
-                <ul>
-                  <li>
-                    <p class="card-text text-muted">
-                      <span class="h4 text-primary">$80</span>/ night
-                    </p>
-                  </li>
-                  <li>
-                    <div class="R_retings">
-                      <div class="list-rat-ch list-room-rati">
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div class="swiper-slide h-auto px-2">
-              <div class="ListriBox">
-                <figure>
-                  <a href="listings-single-page-3.html" class="wishlist_bt"></a>
-                  <a href="listings-single-page-3.html"
-                    ><img src="/images/room4.jpg" class="img-fluid" alt="" />
-                    <div class="read_more"><span>Read more</span></div>
-                  </a>
-                </figure>
-                <div class="ListriBoxmain">
-                  <h3>
-                    <a href="listings-single-page-3.html"
-                      >Modern, Well-Appointed Room</a
-                    >
-                  </h3>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                    sed do
-                  </p>
-                  <a class="address" href="">Get directions</a>
-                </div>
-                <ul>
-                  <li>
-                    <p class="card-text text-muted">
-                      <span class="h4 text-primary">$80</span>/ night
-                    </p>
-                  </li>
-                  <li>
-                    <div class="R_retings">
-                      <div class="list-rat-ch list-room-rati">
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div class="swiper-slide h-auto px-2">
-              <div class="ListriBox">
-                <figure>
-                  <a href="listings-single-page-3.html" class="wishlist_bt"></a>
-                  <a href="listings-single-page-3.html"
-                    ><img src="/images/room5.jpg" class="img-fluid" alt="" />
-                    <div class="read_more"><span>Read more</span></div>
-                  </a>
-                </figure>
-                <div class="ListriBoxmain">
-                  <h3>
-                    <a href="listings-single-page-3.html"
-                      >Modern, Well-Appointed Room</a
-                    >
-                  </h3>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                    sed do
-                  </p>
-                  <a class="address" href="">Get directions</a>
-                </div>
-                <ul>
-                  <li>
-                    <p class="card-text text-muted">
-                      <span class="h4 text-primary">$80</span>/ night
-                    </p>
-                  </li>
-                  <li>
-                    <div class="R_retings">
-                      <div class="list-rat-ch list-room-rati">
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div class="swiper-slide h-auto px-2">
-              <div class="ListriBox">
-                <figure>
-                  <a href="listings-single-page-3.html" class="wishlist_bt"></a>
-                  <a href="listings-single-page-3.html"
-                    ><img src="/images/room6.jpg" class="img-fluid" alt="" />
-                    <div class="read_more"><span>Read more</span></div>
-                  </a>
-                </figure>
-                <div class="ListriBoxmain">
-                  <h3>
-                    <a href="listings-single-page-3.html"
-                      >Modern, Well-Appointed Room</a
-                    >
-                  </h3>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                    sed do
-                  </p>
-                  <a class="address" href="">Get directions</a>
-                </div>
-                <ul>
-                  <li>
-                    <p class="card-text text-muted">
-                      <span class="h4 text-primary">$80</span>/ night
-                    </p>
-                  </li>
-                  <li>
-                    <div class="R_retings">
-                      <div class="list-rat-ch list-room-rati">
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="swiper-pagination d-md-none"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <section class="client-section">
-    <div class="section-overlay bg-opacity">
-      <div class="container pt80 pb80">
-        <div class="row">
-          <div class="col-md-8 col-centered">
-            <div class="col-xs-12 text-center">
-              <h6 class="nopadding lspace text-white">
-                Our dear customers said about us
-              </h6>
-              <h1 class="paddtop1 dosis font-weight text-white lspace-sm">
-                TESTIMONIALS
-              </h1>
-              <div class="title-line white align-center"></div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12 col-centered">
-            <!-- Slider main container-->
-            <div class="swiper-container testimonials-slider testimonials">
-              <!-- Additional required wrapper-->
-              <div class="swiper-wrapper pt-2 pb-5">
-                <!-- Slides-->
-                <div class="swiper-slide px-3">
-                  <div class="testimonial card rounded-lg shadow border-0">
-                    <div class="testimonial-avatar">
-                      <img
-                        src="/images/avatar/avatar-3.jpg"
-                        alt="..."
-                        class="img-fluid"
-                      />
-                    </div>
-                    <div class="text">
-                      <div class="testimonial-quote">
-                        <i class="fas fa-quote-right"></i>
-                      </div>
-                      <p class="testimonial-text">
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry. Lorem Ipsum has been the
-                        industry's standard dummy text ever
-                      </p>
-                      <strong>Jessica Watson</strong>
-                    </div>
-                  </div>
-                </div>
-                <div class="swiper-slide px-3">
-                  <div class="testimonial card rounded-lg shadow border-0">
-                    <div class="testimonial-avatar">
-                      <img
-                        src="/images/avatar/avatar-3.jpg"
-                        alt="..."
-                        class="img-fluid"
-                      />
-                    </div>
-                    <div class="text">
-                      <div class="testimonial-quote">
-                        <i class="fas fa-quote-right"></i>
-                      </div>
-                      <p class="testimonial-text">
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry. Lorem Ipsum has been the
-                        industry's standard dummy text ever
-                      </p>
-                      <strong>Jessica Watson</strong>
-                    </div>
-                  </div>
-                </div>
-                <div class="swiper-slide px-3">
-                  <div class="testimonial card rounded-lg shadow border-0">
-                    <div class="testimonial-avatar">
-                      <img
-                        src="/images/avatar/avatar-3.jpg"
-                        alt="..."
-                        class="img-fluid"
-                      />
-                    </div>
-                    <div class="text">
-                      <div class="testimonial-quote">
-                        <i class="fas fa-quote-right"></i>
-                      </div>
-                      <p class="testimonial-text">
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry. Lorem Ipsum has been the
-                        industry's standard dummy text ever
-                      </p>
-                      <strong>Jessica Watson</strong>
-                    </div>
-                  </div>
-                </div>
-                <div class="swiper-slide px-3">
-                  <div class="testimonial card rounded-lg shadow border-0">
-                    <div class="testimonial-avatar">
-                      <img
-                        src="/images/avatar/avatar-3.jpg"
-                        alt="..."
-                        class="img-fluid"
-                      />
-                    </div>
-                    <div class="text">
-                      <div class="testimonial-quote">
-                        <i class="fas fa-quote-right"></i>
-                      </div>
-                      <p class="testimonial-text">
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry. Lorem Ipsum has been the
-                        industry's standard dummy text ever
-                      </p>
-                      <strong>Jessica Watson</strong>
-                    </div>
-                  </div>
-                </div>
-                <div class="swiper-slide px-3">
-                  <div class="testimonial card rounded-lg shadow border-0">
-                    <div class="testimonial-avatar">
-                      <img
-                        src="/images/avatar/avatar-3.jpg"
-                        alt="..."
-                        class="img-fluid"
-                      />
-                    </div>
-                    <div class="text">
-                      <div class="testimonial-quote">
-                        <i class="fas fa-quote-right"></i>
-                      </div>
-                      <p class="testimonial-text">
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry. Lorem Ipsum has been the
-                        industry's standard dummy text ever
-                      </p>
-                      <strong>Jessica Watson</strong>
-                    </div>
-                  </div>
-                </div>
-                <div class="swiper-slide px-3">
-                  <div class="testimonial card rounded-lg shadow border-0">
-                    <div class="testimonial-avatar">
-                      <img
-                        src="/images/avatar/avatar-3.jpg"
-                        alt="..."
-                        class="img-fluid"
-                      />
-                    </div>
-                    <div class="text">
-                      <div class="testimonial-quote">
-                        <i class="fas fa-quote-right"></i>
-                      </div>
-                      <p class="testimonial-text">
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry. Lorem Ipsum has been the
-                        industry's standard dummy text ever
-                      </p>
-                      <strong>Jessica Watson</strong>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="swiper-pagination"></div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </section>
-  <section class="Blog-list pt80 pb50">
-    <div class="container">
-      <div class="row mb-5">
-        <div class="col-md-8">
-          <p class="subtitle text-secondary nopadding">
-            Stories from around the globe
-          </p>
-          <h1 class="paddtop1 font-weight lspace-sm">From our blog</h1>
-        </div>
-        <div class="col-md-4 d-md-flex align-items-center justify-content-end">
-          <a href="blog_grid.html" class="blist text-sm">
-            See all articles<i class="fas fa-angle-double-right ml-2"></i
-          ></a>
-        </div>
-      </div>
-      <div class="row">
-        <!-- blog item-->
-        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mb-4">
-          <div class="card shadow border-0 h-100">
-            <a href="post.html"
-              ><img
-                src="/images/b1.jpg"
-                alt="..."
-                class="img-fluid card-img-top"
-            /></a>
-            <div class="card-body">
-              <h5 class="my-2">
-                <a href="post.html" class="text-dark"
-                  >Autumn fashion tips and tricks
-                </a>
-              </h5>
-              <p class="text-gray-500 text-sm my-3">
-                <i class="far fa-clock mr-2"></i>January 16, 2019
-              </p>
-              <p class="my-2 text-muted text-sm">
-                Pellentesque habitant morbi tristique senectus. Vestibulum
-                tortor quam, feugiat vitae, ultricies ege...
-              </p>
-              <a href="post.html" class="btn btn-link pl-0"
-                >Read more<i class="fa fa-long-arrow-alt-right ml-2"></i
-              ></a>
-            </div>
-          </div>
-        </div>
-        <!-- blog item-->
-        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mb-4">
-          <div class="card shadow border-0 h-100">
-            <a href="post.html"
-              ><img
-                src="/images/b2.jpg"
-                alt="..."
-                class="img-fluid card-img-top"
-            /></a>
-            <div class="card-body">
-              <h5 class="my-2">
-                <a href="post.html" class="text-dark">Newest photo apps </a>
-              </h5>
-              <p class="text-gray-500 text-sm my-3">
-                <i class="far fa-clock mr-2"></i>January 16, 2019
-              </p>
-              <p class="my-2 text-muted text-sm">
-                ellentesque habitant morbi tristique senectus et netus et
-                malesuada fames ac turpis egestas. Vestibu...
-              </p>
-              <a href="post.html" class="btn btn-link pl-0"
-                >Read more<i class="fa fa-long-arrow-alt-right ml-2"></i
-              ></a>
-            </div>
-          </div>
-        </div>
-        <!-- blog item-->
-        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mb-4">
-          <div class="card shadow border-0 h-100">
-            <a href="post.html"
-              ><img
-                src="/images/b3.jpg"
-                alt="..."
-                class="img-fluid card-img-top"
-            /></a>
-            <div class="card-body">
-              <h5 class="my-2">
-                <a href="post.html" class="text-dark"
-                  >Best books about Photography
-                </a>
-              </h5>
-              <p class="text-gray-500 text-sm my-3">
-                <i class="far fa-clock mr-2"></i>January 16, 2019
-              </p>
-              <p class="my-2 text-muted text-sm">
-                Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor
-                sit amet, ante. Mauris placerat eleif...
-              </p>
-              <a href="post.html" class="btn btn-link pl-0"
-                >Read more<i class="fa fa-long-arrow-alt-right ml-2"></i
-              ></a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <section class="section-less-padding">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <ul class="clientlogo-list">
-            <li><img src="/images/client-logo1.png" alt="" /></li>
-            <li><img src="/images/client-logo2.png" alt="" /></li>
-            <li><img src="/images/client-logo3.png" alt="" /></li>
-            <li><img src="/images/client-logo4.png" alt="" /></li>
-            <li><img src="/images/client-logo5.png" alt="" /></li>
-            <li><img src="/images/client-logo6.png" alt="" /></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
+  <div class="contact-to-us">联系我们</div>
 </template>
 
 <style lang="scss" scoped>
+.flex-wapper {
+  justify-content: space-around;
+}
 .theme-travel {
+  padding-top: 80px !important;
+}
+.route-container2 {
+  width: 100%;
+  height: 80px;
+  // padding: 15px 25px;
+  border-top: 1px solid #ededed;
+  // position: absolute;
+  // bottom: 0;
+  p {
+    margin-top: 5px;
+    // margin-left: 10px;
+    display: flex;
+    align-items: center;
+    span {
+      padding: 2px 5px;
+      background-color: #c60b1e;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 14px;
+      border-radius: 5px;
+      margin: 5px 10px;
+    }
+  }
+  .route-city {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    padding-left: 5px;
+    //溢出显示省略号
+    overflow: hidden;
+    white-space: nowrap;
+    height: 27px;
+    div {
+      margin: 0 5px;
+      display: flex;
+      align-items: center;
+      span {
+        font-size: 14px;
+        color: #73767a;
+        margin-right: 5px;
+      }
+      strong {
+        font-size: 16px;
+      }
+    }
+  }
+}
+.theme-wapper {
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.15) !important;
+  padding: 0;
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-bottom: 20px;
+  // box-sizing: border-box;
+}
+.vertical-container {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+.vertical-wapper {
+  margin-bottom: 0 !important;
+}
+.ListriBox {
+  display: flex;
+  justify-content: space-between;
+}
+.ListriBoxmain {
   padding-top: 0;
+}
+.img-container {
+  width: 120px;
+  height: 120px;
+}
+.ListriBox figure a img {
+  // left: 0% !important;
+  top: 30% !important;
+}
+.describe {
+  margin: 10px 0;
+}
+// .Nopadding {
+//   width: 250px !important;
+// }
+.route-container {
+  width: 100%;
+  height: 35px;
+  // padding: 15px 25px;
+  border-top: 1px solid #ededed;
+  // position: absolute;
+  // bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  // > div {
+  //   float: right;
+  // }
+}
+.no-padding {
+  padding: 0;
+}
+.visa-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+// .text-muted-aaa {
+//   margin: 0 !important;
+// }
+.text-gray-500-aaa {
+  margin-bottom: 0 !important;
+}
+.container-aaa {
+  margin-top: 15px !important;
+  margin-bottom: 15px !important;
+}
+// .card-body {
+//   // padding-bottom: 0;
+// }
+.main-banner {
+  cursor: pointer;
+}
+.contact-to-us {
+  width: 100px;
+  height: 40px;
+  cursor: pointer;
+  // background-color: rgba(177, 179, 184, 0.5);
+  cursor: pointer;
+  background-color: rgba(198, 11, 30, 0.3);
+  color: #ffffff;
+  font-weight: 800;
+  position: absolute;
+  top: 120px;
+  right: 30px;
+  z-index: 1000000;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: tittlemove alternate infinite 3s ease-in-out;
+}
+@keyframes tittlemove {
+  0% {
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+  100% {
+    transform: translateY(5px);
+  }
+}
+.content-wapper {
+  width: 180px;
+  // overflow: ellipsis;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  height: 27px;
 }
 </style>

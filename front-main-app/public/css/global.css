@@ -125,7 +125,9 @@ td {
 body {
 	font-size: 1rem;
 	color: #555555;
-	font-family: "Poppins", sans-serif;
+	/* 修改字体 */
+	/* font-family: "Poppins", sans-serif; */
+	font-family: ali-regular;
 	font-weight: normal;
 	font-style: normal;
 	line-height: 1.6;

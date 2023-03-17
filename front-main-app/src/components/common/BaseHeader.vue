@@ -198,6 +198,7 @@ onMounted(() => {
     margin-right: 8px;
     a {
       font-size: 15px;
+      font-weight: 1000 !important;
     }
   }
 }

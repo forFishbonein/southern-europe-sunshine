@@ -9,8 +9,8 @@ import router from "@/router";
 // import { mainStore } from "@/store/user";
 // // 引入全局基本样式
 // import "@/style.css";
-// // 引入字体
-// import "@/assets/fonts/font.css";
+// 引入字体
+import "@/assets/fonts/font.css";
 // 引入图标库
 // import "@/assets/font/iconfont";
 // 引入全局element-icon

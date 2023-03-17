@@ -1,0 +1,14 @@
+@font-face {
+    font-family: "ali-blod";
+    src: url("./Alibaba-PuHuiTi-Bold.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "ali-medium";
+    src: url("./Alibaba-PuHuiTi-Medium.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "ali-regular";
+    src: url("./Alibaba-PuHuiTi-Regular.ttf") format("truetype");
+}

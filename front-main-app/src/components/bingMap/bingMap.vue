@@ -7,6 +7,7 @@ export default {
       latNum: null, // 纬度
       map: null,
       infobox: null,
+      directionsManager: null,
     };
   },
   //   props: [tocitys],
@@ -61,6 +62,7 @@ export default {
             visible: false,
           });
           _this.infobox.setMap(_this.map);
+          let pinList = [];
           //标记
           for (var i = 0; i < pointList.length; i++) {
             // var Location = new Microsoft.Maps.Location(latList[i], lngList[i]);
@@ -69,7 +71,9 @@ export default {
               pointList[i][0]
             );
             //标记初始化
-            var pin = new Microsoft.Maps.Pushpin(Location);
+            var pin = new Microsoft.Maps.Pushpin(Location, {
+              icon: "/images/flag.png",
+            });
             // {title : "我是地址"+i,subTitle: 'City Center',text: ''+i}
             // 设置标记信息
             pin.metadata = {
@@ -85,23 +89,123 @@ export default {
             Microsoft.Maps.Events.addHandler(pin, "click", this.pushpinClicked);
 
             //鼠标停留在点标记上时，触发该事件
-            Microsoft.Maps.Events.addHandler(pin, "mouseover", function (e) {
-              e.target.setOptions({ color: "red" });
-            });
-            //鼠标悬停在点标记上方，并单击鼠标左键时，触发该事件。
-            Microsoft.Maps.Events.addHandler(pin, "mousedown", function (e) {
-              e.target.setOptions({ color: "blue" });
-            });
-            //当鼠标移除点标记覆盖区域时，触发该事件
-            Microsoft.Maps.Events.addHandler(pin, "mouseout", function (e) {
-              e.target.setOptions({ color: "purple" });
-            });
+            // Microsoft.Maps.Events.addHandler(pin, "mouseover", function (e) {
+            //   e.target.setOptions({ color: "red" });
+            // });
+            // //鼠标悬停在点标记上方，并单击鼠标左键时，触发该事件。
+            // Microsoft.Maps.Events.addHandler(pin, "mousedown", function (e) {
+            //   e.target.setOptions({ color: "blue" });
+            // });
+            // //当鼠标移除点标记覆盖区域时，触发该事件
+            // Microsoft.Maps.Events.addHandler(pin, "mouseout", function (e) {
+            //   e.target.setOptions({ color: "purple" });
+            // });
             //添加标记
             _this.map.entities.push(pin);
+            pinList.push(pin);
+            // console.log(pin.getLocation());
+          }
+          if (pinList.length > 1) {
+            // alert(111);
+            // 创建折线对象，连接标记
+            let tempList = [];
+            pinList.forEach((e) => {
+              tempList.push(e.getLocation());
+            });
+            //parseFloat
+            console.log(tempList);
+            var line = new Microsoft.Maps.Polyline(tempList, {
+              strokeColor: "#c60b1e",
+              strokeThickness: 2,
+            });
+            // 创建图层，将标记和折线添加到图层中
+            // var layer = new Microsoft.Maps.PushpinLayer();
+            // pinList.forEach((e) => {
+            //   layer.add(e);
+            // });
+            // // 将图层添加到地图中
+            // _this.map.layers.insert(layer);
+            _this.map.entities.push(line);
+            Microsoft.Maps.loadModule("Microsoft.Maps.Directions", function () {
+              // 在这里使用DirectionsManager对象
+              // 创建DirectionsManager对象
+              _this.directionsManager =
+                new Microsoft.Maps.Directions.DirectionsManager(_this.map);
+              // 设置起点和终点的经度和纬度值
+              // var start = tempList[0];
+              // var end = tempList[1];
+              // var startLatitude = 47.60357;
+              // var startLongitude = -122.32945;
+              // var endLatitude = 47.60621;
+              // var endLongitude = -122.33207;
+              // 创建起点和终点的位置对象 //添加所有节点
+              for (let i = 0; i < tempList.length; i++) {
+                var start = tempList[i];
+                // var end = tempList[i + 1];
+                var startLocation = new Microsoft.Maps.Directions.Waypoint({
+                  address: "节点",
+                  location: new Microsoft.Maps.Location(
+                    start.latitude,
+                    start.longitude
+                  ),
+                });
+                // var endLocation = new Microsoft.Maps.Directions.Waypoint({
+                //   address: "End",
+                //   location: new Microsoft.Maps.Location(
+                //     end.latitude,
+                //     end.longitude
+                //   ),
+                // });
+                // 将起点和终点添加到DirectionsManager对象中
+                _this.directionsManager.addWaypoint(startLocation);
+                // _this.directionsManager.addWaypoint(endLocation);
+              }
+
+              // // 添加其他途经点
+              // var waypoint1 = new Microsoft.Maps.Directions.Waypoint({
+              //   location: new Microsoft.Maps.Location(47.60382, -122.32891),
+              // });
+              // var waypoint2 = new Microsoft.Maps.Directions.Waypoint({
+              //   location: new Microsoft.Maps.Location(47.6096, -122.34279),
+              // });
+              // directionsManager.addWaypoint(waypoint1);
+              // directionsManager.addWaypoint(waypoint2);
+              // 设置行程路线选项
+              var routeOptions = {
+                routeMode: Microsoft.Maps.Directions.RouteMode.driving,
+                avoidTraffic: true,
+                optimize: Microsoft.Maps.Directions.Optimize.time,
+              };
+              // 计算行程路线
+              _this.directionsManager.calculateDirections(routeOptions);
+            });
           }
         }
       });
     },
+    //添加新的路径到地图
+    // btn_AddPolyline_Click() {
+    //   //新路径
+    //   let polyline = new MapPolyline();
+    //   //描边颜色
+    //   polyline.Stroke = new System.Windows.Media.SolidColorBrush(
+    //     System.Windows.Media.Colors.Green
+    //   );
+    //   //描边宽度
+    //   polyline.StrokeThickness = 5;
+    //   //透明度
+    //   polyline.Opacity = 1;
+    //   //通过Location集合来定义路径各个拐点的位置
+    //   polyline.Locations = new LocationCollection();
+    //   {
+    //     new Location(34.9294740237661, 87),
+    //       new Location(37.7814222409819, 85.979148275863),
+    //       new Location(40.2865067209496, 89.219382650863),
+    //       new Location(29.8104584489867, 95.943992025863);
+    //   }
+    //   //向Map控件中添加路径
+    //   this.map.Children.Add(polyline);
+    // },
     //信息窗口
     pushpinClicked(e) {
       console.log("+++++++");
@@ -149,6 +253,7 @@ export default {
       console.log("加载成功...");
       _this.initMap([-3.7360839843750093, 40.419503062300386], 6);
     });
+    // this.btn_AddPolyline_Click();
   },
   mounted() {
     var worldMapContainer = document.getElementById("localMap");
