@@ -3,6 +3,8 @@ import { ref } from "vue";
 import { getOneNewsInfo } from "@/apis/news";
 import { newsInfoType } from "@/apis/interface/resultType";
 import { useRoute } from "vue-router";
+import { getInsuranceListInfo } from "@/apis/news";
+import { getNewsListInfo } from "@/apis/news";
 const route = useRoute();
 const insuranceId = route.params.insuranceId;
 const oneNewsDetailInfo = ref({} as newsInfoType);
@@ -29,6 +31,54 @@ const getTheOneThemeDetailInfo = () => {
     });
 };
 getTheOneThemeDetailInfo();
+let insuranceListInfo = ref([] as newsInfoType[]);
+const getTheInsuranceList = () => {
+  getInsuranceListInfo(1, 1, 8)
+    .then((res: any) => {
+      if (res.code != 2000) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        // alert(page.value);
+        insuranceListInfo.value = res.data.records;
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
+getTheInsuranceList();
+const newsListInfo = ref([] as newsInfoType[]);
+const getTheNewsList = () => {
+  getNewsListInfo(1, 8)
+    .then((res: any) => {
+      if (res.code != 2000) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        // alert(page.value);
+        newsListInfo.value = res.data.records;
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
+getTheNewsList();
 </script>
 <template>
   <section class="Blog-list pt80 pb80 blog-single-section">
@@ -112,87 +162,26 @@ getTheOneThemeDetailInfo();
         </div>
         <div class="col-md-4 col-xs-12">
           <div class="blog-sidebar">
-            <div class="widget search-widget">
-              <h3>Search</h3>
-              <form>
-                <div>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Search Post.."
-                  />
-                  <button type="submit"><i class="ti-search"></i></button>
-                </div>
-              </form>
-            </div>
             <div class="widget category-widget">
-              <h3>Categories</h3>
+              <h3>签证保险</h3>
               <ul>
-                <li>
-                  <a href="#">Business <span>(2)</span></a>
-                </li>
-                <li>
-                  <a href="#">Corporate <span>(5)</span></a>
-                </li>
-                <li>
-                  <a href="#">Market Research <span>(3)</span></a>
-                </li>
-                <li>
-                  <a href="#">Financial Planning <span>(7)</span></a>
-                </li>
-                <li>
-                  <a href="#">Consulting <span>(10)</span></a>
+                <li v-for="(item, index) in insuranceListInfo" :key="index">
+                  <router-link :to="`/news/detail/${item.newsId}`"
+                    >{{ item.newsTitle }}
+                    <span>{{ item.createDate }}</span></router-link
+                  >
                 </li>
               </ul>
             </div>
-            <div class="widget recent-post-widget">
-              <h3>Recent post</h3>
-              <div class="posts">
-                <div class="post">
-                  <div class="img-holder">
-                    <img src="/images/b1.jpg" alt="" />
-                  </div>
-                  <div class="details">
-                    <h4>
-                      <a href="#">Slightly domed and divided by arches</a>
-                    </h4>
-                    <span class="date">Mar 19 2019</span>
-                  </div>
-                </div>
-                <div class="post">
-                  <div class="img-holder">
-                    <img src="/images/b2.jpg" alt="" />
-                  </div>
-                  <div class="details">
-                    <h4>
-                      <a href="#">Collection of textile samples lay spread</a>
-                    </h4>
-                    <span class="date">Mar 19 2019</span>
-                  </div>
-                </div>
-                <div class="post">
-                  <div class="img-holder">
-                    <img src="/images/b3.jpg" alt="" />
-                  </div>
-                  <div class="details">
-                    <h4>
-                      <a href="#"
-                        >Recently cut out of an illustrated magazine
-                      </a>
-                    </h4>
-                    <span class="date">Mar 19 2019</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="widget tag-widget">
-              <h3>Tags</h3>
+            <div class="widget category-widget">
+              <h3>西葡资讯</h3>
               <ul>
-                <li><a href="#">Consulting</a></li>
-                <li><a href="#">Analysis</a></li>
-                <li><a href="#">Business</a></li>
-                <li><a href="#">Research</a></li>
-                <li><a href="#">Corporate</a></li>
+                <li v-for="(item, index) in newsListInfo" :key="index">
+                  <router-link :to="`/news/detail/${item.newsId}`"
+                    >{{ item.newsTitle }}
+                    <span>{{ item.createDate }}</span></router-link
+                  >
+                </li>
               </ul>
             </div>
           </div>

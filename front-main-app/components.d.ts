@@ -37,6 +37,7 @@ declare module '@vue/runtime-core' {
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     InitBingMap: typeof import('./src/components/bingMap/initBingMap.vue')['default']
+    Loading: typeof import('./src/components/loading/Loading.vue')['default']
     Login: typeof import('./src/components/login/Login.vue')['default']
     Register: typeof import('./src/components/login/Register.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

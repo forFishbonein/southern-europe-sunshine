@@ -3,6 +3,8 @@
 // import { useRouter, useRoute } from "vue-router";
 import { getOneThemeDetailInfo } from "@/apis/theme";
 import { themeListInfoType } from "@/apis/interface/resultType";
+import { getNewsListInfo } from "@/apis/news";
+import { newsInfoType } from "@/apis/interface/resultType";
 export default {
   data() {
     return {
@@ -10,6 +12,7 @@ export default {
       itemId: this.$route.params.itemId,
       oneThemeDetailInfo: {} as themeListInfoType,
       lastPath: "",
+      newsListInfo: [] as newsInfoType[],
     };
   },
   methods: {
@@ -35,6 +38,29 @@ export default {
           });
         });
     },
+    //得到分页数据
+    getTheNewsList() {
+      getNewsListInfo(1, 8)
+        .then((res: any) => {
+          if (res.code != 2000) {
+            //@ts-ignore
+            ElMessage({
+              type: "error",
+              message: res.msg,
+            });
+          } else {
+            // alert(page.value);
+            this.newsListInfo = res.data.records;
+          }
+        })
+        .catch((error) => {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: error.message,
+          });
+        });
+    },
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
@@ -48,6 +74,7 @@ export default {
   },
   mounted() {
     this.getTheOneThemeDetailInfo();
+    this.getTheNewsList();
   },
 };
 </script>
@@ -170,6 +197,26 @@ getTheOneThemeDetailInfo();
                       <a><span>3.塞维利亚</span><i></i></a>
                     </li> -->
                   </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="text-block">
+            <h3 class="mb-4">热门资讯</h3>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="blog-sidebar">
+                  <div class="widget category-widget">
+                    <h3>点赞量排行榜</h3>
+                    <ul>
+                      <li v-for="(item, index) in newsListInfo" :key="index">
+                        <router-link :to="`/news/detail/${item.newsId}`"
+                          >{{ item.newsTitle }}
+                          <span>{{ item.createDate }}</span></router-link
+                        >
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>

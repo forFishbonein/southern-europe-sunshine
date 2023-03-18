@@ -147,7 +147,7 @@ onMounted(() => {
                     class="sf-with-ul"
                     to="/contact"
                     active-class="active-nav"
-                    >联系我们</router-link
+                    >关于我们</router-link
                   >
                 </li>
                 <li class="right-side">
@@ -219,7 +219,7 @@ onMounted(() => {
 }
 //把.is-sticky有关的css都复制过来，否则识别不到
 .header-sticky.is-sticky {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.8);
   position: fixed;
   top: 0;
   left: 0;

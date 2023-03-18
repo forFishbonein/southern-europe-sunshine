@@ -3,7 +3,16 @@
 console.log("---环境变量----", import.meta.env);
 </script>
 <template>
-  <router-view />
+  <router-view></router-view>
+  <!-- <router-view v-slot="{ Component }">
+    <keep-alive v-if="$route.meta.keepAlive">
+      <component :is="Component" />
+    </keep-alive>
+    <component :is="Component" v-else />
+  </router-view> -->
+  <!-- <keep-alive>
+    <router-view></router-view>
+  </keep-alive> -->
 </template>
 
 <style>

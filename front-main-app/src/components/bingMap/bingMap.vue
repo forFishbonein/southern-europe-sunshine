@@ -72,7 +72,7 @@ export default {
             );
             //标记初始化
             var pin = new Microsoft.Maps.Pushpin(Location, {
-              icon: "/images/flag.png",
+              icon: "./images/flag.png",
             });
             // {title : "我是地址"+i,subTitle: 'City Center',text: ''+i}
             // 设置标记信息

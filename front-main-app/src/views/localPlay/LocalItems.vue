@@ -6,7 +6,7 @@ import { localListInfoType } from "@/apis/interface/resultType";
 const route = useRoute();
 const localType = route.params.localType;
 /* 分页查询的实现 */
-let themeListInfo = ref([] as localListInfoType[]);
+let localListInfo = ref([] as localListInfoType[]);
 //为了构造一个响应式对象pageParams
 const pageParams = reactive({
   total: 0,
@@ -34,9 +34,9 @@ const requestPageLocalListInfo = () => {
         });
       } else {
         // alert(page.value);
-        themeListInfo.value = res.data.records;
+        localListInfo.value = res.data.records;
         total.value = res.data.total;
-        console.log(themeListInfo.value);
+        console.log(localListInfo.value);
         //处理输出新的按钮列表
         totalPageNum.value = Math.ceil(total.value / limit.value);
         //按钮个数和当前页码 ====> 起始按钮 结束按钮 按钮数组
@@ -92,7 +92,7 @@ const changeCurrentPage = (p: number) => {
       <div class="row">
         <div
           class="col-md-4 col-sm-6 col-xs-12"
-          v-for="(item, index) in themeListInfo"
+          v-for="(item, index) in localListInfo"
           :key="index"
         >
           <div class="ListriBox">
@@ -108,7 +108,10 @@ const changeCurrentPage = (p: number) => {
               <p class="describe-words content-hidden">
                 {{ item.playContent }}
               </p>
-              <a class="address" href="javascript:;"
+              <a
+                class="address"
+                href="javascript:;"
+                v-if="item.cityinfos[0] !== null"
                 >城市：<span
                   v-for="(i, k) in item.cityinfos"
                   :key="k"
@@ -193,6 +196,10 @@ const changeCurrentPage = (p: number) => {
 .ListriBox {
   width: 350px;
   height: 460px;
+}
+.ListriBoxmain {
+  width: 320px;
+  height: 178px;
 }
 .describe-words {
   width: 270px;

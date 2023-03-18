@@ -21,24 +21,25 @@ export const routes: Array<RouteRecordRaw> = [
     name: "Index", //App中包裹Index
     meta: {
       title: "首页",
-      keepAlive: false,
+      keepAlive: true,
       // requireLogin: true, //先加在这里，表示需要登录！
     },
-    component: Index,
+    component: () => import("@/Index.vue"),
+    // component: Index,
     redirect: "/home", //Index中包裹Home等组件
     children: [
       {
         path: "/home",
-        name: "Index",
-        // component: () => import("@/views/Home.vue"), //这个不行，会加载不出来
-        component: Home,
-        meta: { title: "首页", keepAlive: false, showTab: true },
+        name: "Home",
+        component: () => import("@/views/Home.vue"), //这个不行，会加载不出来
+        // component: Home,
+        meta: { title: "首页", keepAlive: true, showTab: true },
       },
       {
         path: "/country",
         name: "Country",
         component: AllCountry,
-        meta: { title: "出行国家", keepAlive: false, showTab: true },
+        meta: { title: "出行国家", keepAlive: true, showTab: true },
         redirect: "/country/countryDetail/1",
         children: [
           {
@@ -62,7 +63,7 @@ export const routes: Array<RouteRecordRaw> = [
         path: "/themeTravel",
         name: "ThemeTravel",
         component: ThemeTravel,
-        meta: { title: "主题旅行", keepAlive: false, showTab: true },
+        meta: { title: "主题旅行", keepAlive: true, showTab: true },
         redirect: "/themeTravel/items/0",
         children: [
           {
@@ -91,7 +92,7 @@ export const routes: Array<RouteRecordRaw> = [
         path: "/localPlay",
         name: "LocalPlay",
         component: LocalPlay,
-        meta: { title: "当地玩乐", keepAlive: false, showTab: true },
+        meta: { title: "当地玩乐", keepAlive: true, showTab: true },
         redirect: "/localPlay/items/足球赛事",
         children: [
           {
@@ -110,13 +111,13 @@ export const routes: Array<RouteRecordRaw> = [
         path: "/localTeam",
         name: "LocalTeam",
         component: LocalTeam,
-        meta: { title: "当地参团", keepAlive: false, showTab: true },
+        meta: { title: "当地参团", keepAlive: true, showTab: true },
       },
       {
         path: "/visaInsurance",
         name: "VisaInsurance",
         component: VisaInsurance,
-        meta: { title: "签证保险", keepAlive: false, showTab: true },
+        meta: { title: "签证保险", keepAlive: true, showTab: true },
         redirect: "/visaInsurance/visa",
         children: [
           {
@@ -125,7 +126,7 @@ export const routes: Array<RouteRecordRaw> = [
             component: () => import("@/views/visaInsurance/visa/Visa.vue"),
             meta: {
               title: "签证",
-              keepAlive: false,
+              keepAlive: true,
               showTab: true,
             },
             redirect: "/visaInsurance/visa/list",
@@ -161,7 +162,7 @@ export const routes: Array<RouteRecordRaw> = [
               import("@/views/visaInsurance/insurance/Insurance.vue"),
             meta: {
               title: "保险",
-              keepAlive: false,
+              keepAlive: true,
               showTab: true,
             },
             redirect: "/visaInsurance/insurance/list",
@@ -196,7 +197,7 @@ export const routes: Array<RouteRecordRaw> = [
         path: "/news",
         name: "News",
         component: News,
-        meta: { title: "西葡资讯", keepAlive: false, showTab: true },
+        meta: { title: "西葡资讯", keepAlive: true, showTab: true },
         redirect: "/news/list",
         children: [
           {
@@ -225,7 +226,7 @@ export const routes: Array<RouteRecordRaw> = [
         path: "/contact",
         name: "ContactUs",
         component: ContactUs,
-        meta: { title: "联系我们", keepAlive: false, showTab: true },
+        meta: { title: "联系我们", keepAlive: true, showTab: true },
       },
       {
         path: "/login",

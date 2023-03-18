@@ -26,3 +26,9 @@ export const getAllPageLocalInfo = (page, limit) => {
     url: "/localplay/page",
   });
 };
+export const getAllLocalListInfo = () => {
+  return httpRequest({
+    method: "get",
+    url: "/localplay",
+  });
+};

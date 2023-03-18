@@ -88,7 +88,6 @@ router.beforeEach((to, from, next) => {
       next(); //其余不需要登录的页面就直接放开
     }
   }
-  next();
 });
 
 router.afterEach((to, from, next) => {

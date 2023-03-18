@@ -48,11 +48,32 @@ var a_idx = 0;
 <template>
   <div class="page-wrapper">
     <BaseHeader></BaseHeader>
+    <!-- <keep-alive>
+    <router-view></router-view>
+    </keep-alive> -->
+    <!-- <keep-alive>
+      <router-view v-if="$route.meta.keepAlive"></router-view>
+    </keep-alive>
+    <router-view v-if="!$route.meta.keepAlive"></router-view> -->
     <router-view v-slot="{ Component }">
-      <keep-alive v-if="route.meta.keepAlive">
+      <!-- <keep-alive v-if="$route.meta.keepAlive"> -->
+      <!-- 只有在一个容器切换时alive才生效，并且只有include可以生效，meta不行 -->
+      <keep-alive
+        :include="[
+          'Home',
+          'Country',
+          'CountryDetail',
+          'ThemeTravel',
+          'LocalPlay',
+          'LocalTeam',
+          'VisaInsurance',
+          'News',
+          'ContactUs',
+        ]"
+      >
         <component :is="Component" />
       </keep-alive>
-      <component :is="Component" v-else />
+      <!-- <component :is="Component" v-else /> -->
     </router-view>
     <BaseFooter></BaseFooter>
   </div>
