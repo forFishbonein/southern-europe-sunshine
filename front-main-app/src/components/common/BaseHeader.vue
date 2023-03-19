@@ -64,7 +64,7 @@ onMounted(() => {
         <nav class="getfund-navbar justify-content-between" id="listingNav">
           <!-- Logo -->
           <router-link class="nav-brand" to="/home"
-            ><img src="/images/logo.jpg" alt="logo"
+            ><img src="/images/logo-transparent.png" alt="logo"
           /></router-link>
 
           <!-- Navbar Toggler -->

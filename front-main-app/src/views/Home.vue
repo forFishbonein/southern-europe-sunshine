@@ -266,6 +266,15 @@ Promise.all([
   .finally(() => {
     isLoading.value = false;
   });
+const themeTitleList = ref([
+  "我的毕业旅行",
+  "我们的蜜月之行",
+  "十岁儿子的亲子之游",
+]);
+const assignTheTitle = (value) => {
+  // alert(11);
+  planInfo.routeTitle = value;
+};
 onMounted(() => {
   // getAllTypes();
   // isLoading.value = true;
@@ -357,9 +366,18 @@ onMounted(() => {
                         type="text"
                         name="search"
                         placeholder="本次旅行的主题?"
-                        class="form-control border-0 shadow-0"
+                        class="form-control border-0 shadow-0 theme-title-input"
                         v-model="planInfo.routeTitle"
                       />
+                      <ul class="option-title">
+                        <li
+                          v-for="(item, key) in themeTitleList"
+                          :key="key"
+                          @click="assignTheTitle(item)"
+                        >
+                          {{ item }}
+                        </li>
+                      </ul>
                     </div>
                     <div class="col-lg-3 d-flex align-items-center form-group">
                       <div
@@ -891,11 +909,11 @@ onMounted(() => {
   <div class="contact-to-us-container">
     <div class="contact-to-us">联系我们</div>
     <div class="panel-hidden">
-      <p><span>腾讯QQ</span></p>
-      <p><span>Liz</span> 1507809850</p>
-      <p><span>Shirley</span> 3179232029</p>
-      <p><span>Jose</span> 1794696686</p>
-      <p><span>旅行管家</span></p>
+      <!-- <p><span>腾讯QQ</span></p> -->
+      <p><img src="/images/qq.jpg" /><span>Liz</span> 1507809850</p>
+      <p><img src="/images/qq.jpg" /><span>Shirley</span> 3179232029</p>
+      <p><img src="/images/qq.jpg" /><span>Jose</span> 1794696686</p>
+      <p><span style="color: #c60b1e">旅行管家</span></p>
       <div class="img-wapper">
         <img src="/images/erwei.jpg" />
       </div>
@@ -1140,8 +1158,14 @@ onMounted(() => {
   opacity: 0;
   // margin: 0 5px;
   color: #000000;
+  img {
+    display: inline-block;
+    width: 18px;
+    height: 20px;
+    margin-right: 5px;
+  }
   span {
-    color: #c60b1e;
+    color: #f4f4f5;
     font-weight: 800;
   }
 }
@@ -1158,5 +1182,35 @@ onMounted(() => {
   // visibility: hidden;
   opacity: 0;
   // display: none;
+}
+.theme-title-input {
+  position: relative;
+}
+.option-title {
+  width: 370px;
+  height: auto;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  // border: 1px #e8604c solid;
+  background-color: rgba(255, 255, 255, 0.3);
+  display: none;
+  transition: all 0.3s linear;
+  border-radius: 10px;
+  li {
+    line-height: 2em;
+    color: #ffffff;
+    border-radius: 10px;
+  }
+  li:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #e8604c;
+  }
+}
+.theme-title-input:focus + .option-title {
+  display: block;
+}
+.option-title:hover {
+  display: block;
 }
 </style>
