@@ -77,20 +77,31 @@ var a_idx = 0;
     </router-view>
     <BaseFooter></BaseFooter>
   </div>
-  <div class="fixed-button">
+  <!-- <div class="fixed-button">
     <el-tooltip
       effect="light"
       content="<span style='color:#c60b1e'><strong>人工客服</strong></span>"
       raw-content
       placement="top-start"
     >
-      <el-icon :size="20" @click="goToQuestion"><Service /></el-icon>
+      <a
+        target="_blank"
+        href="http://wpa.qq.com/msgrd?v=3&uin=1811142895&site=qq&menu=yes"
+        class="go-qq"
+        ><el-icon :size="20" @click="goToQuestion" :color="`#c60b1e`"
+          ><Service /></el-icon
+      ></a>
     </el-tooltip>
-  </div>
+  </div> -->
   <el-backtop :right="10" :bottom="35" />
 </template>
 
 <style lang="scss" scoped>
+.go-qq {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 // ::v-deep .el-popper.is-customized {
 //   padding: 6px 12px;
 //   background: rgba(255, 255, 255, 0.8);

@@ -5,22 +5,35 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { InfoFilled } from "@element-plus/icons-vue";
 const router = useRouter();
-let loginFlag = ref(false);
+// let loginFlag = ref(false);
 const store = mainStore();
-const displayText = () => {
-  if (store.token === "") {
-    loginFlag.value = false;
-    return "登录 / 注册";
-  }
-  loginFlag.value = true;
-  return "个人中心";
-};
-const toLoginOrOwnCenter = () => {
-  if (store.token === "") {
-    router.push("/login");
-  } else {
-    router.push("/personal");
-  }
+// const confirmIsLogin = () => {
+//   if (store.token === "" || !store.token) {
+//     loginFlag.value = false;
+//     // return "登录 / 注册";
+//     return;
+//   }
+//   loginFlag.value = true;
+//   // return "个人中心";
+// };
+// confirmIsLogin();
+// const displayText = () => {
+//   if (store.token === "") {
+//     loginFlag.value = false;,
+//     return "登录 / 注册";
+//   }
+//   loginFlag.value = true;
+//   return "个人中心";
+// };
+// const toLoginOrOwnCenter = () => {
+//   if (store.token === "") {
+//     router.push("/login");
+//   } else {
+//     router.push("/personal");
+//   }
+// };
+const toOwnCenter = () => {
+  router.push("/personal");
 };
 const confirmLogout = () => {
   store.logout();
@@ -49,6 +62,17 @@ onMounted(() => {
           theme: "light",
         });
       }
+      $(".icon").on("click", function () {
+        // alert(111);
+        if ($(".down-list").css("display") === "none") {
+          $(".down-list").css("display", "flex");
+        } else if ($(".down-list").css("display") === "flex") {
+          $(".down-list").css("display", "none");
+        }
+      });
+      $(".down-list>li>a").on("click", function () {
+        $(".down-list").css("display", "none");
+      });
     });
     //@ts-ignore
   })(jQuery);
@@ -151,8 +175,8 @@ onMounted(() => {
                   >
                 </li>
                 <li class="right-side">
-                  <ul>
-                    <li>
+                  <!-- <ul> -->
+                  <!-- <li>
                       <a
                         class="btn btn-primary"
                         @click="toLoginOrOwnCenter"
@@ -177,8 +201,33 @@ onMounted(() => {
                           </div>
                         </template>
                       </el-popconfirm>
-                    </li>
-                  </ul>
+                    </li> -->
+                  <div class="person-login">
+                    <router-link
+                      to="/login"
+                      class="login"
+                      v-if="store.token === ''"
+                      >登录/注册</router-link
+                    >
+                    <div v-show="store.token !== ''">
+                      <span class="username" @click="toOwnCenter">{{
+                        store.userInfo.userName
+                      }}</span>
+                      <!-- <el-avatar :size="50" :src="store.userInfo.imageUrl" /> -->
+                      <el-avatar :size="45" src="./images/home1.jpg" />
+                      <el-icon class="icon"><ArrowDownBold /></el-icon>
+                      <ul class="down-list">
+                        <li><router-link to="/plan">行程定制</router-link></li>
+                        <li>
+                          <a @click="toOwnCenter">个人中心</a>
+                        </li>
+                        <li>
+                          <a @click="confirmLogout">退出登录</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <!-- </ul> -->
                 </li>
               </ul>
             </div>
@@ -192,8 +241,83 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
+.person-login {
+  width: 150px;
+  // border: 1px #e8604c solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  .login {
+    color: #c60b1e;
+    letter-spacing: 5px;
+    font-size: 15px !important;
+    font-weight: 1000 !important;
+  }
+  .login:hover {
+    color: #c45f69;
+  }
+  .username {
+    margin-right: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #444444;
+  }
+  .username:hover {
+    color: #c60b1e;
+  }
+  .icon {
+    margin-left: 5px;
+    cursor: pointer;
+  }
+  .icon:hover {
+    color: #c60b1e;
+  }
+  .down-list {
+    position: absolute;
+    top: 45px;
+    right: 0px;
+    // border: 1px #e8604c solid;
+    width: 150px;
+    height: auto;
+    // background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 255, 255, 1);
+    cursor: pointer;
+    // display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.3s linear;
+    display: none;
+    border-radius: 10px;
+    z-index: 1000000 !important;
+    box-shadow: 0 2px 27px 6px rgba(0, 0, 0, 0.12);
+    > li {
+      display: flex;
+      border-radius: 10px;
+      width: 100%;
+      min-height: 30px;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      padding: 7px;
+      transition: all 0.3s linear;
+    }
+    > li:hover {
+      color: #c60b1e;
+      background-color: #e9e9eb;
+    }
+  }
+}
 #responsive {
-  li {
+  display: flex;
+  align-items: center;
+  > li {
     margin-left: 8px;
     margin-right: 8px;
     a {

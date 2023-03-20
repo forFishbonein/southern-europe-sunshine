@@ -435,7 +435,7 @@ onMounted(() => {
                         type="submit"
                         class="btn btn-primary btn-block rounded-xl h-100"
                       >
-                        确定
+                        定制行程
                       </button>
                     </div>
                   </div>
@@ -910,9 +910,33 @@ onMounted(() => {
     <div class="contact-to-us">联系我们</div>
     <div class="panel-hidden">
       <!-- <p><span>腾讯QQ</span></p> -->
-      <p><img src="/images/qq.jpg" /><span>Liz</span> 1507809850</p>
-      <p><img src="/images/qq.jpg" /><span>Shirley</span> 3179232029</p>
-      <p><img src="/images/qq.jpg" /><span>Jose</span> 1794696686</p>
+      <p>
+        <img src="/images/qq.jpg" /><span>Liz</span>
+        <a
+          target="_blank"
+          href="http://wpa.qq.com/msgrd?v=3&uin=1507809850&site=qq&menu=yes"
+          class="go-qq"
+          >1507809850</a
+        >
+      </p>
+      <p>
+        <img src="/images/qq.jpg" /><span>Shirley</span>
+        <a
+          target="_blank"
+          href="http://wpa.qq.com/msgrd?v=3&uin=3179232029&site=qq&menu=yes"
+          class="go-qq"
+          >3179232029</a
+        >
+      </p>
+      <p>
+        <img src="/images/qq.jpg" /><span>Jose</span>
+        <a
+          target="_blank"
+          href="http://wpa.qq.com/msgrd?v=3&uin=1794696686&site=qq&menu=yes"
+          class="go-qq"
+          >1794696686</a
+        >
+      </p>
       <p><span style="color: #c60b1e">旅行管家</span></p>
       <div class="img-wapper">
         <img src="/images/erwei.jpg" />
@@ -1032,7 +1056,7 @@ onMounted(() => {
 }
 .visa-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   flex-wrap: wrap;
 }
 // .text-muted-aaa {
@@ -1044,6 +1068,8 @@ onMounted(() => {
 .container-aaa {
   margin-top: 15px !important;
   margin-bottom: 15px !important;
+  padding: 0;
+  padding-right: 30px;
 }
 // .card-body {
 //   // padding-bottom: 0;
@@ -1099,7 +1125,7 @@ onMounted(() => {
   position: fixed;
   top: 120px;
   right: 30px;
-  z-index: 100000;
+  z-index: 10000;
 }
 .contact-to-us {
   width: 100px;
@@ -1113,17 +1139,18 @@ onMounted(() => {
   position: relative;
   top: 0;
   right: 0;
-  z-index: 100000;
+  z-index: 10000;
   border-radius: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   animation: tittlemove alternate infinite 3s ease-in-out;
+  box-shadow: 0 2px 27px 6px rgba(0, 0, 0, 0.12);
 }
 .panel-hidden {
   opacity: 0;
   position: absolute;
-  top: 60px;
+  top: 40px;
   right: -10px;
   width: 120px;
   background-color: rgba(255, 255, 255, 0.7);
@@ -1135,6 +1162,18 @@ onMounted(() => {
   justify-content: space-around;
   align-items: center;
   border-radius: 10px;
+  box-shadow: 0 2px 27px 6px rgba(0, 0, 0, 0.12);
+}
+.panel-hidden:hover {
+  opacity: 1;
+  padding: 10px;
+  > .img-wapper {
+    opacity: 1;
+  }
+  > p {
+    // visibility: visible;
+    opacity: 1;
+  }
 }
 .contact-to-us:hover + .panel-hidden {
   // height: 280px;
@@ -1149,7 +1188,7 @@ onMounted(() => {
 }
 .contact-to-us:hover + .panel-hidden > p {
   // display: block;
-  visibility: visible;
+  // visibility: visible;
   opacity: 1;
 }
 .panel-hidden p {
@@ -1164,8 +1203,14 @@ onMounted(() => {
     height: 20px;
     margin-right: 5px;
   }
+  a {
+    display: block;
+  }
+  a:hover {
+    color: #c60b1e;
+  }
   span {
-    color: #f4f4f5;
+    color: #c60b1e;
     font-weight: 800;
   }
 }
@@ -1212,5 +1257,13 @@ onMounted(() => {
 }
 .option-title:hover {
   display: block;
+}
+.featured-content > a {
+  color: #000000;
+  background-color: #e64d5c;
+}
+.featured-content:hover > a {
+  color: #ffffff;
+  background-color: #c60b1e;
 }
 </style>
