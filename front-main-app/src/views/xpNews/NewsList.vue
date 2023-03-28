@@ -106,11 +106,17 @@ const changeCurrentPage = (p: number) => {
                       <router-link :to="`/news/detail/${item.newsId}`">{{
                         item.newsTitle
                       }}</router-link>
-                      <p class="describe" v-html="item.newsContent"></p>
+                      <p
+                        class="describe content-hidden"
+                        v-html="item.newsContent"
+                      ></p>
                     </h2>
                   </div>
                   <div class="route-container">
-                    <div>{{ item.createDate }}</div>
+                    <div style="margin-right: 20px">
+                      点击率：{{ item.clickRate }}
+                    </div>
+                    <div>发布时间：{{ item.createDate }}</div>
                   </div>
                 </div>
               </div>
@@ -227,5 +233,19 @@ const changeCurrentPage = (p: number) => {
 }
 .paginationCommon {
   margin: 35px 0;
+}
+
+/* 段落显示2行，多余的用...省略，并且首行缩进2字符 */
+.content-hidden {
+  // text-indent: 2em;
+  text-align: justify;
+  word-break: break-all;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  /*! autoprefixer: off */
+  -webkit-box-orient: vertical;
+  /* autoprefixer: on */
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 </style>

@@ -38,3 +38,9 @@ export const getOneNewsInfo = (newsId) => {
     url: `/news/${newsId}`,
   });
 };
+export const getOneVisaInfo = (visaId) => {
+  return httpRequest({
+    method: "get",
+    url: `/visa/${visaId}`,
+  });
+};

@@ -112,7 +112,10 @@ const changeCurrentPage = (p: number) => {
               <p class="text-gray-500 text-sm my-3">
                 <i class="far fa-clock mr-2"></i>{{ item.createDate }}
               </p>
-              <p class="my-2 text-muted text-sm" v-html="item.newsContent"></p>
+              <p
+                class="my-2 text-muted text-sm content-hidden"
+                v-html="item.newsContent"
+              ></p>
               <router-link
                 :to="`/visaInsurance/visa/detail/${item.newsId}`"
                 class="btn btn-link pl-0"
@@ -202,5 +205,17 @@ const changeCurrentPage = (p: number) => {
     height: 100%;
     // position: fixed;
   }
+}
+.content-hidden {
+  // text-indent: 2em;
+  text-align: justify;
+  word-break: break-all;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  /*! autoprefixer: off */
+  -webkit-box-orient: vertical;
+  /* autoprefixer: on */
+  -webkit-line-clamp: 3;
+  overflow: hidden;
 }
 </style>

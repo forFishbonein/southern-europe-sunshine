@@ -202,7 +202,7 @@ getTheOneThemeDetailInfo();
               </div>
             </div>
           </div>
-          <div class="text-block">
+          <!-- <div class="text-block">
             <h3 class="mb-4">热门资讯</h3>
             <div class="row">
               <div class="col-md-12">
@@ -221,7 +221,7 @@ getTheOneThemeDetailInfo();
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- Amenities-->
           <!-- <div class="text-block">
             <h3 class="mb-4">服务提供</h3>
@@ -286,7 +286,7 @@ getTheOneThemeDetailInfo();
           </div> -->
         </div>
         <div class="col-lg-4 right_Details">
-          <div class="p-4 shadow ml-lg-4 rounded sticky-top" style="top: 100px">
+          <div class="p-4 shadow ml-lg-4 rounded" style="top: 100px">
             <!-- <p class="text-muted">
               <span class="text-primary h2">$800</span>预算
             </p> -->
@@ -344,6 +344,19 @@ getTheOneThemeDetailInfo();
               </p>
             </div>
           </div>
+          <div class="blog-sidebar" style="margin-top: 30px">
+            <div class="widget category-widget">
+              <h3>点赞量排行榜</h3>
+              <ul>
+                <li v-for="(item, index) in newsListInfo" :key="index">
+                  <router-link :to="`/news/detail/${item.newsId}`"
+                    >{{ item.newsTitle }}
+                    <span>{{ item.createDate }}</span></router-link
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -351,6 +364,15 @@ getTheOneThemeDetailInfo();
 </template>
 
 <style lang="scss" scoped>
+.ml-lg-4 {
+  margin-left: 0.5em !important;
+}
+// .click-news {
+//   display: block;
+//   position: sticky;
+//   top: 100px;
+//   right: 0px;
+// }
 .pointsRule {
   display: inline-block;
   font-size: 12px;

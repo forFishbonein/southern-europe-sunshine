@@ -472,7 +472,7 @@ onMounted(() => {
                   class="tile-link"
                 ></router-link
                 ><img
-                  src="/images/photo/1.jpg"
+                  src="/images/photo/3.jpg"
                   alt="Card image"
                   class="bg-image"
                 />
@@ -506,7 +506,7 @@ onMounted(() => {
                   class="tile-link"
                 ></router-link
                 ><img
-                  src="/images/photo/3.jpg"
+                  src="/images/photo/1.jpg"
                   alt="Card image"
                   class="bg-image"
                 />
@@ -567,9 +567,10 @@ onMounted(() => {
                       <router-link :to="`/news/detail/${item.newsId}`">{{
                         item.newsTitle
                       }}</router-link>
-                      <p class="describe">
-                        {{ item.newsContent }}
-                      </p>
+                      <p
+                        class="describe content-hidden"
+                        v-html="item.newsContent"
+                      ></p>
                     </h2>
                   </div>
                   <div class="route-container">
@@ -609,9 +610,10 @@ onMounted(() => {
                   <p class="text-gray-500 text-gray-500-aaa text-sm my-3">
                     <i class="far fa-clock mr-2"></i>{{ item.createDate }}
                   </p>
-                  <p class="my-2 text-muted text-muted-aaa text-sm">
-                    {{ item.newsContent }}
-                  </p>
+                  <p
+                    class="my-2 text-muted text-muted-aaa text-sm content-hidden"
+                    v-html="item.newsContent"
+                  ></p>
                   <router-link
                     :to="`/visaInsurance/insurance/detail/${item.newsId}`"
                     class="btn btn-link pl-0"
@@ -645,9 +647,10 @@ onMounted(() => {
                   <p class="text-gray-500 text-gray-500-aaa text-sm my-3">
                     <i class="far fa-clock mr-2"></i>{{ item.createDate }}
                   </p>
-                  <p class="my-2 text-muted text-muted-aaa text-sm">
-                    {{ item.newsContent }}
-                  </p>
+                  <p
+                    class="my-2 text-muted text-muted-aaa text-sm content-hidden"
+                    v-html="item.newsContent"
+                  ></p>
                   <router-link
                     :to="`/visaInsurance/visa/detail/${item.newsId}`"
                     class="btn btn-link pl-0"
@@ -939,7 +942,7 @@ onMounted(() => {
       </p>
       <p><span style="color: #c60b1e">旅行管家</span></p>
       <div class="img-wapper">
-        <img src="/images/erwei.jpg" />
+        <img src="/images/erweima.jpg" />
       </div>
     </div>
   </div>
@@ -1265,5 +1268,18 @@ onMounted(() => {
 .featured-content:hover > a {
   color: #ffffff;
   background-color: #c60b1e;
+}
+/* 段落显示2行，多余的用...省略，并且首行缩进2字符 */
+.content-hidden {
+  // text-indent: 2em;
+  text-align: justify;
+  word-break: break-all;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  /*! autoprefixer: off */
+  -webkit-box-orient: vertical;
+  /* autoprefixer: on */
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 </style>

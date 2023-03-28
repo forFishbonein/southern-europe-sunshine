@@ -79,8 +79,8 @@ console.log(route.params.countryId);
 }
 .flagImage {
   display: inline-block;
-  width: 40px;
-  height: 30px;
+  width: 80px;
+  height: 60px;
   margin-right: 10px;
 }
 .countryName {

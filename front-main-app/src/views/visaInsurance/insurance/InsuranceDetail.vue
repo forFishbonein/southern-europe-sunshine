@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { getOneNewsInfo } from "@/apis/news";
+import { getOneVisaInfo } from "@/apis/news";
 import { newsInfoType } from "@/apis/interface/resultType";
 import { useRoute } from "vue-router";
 import { getInsuranceListInfo } from "@/apis/news";
@@ -9,7 +9,7 @@ const route = useRoute();
 const insuranceId = route.params.insuranceId;
 const oneNewsDetailInfo = ref({} as newsInfoType);
 const getTheOneThemeDetailInfo = () => {
-  getOneNewsInfo(insuranceId)
+  getOneVisaInfo(insuranceId)
     .then((res: any) => {
       if (res.code != 2000) {
         //@ts-ignore
