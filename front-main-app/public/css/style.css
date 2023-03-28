@@ -144,7 +144,7 @@ Slider css
 /* 更换主页轮播背景 */
 .main-banner {
 	/* 先进行全部预加载 */
-	background: url(../images/banner-img.jpg), url(../images/home1.jpg), url(../images/home2.jpg), url(../images/home3.jpg), url(../images/home4.jpg), ;
+	background: url(../images/background/fengche.jpg), url(../images/background/hongqiang.jpg), url(../images/background/jiatai.png), url(../images/background//luokajiao.jpeg), url(../images/background/kexue.jpg), ;
 	height: 800px;
 	width: 100%;
 	background-position: center center;
@@ -165,23 +165,23 @@ Slider css
 @keyframes carousel {
 
 	0% {
-		background: url(../images/home1.jpg) no-repeat fixed center / 100% 100%;
+		background: url(../images/background/fengche.jpg) no-repeat fixed center / 100% 100%;
 	}
 
 	25% {
-		background: url(../images/home2.jpg) no-repeat fixed center / 100% 100%;
+		background: url(../images/background/hongqiang.jpg) no-repeat fixed center / 100% 100%;
 	}
 
 	50% {
-		background: url(../images/home3.jpg) no-repeat fixed center / 100% 100%;
+		background: url(../images/background/jiatai.png) no-repeat fixed center / 100% 100%;
 	}
 
 	75% {
-		background: url(../images/home4.jpg) no-repeat fixed center / 100% 100%;
+		background: url(../images/background//luokajiao.jpeg) no-repeat fixed center / 100% 100%;
 	}
 
 	100% {
-		background: url(../images/banner-img.jpg) no-repeat fixed center / 100% 100%;
+		background: url(../images/background/kexue.jpg) no-repeat fixed center / 100% 100%;
 	}
 }
 

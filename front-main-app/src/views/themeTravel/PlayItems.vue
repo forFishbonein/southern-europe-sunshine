@@ -223,9 +223,7 @@ watch(keyword, (newValue, oldValue) => {
                         item.themeTitle
                       }}</router-link>
                     </h3>
-                    <p class="content-hidden">
-                      {{ item.themeContent }}
-                    </p>
+                    <p class="content-hidden" v-html="item.themeContent"></p>
                     <p>
                       <span class="click-rate-span"
                         >点击率: {{ item.clickRate }}</span

@@ -170,9 +170,10 @@ getTheOneThemeDetailInfo();
                 类型：{{ oneThemeDetailInfo.themeTypeId }}
               </li>
             </ul>
-            <p class="text-muted font-weight-light">
-              {{ oneThemeDetailInfo.themeContent }}
-            </p>
+            <p
+              class="text-muted font-weight-light"
+              v-html="oneThemeDetailInfo.themeContent"
+            ></p>
           </div>
           <div class="text-block">
             <h3 class="mb-4">行程路线</h3>

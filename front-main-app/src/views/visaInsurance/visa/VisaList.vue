@@ -112,9 +112,7 @@ const changeCurrentPage = (p: number) => {
               <p class="text-gray-500 text-sm my-3">
                 <i class="far fa-clock mr-2"></i>{{ item.createDate }}
               </p>
-              <p class="my-2 text-muted text-sm">
-                {{ item.newsContent }}
-              </p>
+              <p class="my-2 text-muted text-sm" v-html="item.newsContent"></p>
               <router-link
                 :to="`/visaInsurance/visa/detail/${item.newsId}`"
                 class="btn btn-link pl-0"

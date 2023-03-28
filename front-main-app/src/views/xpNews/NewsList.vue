@@ -106,9 +106,7 @@ const changeCurrentPage = (p: number) => {
                       <router-link :to="`/news/detail/${item.newsId}`">{{
                         item.newsTitle
                       }}</router-link>
-                      <p class="describe">
-                        {{ item.newsContent }}
-                      </p>
+                      <p class="describe" v-html="item.newsContent"></p>
                     </h2>
                   </div>
                   <div class="route-container">
