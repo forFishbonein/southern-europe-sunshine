@@ -61,6 +61,15 @@ export default {
           });
         });
     },
+    ellipsis(value, len) {
+      if (!value) return "";
+
+      if (value.length > len) {
+        return value.slice(0, len) + "...";
+      }
+
+      return value;
+    },
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
@@ -129,8 +138,8 @@ getTheOneThemeDetailInfo();
             <!-- Gallery-->
             <!-- <h3 class="mb-4">西班牙美食之旅</h3> -->
             <div class="row gallery ml-n1 mr-n1">
-              <div class="col-lg-4 col-6 px-1 mb-2 center-img">
-                <a href="javascript:;"
+              <div class="col-lg-12 col-6 px-1 mb-2 center-img">
+                <a href="javascript:;" class="img-container-big"
                   ><img
                     :src="
                       'http://182.92.103.154/static/images/upload/' +
@@ -165,11 +174,11 @@ getTheOneThemeDetailInfo();
             <h1>{{ oneThemeDetailInfo.themeTitle }}</h1>
             <ul class="list-inline text-sm mb-4">
               <li class="list-inline-item mr-3">
-                <i class="fa fa-users mr-1 text-secondary"></i>
+                <!-- <i class="fa fa-users mr-1 text-secondary"></i> -->
                 <el-icon><Pointer /></el-icon>{{ oneThemeDetailInfo.clickRate }}
               </li>
               <li class="list-inline-item mr-3">
-                <i class="fa fa-door-open mr-1 text-secondary"></i>
+                <!-- <i class="fa fa-door-open mr-1 text-secondary"></i> -->
                 类型：{{ oneThemeDetailInfo.themeTypeId }}
               </li>
             </ul>
@@ -359,9 +368,10 @@ getTheOneThemeDetailInfo();
                   <router-link
                     :to="`/news/detail/${item.newsId}`"
                     class="content-hidden"
-                    >{{ item.newsTitle }}
+                    v-text="ellipsis(item.newsTitle, 26)"
+                  >
                   </router-link>
-                  <span
+                  <span class="absolute-time"
                     ><i class="far fa-clock mr-2"></i
                     >{{ item.createDate }}</span
                   >
@@ -376,12 +386,15 @@ getTheOneThemeDetailInfo();
 </template>
 
 <style lang="scss" scoped>
-.li-list {
-  height: 70px !important;
-  // padding-bottom: 20px;
-  margin-top: 0px !important;
-  margin-bottom: 10px;
+.text-block {
+  padding-top: 10px !important;
 }
+// .li-list {
+//   height: 70px !important;
+//   // padding-bottom: 20px;
+//   margin-top: 0px !important;
+//   margin-bottom: 10px;
+// }
 .ml-lg-4 {
   margin-left: 0.5em !important;
 }
@@ -467,7 +480,8 @@ getTheOneThemeDetailInfo();
 // }
 .content-hidden {
   width: 270px;
-  height: 50px;
+  // height: 50px;
+  line-height: 1.5em;
   // text-indent: 2em;
   text-align: justify;
   word-break: break-all;
@@ -480,9 +494,24 @@ getTheOneThemeDetailInfo();
   overflow: hidden;
 }
 .li-list {
-  height: 70px !important;
-  // padding-bottom: 20px;
-  margin-top: 0px !important;
-  margin-bottom: 10px;
+  // height: 70px !important;
+  height: 45px;
+  margin-bottom: 10px !important;
+  // margin-top: 0px !important;
+  // margin-top: 30px !important;
+}
+.absolute-time {
+  position: absolute;
+  top: 1.5em;
+}
+.img-container-big {
+  display: block;
+  width: 760px;
+  height: 450px;
+  img {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
 }
 </style>

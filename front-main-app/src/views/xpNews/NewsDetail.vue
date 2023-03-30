@@ -114,8 +114,8 @@ getTheNewsList();
                   >
                 </li>
                 <li>
-                  <a href="javascript:;"
-                    ><i class="fas fa-funnel-dollar"></i
+                  <a href="javascript:;" class="click-rate"
+                    ><el-icon><Pointer /></el-icon
                     >{{ oneNewsDetailInfo.clickRate }}</a
                   >
                 </li>
@@ -215,6 +215,11 @@ getTheNewsList();
 </template>
 
 <style lang="scss" scoped>
+.click-rate {
+  display: flex;
+  justify-content: center;
+  // align-items: center;
+}
 .bread-container {
   margin-bottom: 30px;
   margin-left: 0px;

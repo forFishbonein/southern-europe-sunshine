@@ -79,6 +79,15 @@ const getTheNewsList = () => {
     });
 };
 getTheNewsList();
+const ellipsis = (value, len) => {
+  if (!value) return "";
+
+  if (value.length > len) {
+    return value.slice(0, len) + "...";
+  }
+
+  return value;
+};
 </script>
 <template>
   <section class="Blog-list pt80 pb80 blog-single-section">
@@ -113,8 +122,8 @@ getTheNewsList();
                   >
                 </li>
                 <li>
-                  <a href="javascript:;"
-                    ><i class="fas fa-funnel-dollar"></i
+                  <a href="javascript:;" class="click-rate"
+                    ><el-icon><Pointer /></el-icon
                     >{{ oneNewsDetailInfo.clickRate }}</a
                   >
                 </li>
@@ -179,8 +188,10 @@ getTheNewsList();
                   <router-link
                     :to="`/news/detail/${item.newsId}`"
                     class="content-hidden"
-                    >{{ item.newsTitle }} </router-link
-                  ><span
+                    v-text="ellipsis(item.newsTitle, 26)"
+                  >
+                  </router-link
+                  ><span class="absolute-time"
                     ><i class="far fa-clock mr-2"></i
                     >{{ item.createDate }}</span
                   >
@@ -198,8 +209,10 @@ getTheNewsList();
                   <router-link
                     :to="`/news/detail/${item.newsId}`"
                     class="content-hidden"
-                    >{{ item.newsTitle }} </router-link
-                  ><span
+                    v-text="ellipsis(item.newsTitle, 26)"
+                  >
+                  </router-link
+                  ><span class="absolute-time"
                     ><i class="far fa-clock mr-2"></i
                     >{{ item.createDate }}</span
                   >
@@ -220,7 +233,8 @@ getTheNewsList();
 }
 .content-hidden {
   width: 270px;
-  height: 50px;
+  // height: 50px;
+  line-height: 1.5em;
   // text-indent: 2em;
   text-align: justify;
   word-break: break-all;
@@ -233,9 +247,19 @@ getTheNewsList();
   overflow: hidden;
 }
 .li-list {
-  height: 70px !important;
-  // padding-bottom: 20px;
-  margin-top: 0px !important;
+  // height: 70px !important;
+  height: 45px;
   margin-bottom: 10px;
+  // margin-top: 0px !important;
+  // margin-top: 30px !important;
+}
+.absolute-time {
+  position: absolute;
+  top: 1.5em;
+}
+.click-rate {
+  display: flex;
+  justify-content: center;
+  // align-items: center;
 }
 </style>

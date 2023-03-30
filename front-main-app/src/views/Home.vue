@@ -574,6 +574,7 @@ onMounted(() => {
                       <router-link
                         :to="`/news/detail/${item.newsId}`"
                         class="content-hidden"
+                        style="font-weight: 800;margin-bottom:5px"
                         >{{ item.newsTitle }}</router-link
                       >
                       <p
@@ -583,6 +584,9 @@ onMounted(() => {
                     </h2>
                   </div>
                   <div class="route-container">
+                    <div style="font-size: 0.875rem">
+                      <el-icon><Pointer /></el-icon>{{ item.clickRate }}
+                    </div>
                     <div style="font-size: 0.875rem">
                       <i class="far fa-clock mr-2"></i>{{ item.createDate }}
                     </div>
@@ -615,12 +619,17 @@ onMounted(() => {
                   <h5 class="my-2">
                     <router-link
                       :to="`/visaInsurance/insurance/detail/${item.newsId}`"
-                      class="text-dark content-hidden title-block"
+                      class="text-dark content-hidden title-block color-red"
                       >{{ item.newsTitle }}
                     </router-link>
                   </h5>
                   <p class="text-gray-500 text-gray-500-aaa text-sm my-3">
-                    <i class="far fa-clock mr-2"></i>{{ item.createDate }}
+                    <div style="font-size: 0.875rem">
+                      <el-icon><Pointer /></el-icon>{{ item.clickRate }}
+                    </div>
+                    <div style="font-size: 0.875rem">
+                      <i class="far fa-clock mr-2"></i>{{ item.createDate }}
+                    </div>
                   </p>
                   <p
                     class="my-2 text-muted text-muted-aaa text-sm content-hidden2"
@@ -653,12 +662,17 @@ onMounted(() => {
                   <h5 class="my-2">
                     <router-link
                       :to="`/visaInsurance/visa/detail/${item.newsId}`"
-                      class="text-dark content-hidden title-block"
+                      class="text-dark content-hidden title-block color-red"
                       >{{ item.newsTitle }}
                     </router-link>
                   </h5>
                   <p class="text-gray-500 text-gray-500-aaa text-sm my-3">
-                    <i class="far fa-clock mr-2"></i>{{ item.createDate }}
+                    <div style="font-size: 0.875rem">
+                      <el-icon><Pointer /></el-icon>{{ item.clickRate }}
+                    </div>
+                    <div style="font-size: 0.875rem">
+                      <i class="far fa-clock mr-2"></i>{{ item.createDate }}
+                    </div>
                   </p>
                   <p
                     class="my-2 text-muted text-muted-aaa text-sm content-hidden2"
@@ -698,7 +712,16 @@ onMounted(() => {
         >
           <div class="featured-wrap">
             <div class="featured-img">
-              <img src="/images/featured/1.jpg" alt="" />
+              <img
+                :src="
+                  'http://182.92.103.154/static/images/upload/' +
+                  item.themeListInfo.titlePic
+                "
+                alt=""
+                v-if="item.themeListInfo"
+                style="width: 300px; height: 185px"
+              />
+              <!-- <img src="/images/home3.jpg" alt="" /> -->
               <div class="featured-content">
                 <router-link :to="`/themeTravel/items/${item.themeTypeId}`">{{
                   item.typeName
@@ -713,6 +736,7 @@ onMounted(() => {
               <router-link
                 :to="`/themeTravel/item/${item.themeListInfo.themeId}`"
                 class="content-wapper"
+                style="font-weight: 800"
                 >{{ item.themeListInfo.themeTitle }}</router-link
               >
             </p>
@@ -1051,9 +1075,10 @@ onMounted(() => {
 }
 .describe {
   width: 332.5px;
-  height: 52px;
-  margin: 10px 0;
+  height: 73px;
+  // margin: 10px 0;
   overflow: hidden;
+  margin-bottom: 0 !important;
 }
 // .Nopadding {
 //   width: 250px !important;
@@ -1067,10 +1092,15 @@ onMounted(() => {
   // bottom: 0;
   display: flex;
   align-items: center;
-  justify-content: right;
+  justify-content: space-between;
   // > div {
   //   float: right;
   // }
+  > div:first-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 .no-padding {
   padding: 0;
@@ -1084,13 +1114,22 @@ onMounted(() => {
 //   margin: 0 !important;
 // }
 .text-gray-500-aaa {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 0 !important;
+  > div:first-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 .container-aaa {
   margin-top: 15px !important;
   margin-bottom: 15px !important;
   padding: 0;
-  padding-right: 30px;
+  display: flex;
+  justify-content: center;
 }
 .card-body2 {
   width: 240px;
@@ -1319,5 +1358,8 @@ onMounted(() => {
 .title-block {
   width: 200px;
   height: 43px;
+}
+.color-red:hover{
+  color: #c60b1e !important;
 }
 </style>
