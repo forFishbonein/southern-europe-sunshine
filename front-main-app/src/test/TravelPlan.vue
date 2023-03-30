@@ -514,7 +514,14 @@ onMounted(() => {
             <div class="timeline-card-title">{{ item.date }}</div>
             <div class="timeline-card-content">
               <div class="card-header-content">
-                <div class="header-img"><img :src="item.city.image" /></div>
+                <div class="header-img">
+                  <img
+                    :src="
+                      'http://182.92.103.154/static/images/upload/' +
+                      item.city.image
+                    "
+                  />
+                </div>
                 <div class="header-title">
                   <strong>今日安排</strong><br /><span>{{
                     item.city.name

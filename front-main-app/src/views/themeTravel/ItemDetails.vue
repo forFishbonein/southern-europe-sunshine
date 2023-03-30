@@ -132,7 +132,10 @@ getTheOneThemeDetailInfo();
               <div class="col-lg-4 col-6 px-1 mb-2 center-img">
                 <a href="javascript:;"
                   ><img
-                    :src="oneThemeDetailInfo.titlePic"
+                    :src="
+                      'http://182.92.103.154/static/images/upload/' +
+                      oneThemeDetailInfo.titlePic
+                    "
                     alt="..."
                     class="img-fluid"
                 /></a>
@@ -163,7 +166,7 @@ getTheOneThemeDetailInfo();
             <ul class="list-inline text-sm mb-4">
               <li class="list-inline-item mr-3">
                 <i class="fa fa-users mr-1 text-secondary"></i>
-                点击率：{{ oneThemeDetailInfo.clickRate }}
+                <el-icon><Pointer /></el-icon>{{ oneThemeDetailInfo.clickRate }}
               </li>
               <li class="list-inline-item mr-3">
                 <i class="fa fa-door-open mr-1 text-secondary"></i>
@@ -348,10 +351,19 @@ getTheOneThemeDetailInfo();
             <div class="widget category-widget">
               <h3>点赞量排行榜</h3>
               <ul>
-                <li v-for="(item, index) in newsListInfo" :key="index">
-                  <router-link :to="`/news/detail/${item.newsId}`"
+                <li
+                  v-for="(item, index) in newsListInfo"
+                  :key="index"
+                  class="li-list"
+                >
+                  <router-link
+                    :to="`/news/detail/${item.newsId}`"
+                    class="content-hidden"
                     >{{ item.newsTitle }}
-                    <span>{{ item.createDate }}</span></router-link
+                  </router-link>
+                  <span
+                    ><i class="far fa-clock mr-2"></i
+                    >{{ item.createDate }}</span
                   >
                 </li>
               </ul>
@@ -364,6 +376,12 @@ getTheOneThemeDetailInfo();
 </template>
 
 <style lang="scss" scoped>
+.li-list {
+  height: 70px !important;
+  // padding-bottom: 20px;
+  margin-top: 0px !important;
+  margin-bottom: 10px;
+}
 .ml-lg-4 {
   margin-left: 0.5em !important;
 }
@@ -403,7 +421,6 @@ getTheOneThemeDetailInfo();
   background: #f8f9fa;
   border-top: 1px solid #c60b1e;
   border-bottom: 1px solid #c60b1e;
-  height: 45px;
 }
 
 .pointsRule ul li:first-child {
@@ -448,4 +465,24 @@ getTheOneThemeDetailInfo();
 //     margin: 0 auto;
 //   }
 // }
+.content-hidden {
+  width: 270px;
+  height: 50px;
+  // text-indent: 2em;
+  text-align: justify;
+  word-break: break-all;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  /*! autoprefixer: off */
+  -webkit-box-orient: vertical;
+  // autoprefixer: on;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+.li-list {
+  height: 70px !important;
+  // padding-bottom: 20px;
+  margin-top: 0px !important;
+  margin-bottom: 10px;
+}
 </style>

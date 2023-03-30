@@ -97,7 +97,9 @@ const changeCurrentPage = (p: number) => {
               :to="`/visaInsurance/insurance/detail/${item.newsId}`"
               class="img-container"
               ><img
-                :src="item.titlePic"
+                :src="
+                  'http://182.92.103.154/static/images/upload/' + item.titlePic
+                "
                 alt="..."
                 class="img-fluid card-img-top"
             /></router-link>
@@ -105,7 +107,7 @@ const changeCurrentPage = (p: number) => {
               <h5 class="my-2">
                 <router-link
                   :to="`/visaInsurance/insurance/detail/${item.newsId}`"
-                  class="text-dark"
+                  class="text-dark content-hidden2"
                   >{{ item.newsTitle }}
                 </router-link>
               </h5>
@@ -216,6 +218,20 @@ const changeCurrentPage = (p: number) => {
   -webkit-box-orient: vertical;
   /* autoprefixer: on */
   -webkit-line-clamp: 3;
+  overflow: hidden;
+  width: 310px;
+  height: 67.2px;
+}
+.content-hidden2 {
+  // text-indent: 2em;
+  text-align: justify;
+  word-break: break-all;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  /*! autoprefixer: off */
+  -webkit-box-orient: vertical;
+  /* autoprefixer: on */
+  -webkit-line-clamp: 2;
   overflow: hidden;
 }
 </style>

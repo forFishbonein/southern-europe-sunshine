@@ -34,7 +34,10 @@ const handleSelect = (key: string, keyPath: string[]) => {
           <div class="dashboardBoxBg mb30">
             <div class="profileImage">
               <img
-                :src="store.userInfo.imageUrl"
+                :src="
+                  'http://182.92.103.154/static/images/upload/' +
+                  store.userInfo.imageUrl
+                "
                 alt="Image User"
                 class="img-circle"
               />

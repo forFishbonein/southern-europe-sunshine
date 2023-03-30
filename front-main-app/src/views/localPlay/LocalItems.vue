@@ -98,7 +98,14 @@ const changeCurrentPage = (p: number) => {
           <div class="ListriBox">
             <figure>
               <a href="javascript:;"
-                ><img src="/images/hotel1.jpg" class="img-fluid" alt="" />
+                ><img
+                  :src="
+                    'http://182.92.103.154/static/images/upload/' +
+                    item.titlePic
+                  "
+                  class="img-fluid"
+                  alt=""
+                />
               </a>
             </figure>
             <div class="ListriBoxmain">

@@ -557,16 +557,25 @@ onMounted(() => {
                 <div class="col-md-3 col-sm-6 col-xs-12 Nopadding">
                   <figure class="img-container">
                     <router-link :to="`/news/detail/${item.newsId}`"
-                      ><img :src="item.titlePic" class="img-fluid" alt="" />
+                      ><img
+                        :src="
+                          'http://182.92.103.154/static/images/upload/' +
+                          item.titlePic
+                        "
+                        class="img-fluid"
+                        alt=""
+                      />
                     </router-link>
                   </figure>
                 </div>
                 <div class="col-md-9 col-sm-6 col-xs-12 Nopadding">
                   <div class="ListriBoxmain ListriBoxmain2">
                     <h2>
-                      <router-link :to="`/news/detail/${item.newsId}`">{{
-                        item.newsTitle
-                      }}</router-link>
+                      <router-link
+                        :to="`/news/detail/${item.newsId}`"
+                        class="content-hidden"
+                        >{{ item.newsTitle }}</router-link
+                      >
                       <p
                         class="describe content-hidden"
                         v-html="item.newsContent"
@@ -574,7 +583,9 @@ onMounted(() => {
                     </h2>
                   </div>
                   <div class="route-container">
-                    <div>{{ item.createDate }}</div>
+                    <div style="font-size: 0.875rem">
+                      <i class="far fa-clock mr-2"></i>{{ item.createDate }}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -595,15 +606,16 @@ onMounted(() => {
                   :to="`/visaInsurance/insurance/detail/${item.newsId}`"
                   class="img-container"
                   ><img
-                    :src="item.titlePic"
+                    :src="
+                    'http://182.92.103.154/static/images/upload/'+item.titlePic"
                     alt="..."
                     class="img-fluid card-img-top"
                 /></router-link> -->
-                <div class="card-body">
+                <div class="card-body card-body2">
                   <h5 class="my-2">
                     <router-link
                       :to="`/visaInsurance/insurance/detail/${item.newsId}`"
-                      class="text-dark"
+                      class="text-dark content-hidden title-block"
                       >{{ item.newsTitle }}
                     </router-link>
                   </h5>
@@ -611,7 +623,7 @@ onMounted(() => {
                     <i class="far fa-clock mr-2"></i>{{ item.createDate }}
                   </p>
                   <p
-                    class="my-2 text-muted text-muted-aaa text-sm content-hidden"
+                    class="my-2 text-muted text-muted-aaa text-sm content-hidden2"
                     v-html="item.newsContent"
                   ></p>
                   <router-link
@@ -632,15 +644,16 @@ onMounted(() => {
                   :to="`/visaInsurance/visa/detail/${item.newsId}`"
                   class="img-container"
                   ><img
-                    :src="item.titlePic"
+                    :src="
+                    'http://182.92.103.154/static/images/upload/'+item.titlePic"
                     alt="..."
                     class="img-fluid card-img-top"
                 /></router-link> -->
-                <div class="card-body">
+                <div class="card-body card-body2">
                   <h5 class="my-2">
                     <router-link
                       :to="`/visaInsurance/visa/detail/${item.newsId}`"
-                      class="text-dark"
+                      class="text-dark content-hidden title-block"
                       >{{ item.newsTitle }}
                     </router-link>
                   </h5>
@@ -648,7 +661,7 @@ onMounted(() => {
                     <i class="far fa-clock mr-2"></i>{{ item.createDate }}
                   </p>
                   <p
-                    class="my-2 text-muted text-muted-aaa text-sm content-hidden"
+                    class="my-2 text-muted text-muted-aaa text-sm content-hidden2"
                     v-html="item.newsContent"
                   ></p>
                   <router-link
@@ -1020,6 +1033,8 @@ onMounted(() => {
   margin-bottom: 0 !important;
 }
 .ListriBox2 {
+  width: 540px;
+  height: 185px;
   display: flex;
   justify-content: space-between;
 }
@@ -1035,7 +1050,10 @@ onMounted(() => {
   top: 30% !important;
 }
 .describe {
+  width: 332.5px;
+  height: 52px;
   margin: 10px 0;
+  overflow: hidden;
 }
 // .Nopadding {
 //   width: 250px !important;
@@ -1074,9 +1092,10 @@ onMounted(() => {
   padding: 0;
   padding-right: 30px;
 }
-// .card-body {
-//   // padding-bottom: 0;
-// }
+.card-body2 {
+  width: 240px;
+  height: 275px;
+}
 .main-banner {
   cursor: pointer;
 }
@@ -1281,5 +1300,24 @@ onMounted(() => {
   /* autoprefixer: on */
   -webkit-line-clamp: 2;
   overflow: hidden;
+  font-size: 18px;
+}
+.content-hidden2 {
+  // text-indent: 2em;
+  text-align: justify;
+  word-break: break-all;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  /*! autoprefixer: off */
+  -webkit-box-orient: vertical;
+  /* autoprefixer: on */
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+  width: 200px;
+  height: 90px;
+}
+.title-block {
+  width: 200px;
+  height: 43px;
 }
 </style>

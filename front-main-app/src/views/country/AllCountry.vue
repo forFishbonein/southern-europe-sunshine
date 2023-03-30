@@ -90,8 +90,13 @@ const selectConutry = (countryId) => {
         <div class="col-md-6">
           <a href="javascript:;">
             <div class="list-mig-like-com">
-              <div class="list-mig-lc-img">
-                <img :src="countryImg" alt="" />
+              <div class="list-mig-lc-img list-img2">
+                <img
+                  :src="
+                    'http://182.92.103.154/static/images/upload/' + countryImg
+                  "
+                  alt=""
+                />
               </div>
               <div class="list-mig-lc-con">
                 <h5>{{ countryName }}</h5>
@@ -112,8 +117,14 @@ const selectConutry = (countryId) => {
                 @click="selectConutry(item.ciid)"
               >
                 <div class="list-mig-like-com">
-                  <div class="list-mig-lc-img">
-                    <img :src="item.nationalPic" alt="" />
+                  <div class="list-mig-lc-img list-img1">
+                    <img
+                      :src="
+                        'http://182.92.103.154/static/images/upload/' +
+                        item.nationalPic
+                      "
+                      alt=""
+                    />
                   </div>
                   <div class="list-mig-lc-con list-mig-lc-con2">
                     <h5>{{ item.countryNameCn }}</h5>
@@ -132,4 +143,21 @@ const selectConutry = (countryId) => {
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.list-img1 {
+  width: 255px;
+  height: 160px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+.list-img2 {
+  width: 540px;
+  height: 338px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+</style>

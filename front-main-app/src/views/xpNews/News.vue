@@ -18,7 +18,7 @@
       </div>
     </div>
   </section>
-  <router-view />
+  <router-view :key="$route.fullPath" />
 </template>
 
 <style lang="scss" scoped></style>

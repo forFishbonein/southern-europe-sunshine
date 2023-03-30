@@ -98,7 +98,13 @@ getTheNewsList();
           <div class="blog-content">
             <div class="post format-standard-image">
               <div class="entry-media">
-                <img :src="oneNewsDetailInfo.titlePic" alt="" />
+                <img
+                  :src="
+                    'http://182.92.103.154/static/images/upload/' +
+                    oneNewsDetailInfo.titlePic
+                  "
+                  alt=""
+                />
               </div>
               <ul class="entry-meta">
                 <li>
@@ -166,10 +172,18 @@ getTheNewsList();
             <div class="widget category-widget">
               <h3>西葡资讯</h3>
               <ul>
-                <li v-for="(item, index) in newsListInfo" :key="index">
-                  <router-link :to="`/news/detail/${item.newsId}`"
-                    >{{ item.newsTitle }}
-                    <span>{{ item.createDate }}</span></router-link
+                <li
+                  v-for="(item, index) in newsListInfo"
+                  :key="index"
+                  class="li-list"
+                >
+                  <router-link
+                    :to="`/news/detail/${item.newsId}`"
+                    class="content-hidden"
+                    >{{ item.newsTitle }} </router-link
+                  ><span
+                    ><i class="far fa-clock mr-2"></i
+                    >{{ item.createDate }}</span
                   >
                 </li>
               </ul>
@@ -177,10 +191,18 @@ getTheNewsList();
             <div class="widget category-widget">
               <h3>签证保险</h3>
               <ul>
-                <li v-for="(item, index) in insuranceListInfo" :key="index">
-                  <router-link :to="`/news/detail/${item.newsId}`"
-                    >{{ item.newsTitle }}
-                    <span>{{ item.createDate }}</span></router-link
+                <li
+                  v-for="(item, index) in insuranceListInfo"
+                  :key="index"
+                  class="li-list"
+                >
+                  <router-link
+                    :to="`/news/detail/${item.newsId}`"
+                    class="content-hidden"
+                    >{{ item.newsTitle }} </router-link
+                  ><span
+                    ><i class="far fa-clock mr-2"></i
+                    >{{ item.createDate }}</span
                   >
                 </li>
               </ul>
@@ -196,5 +218,25 @@ getTheNewsList();
 .bread-container {
   margin-bottom: 30px;
   margin-left: 0px;
+}
+.content-hidden {
+  width: 270px;
+  height: 50px;
+  // text-indent: 2em;
+  text-align: justify;
+  word-break: break-all;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  /*! autoprefixer: off */
+  -webkit-box-orient: vertical;
+  // autoprefixer: on;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+.li-list {
+  height: 70px !important;
+  // padding-bottom: 20px;
+  margin-top: 0px !important;
+  margin-bottom: 10px;
 }
 </style>

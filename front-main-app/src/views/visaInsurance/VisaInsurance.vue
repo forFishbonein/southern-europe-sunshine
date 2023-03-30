@@ -46,7 +46,7 @@ watch(selection, (newValue, oldValue) => {
       </el-radio-group>
     </div>
   </div>
-  <router-view />
+  <router-view :key="$route.fullPath" />
 </template>
 
 <style lang="scss" scoped>

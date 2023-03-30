@@ -96,7 +96,14 @@ const changeCurrentPage = (p: number) => {
                 <div class="col-md-2 col-sm-6 col-xs-12 Nopadding">
                   <figure class="img-container">
                     <router-link :to="`/news/detail/${item.newsId}`"
-                      ><img :src="item.titlePic" class="img-fluid" alt="" />
+                      ><img
+                        :src="
+                          'http://182.92.103.154/static/images/upload/' +
+                          item.titlePic
+                        "
+                        class="img-fluid"
+                        alt=""
+                      />
                     </router-link>
                   </figure>
                 </div>
@@ -113,10 +120,12 @@ const changeCurrentPage = (p: number) => {
                     </h2>
                   </div>
                   <div class="route-container">
-                    <div style="margin-right: 20px">
-                      点击率：{{ item.clickRate }}
+                    <div style="margin-right: 20px; font-size: 0.875rem">
+                      <i class="far fa-clock mr-2"></i>{{ item.createDate }}
                     </div>
-                    <div>发布时间：{{ item.createDate }}</div>
+                    <div style="font-size: 0.875rem" class="click-rate">
+                      <el-icon><Pointer /></el-icon>{{ item.clickRate }}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -247,5 +256,10 @@ const changeCurrentPage = (p: number) => {
   /* autoprefixer: on */
   -webkit-line-clamp: 2;
   overflow: hidden;
+}
+.click-rate {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

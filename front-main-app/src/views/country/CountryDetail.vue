@@ -64,7 +64,11 @@ console.log(route.params.countryId);
     <div class="col-lg-12">
       <div class="text-block">
         <p class="text-muted font-weight-light">
-          <img :src="flagImage" alt="" class="flagImage" />
+          <img
+            :src="'http://182.92.103.154/static/images/upload/' + flagImage"
+            alt=""
+            class="flagImage"
+          />
           <span class="countryName">{{ countryName }}</span
           ><span v-html="describeWords"> </span>
         </p>

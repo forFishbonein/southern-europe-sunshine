@@ -211,7 +211,14 @@ watch(keyword, (newValue, oldValue) => {
                 <div class="col-md-5 col-sm-6 col-xs-12 Nopadding">
                   <figure>
                     <router-link :to="`/themeTravel/item/${item.themeId}`"
-                      ><img :src="item.titlePic" class="img-fluid" alt="" />
+                      ><img
+                        :src="
+                          'http://182.92.103.154/static/images/upload/' +
+                          item.titlePic
+                        "
+                        class="img-fluid"
+                        alt=""
+                      />
                       <div class="read_more"><span>查看详情</span></div>
                     </router-link>
                   </figure>
@@ -226,7 +233,8 @@ watch(keyword, (newValue, oldValue) => {
                     <p class="content-hidden" v-html="item.themeContent"></p>
                     <p>
                       <span class="click-rate-span"
-                        >点击率: {{ item.clickRate }}</span
+                        ><el-icon><Pointer /></el-icon
+                        >{{ item.clickRate }}</span
                       >
                     </p>
                   </div>
@@ -317,7 +325,14 @@ watch(keyword, (newValue, oldValue) => {
                 <div class="col-md-5 col-sm-6 col-xs-12 Nopadding">
                   <figure>
                     <router-link :to="`/themeTravel/item/${item.themeId}`"
-                      ><img :src="item.titlePic" class="img-fluid" alt="" />
+                      ><img
+                        :src="
+                          'http://182.92.103.154/static/images/upload/' +
+                          item.titlePic
+                        "
+                        class="img-fluid"
+                        alt=""
+                      />
                       <div class="read_more"><span>查看详情</span></div>
                     </router-link>
                   </figure>
@@ -334,7 +349,8 @@ watch(keyword, (newValue, oldValue) => {
                     </p>
                     <p>
                       <span class="click-rate-span"
-                        >点击率: {{ item.clickRate }}</span
+                        ><el-icon><Pointer /></el-icon
+                        >{{ item.clickRate }}</span
                       >
                     </p>
                   </div>
@@ -405,10 +421,12 @@ watch(keyword, (newValue, oldValue) => {
   overflow: hidden;
 }
 .click-rate-span {
-  display: block;
+  display: flex;
   float: right;
-  font-size: 12px;
+  font-size: 14px;
   color: #b1b3b8;
+  justify-content: center;
+  align-items: center;
 }
 
 .input-box {
