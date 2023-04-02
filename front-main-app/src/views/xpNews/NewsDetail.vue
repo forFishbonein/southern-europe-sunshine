@@ -80,6 +80,15 @@ const getTheNewsList = () => {
     });
 };
 getTheNewsList();
+const ellipsis = (value, len) => {
+  if (!value) return "";
+
+  if (value.length > len) {
+    return value.slice(0, len) + "...";
+  }
+
+  return value;
+};
 </script>
 <template>
   <section class="Blog-list pt80 pb80 blog-single-section">
@@ -180,8 +189,9 @@ getTheNewsList();
                   <router-link
                     :to="`/news/detail/${item.newsId}`"
                     class="content-hidden"
-                    >{{ item.newsTitle }} </router-link
-                  ><span
+                    v-text="ellipsis(item.newsTitle, 26)"
+                  ></router-link
+                  ><span class="absolute-time"
                     ><i class="far fa-clock mr-2"></i
                     >{{ item.createDate }}</span
                   >
@@ -199,8 +209,9 @@ getTheNewsList();
                   <router-link
                     :to="`/news/detail/${item.newsId}`"
                     class="content-hidden"
-                    >{{ item.newsTitle }} </router-link
-                  ><span
+                    v-text="ellipsis(item.newsTitle, 26)"
+                  ></router-link
+                  ><span class="absolute-time"
                     ><i class="far fa-clock mr-2"></i
                     >{{ item.createDate }}</span
                   >
@@ -238,10 +249,21 @@ getTheNewsList();
   -webkit-line-clamp: 1;
   overflow: hidden;
 }
+// .li-list {
+//   height: 70px !important;
+//   // padding-bottom: 20px;
+//   margin-top: 0px !important;
+//   margin-bottom: 10px;
+// }
+.absolute-time {
+  position: absolute;
+  top: 1.5em;
+}
 .li-list {
-  height: 70px !important;
-  // padding-bottom: 20px;
-  margin-top: 0px !important;
+  // height: 70px !important;
+  height: 45px;
   margin-bottom: 10px;
+  // margin-top: 0px !important;
+  // margin-top: 30px !important;
 }
 </style>

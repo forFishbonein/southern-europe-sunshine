@@ -13,4 +13,3 @@ export const getOneCountryInfo = (countryId) => {
     // loading: false, //显示加载圈
   });
 };
-getOneCountryInfo;

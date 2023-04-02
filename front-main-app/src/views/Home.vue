@@ -472,7 +472,7 @@ onMounted(() => {
                   class="tile-link"
                 ></router-link
                 ><img
-                  src="/images/photo/3.jpg"
+                  src="/images/country/xibanya.jpg"
                   alt="Card image"
                   class="bg-image"
                 />
@@ -489,7 +489,7 @@ onMounted(() => {
                   class="tile-link"
                 ></router-link
                 ><img
-                  src="/images/photo/2.jpg"
+                  src="/images/country/putaoya.jpg"
                   alt="Card image"
                   class="bg-image"
                 />
@@ -506,7 +506,7 @@ onMounted(() => {
                   class="tile-link"
                 ></router-link
                 ><img
-                  src="/images/photo/1.jpg"
+                  src="/images/country/nanfa.png"
                   alt="Card image"
                   class="bg-image"
                 />
@@ -523,7 +523,7 @@ onMounted(() => {
                   class="tile-link"
                 ></router-link
                 ><img
-                  src="/images/photo/4.jpg"
+                  src="/images/country/andaoer.jpg"
                   alt="Card image"
                   class="bg-image"
                 />

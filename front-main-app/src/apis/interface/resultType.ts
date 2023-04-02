@@ -80,3 +80,24 @@ export interface newsInfoType {
   createDate: string;
   remark: string;
 }
+export interface membersInfoType {
+  userid: Number;
+  imageUrl: string;
+  userName: string;
+  enName: string;
+  rankTitle: string;
+  sex: Number;
+  password: string;
+  phone: string;
+  address: string;
+  birthday: string;
+  email: string;
+  education: string;
+  interest: string;
+  userType: Number;
+  reMark: string;
+  createDate: string;
+  modifDate: string;
+  isShowWeb: Number;
+  isDeleted: Number;
+}

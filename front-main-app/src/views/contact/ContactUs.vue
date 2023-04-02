@@ -1,4 +1,80 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from "vue";
+import { membersInfoType } from "@/apis/interface/resultType";
+import { postContactToUs, getTeamMembersInfo } from "@/apis/contact";
+import { mainStore } from "@/store/user";
+const store = mainStore();
+let allMembersListInfo = ref([] as membersInfoType[]);
+const getAllMembersInfo = () => {
+  getTeamMembersInfo()
+    .then((res: any) => {
+      if (res.code != 2000) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        // alert(page.value);
+        allMembersListInfo.value = res.data;
+        console.log(allMembersListInfo.value);
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
+getAllMembersInfo();
+interface contactInfo {
+  name: string;
+  email: string;
+  phone: string;
+  myitems: string;
+  remark: string;
+  userid: Number;
+}
+let contactUsInfo = ref({} as contactInfo);
+const contactUs = () => {
+  if (store.userInfo.userid) {
+    contactUsInfo.value.userid = store.userInfo.userid;
+    console.log(contactUsInfo.value);
+    postContactToUs(contactUsInfo.value)
+      .then((res: any) => {
+        if (res.code != 2000) {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: res.msg,
+          });
+        } else {
+          //@ts-ignore
+          ElMessage({
+            type: "success",
+            message: "发送成功！",
+          });
+          contactUsInfo.value = {} as contactInfo;
+        }
+      })
+      .catch((error) => {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: error.message,
+        });
+      });
+  } else {
+    //@ts-ignore
+    ElMessage({
+      type: "error",
+      message: "请先登录！",
+    });
+  }
+};
+</script>
 
 <template>
   <section class="breadcromb-top section_100">
@@ -62,81 +138,26 @@
         </div>
       </div>
       <div class="row flex-wapper">
-        <el-card :body-style="{ padding: '0px' }">
+        <el-card
+          :body-style="{ padding: '0px' }"
+          v-for="(item, index) in allMembersListInfo"
+          :key="index"
+        >
           <img
-            src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+            :src="'http://182.92.103.154/static/images/upload/' + item.imageUrl"
             class="image"
           />
           <div style="padding: 14px" class="card-content">
-            <span>Roberto Gonzalez Martin</span>
+            <span>{{
+              item.enName && item.userName
+                ? item.userName + "/" + item.enName
+                : item.enName
+                ? item.enName
+                : item.userName
+            }}</span>
             <!-- <div class="bottom clearfix"> -->
-            <p>西班牙总公司-外联负责人</p>
-            <p>No lo dejes para manana 哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈</p>
-            <!-- </div> -->
-          </div>
-        </el-card>
-        <el-card :body-style="{ padding: '0px' }">
-          <img
-            src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-            class="image"
-          />
-          <div style="padding: 14px" class="card-content">
-            <span>Roberto Gonzalez Martin</span>
-            <!-- <div class="bottom clearfix"> -->
-            <p>西班牙总公司-外联负责人</p>
-            <p>No lo dejes para manana 哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈</p>
-            <!-- </div> -->
-          </div>
-        </el-card>
-        <el-card :body-style="{ padding: '0px' }">
-          <img
-            src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-            class="image"
-          />
-          <div style="padding: 14px" class="card-content">
-            <span>Roberto Gonzalez Martin</span>
-            <!-- <div class="bottom clearfix"> -->
-            <p>西班牙总公司-外联负责人</p>
-            <p>No lo dejes para manana 哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈</p>
-            <!-- </div> -->
-          </div>
-        </el-card>
-        <el-card :body-style="{ padding: '0px' }">
-          <img
-            src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-            class="image"
-          />
-          <div style="padding: 14px" class="card-content">
-            <span>Roberto Gonzalez Martin</span>
-            <!-- <div class="bottom clearfix"> -->
-            <p>西班牙总公司-外联负责人</p>
-            <p>No lo dejes para manana 哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈</p>
-            <!-- </div> -->
-          </div>
-        </el-card>
-        <el-card :body-style="{ padding: '0px' }">
-          <img
-            src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-            class="image"
-          />
-          <div style="padding: 14px" class="card-content">
-            <span>Roberto Gonzalez Martin</span>
-            <!-- <div class="bottom clearfix"> -->
-            <p>西班牙总公司-外联负责人</p>
-            <p>No lo dejes para manana 哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈</p>
-            <!-- </div> -->
-          </div>
-        </el-card>
-        <el-card :body-style="{ padding: '0px' }">
-          <img
-            src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-            class="image"
-          />
-          <div style="padding: 14px" class="card-content">
-            <span>Roberto Gonzalez Martin</span>
-            <!-- <div class="bottom clearfix"> -->
-            <p>西班牙总公司-外联负责人</p>
-            <p>No lo dejes para manana 哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈</p>
+            <p>{{ item.rankTitle }}</p>
+            <p>{{ item.reMark }}</p>
             <!-- </div> -->
           </div>
         </el-card>
@@ -156,10 +177,11 @@
       <div class="row">
         <div class="col-lg-7 col-md-6 col-sm-12">
           <form
-            method="post"
             class="contact-validation-active"
             id="contact-form-main"
             novalidate="novalidate"
+            autocomplete="off"
+            @submit.prevent="contactUs"
           >
             <div>
               <input
@@ -168,6 +190,7 @@
                 name="name"
                 id="name"
                 placeholder="姓名"
+                v-model="contactUsInfo.name"
               />
             </div>
             <div>
@@ -177,6 +200,7 @@
                 name="email"
                 id="email"
                 placeholder="邮箱"
+                v-model="contactUsInfo.email"
               />
             </div>
             <div>
@@ -186,10 +210,15 @@
                 name="phone"
                 id="phone"
                 placeholder="电话"
+                v-model="contactUsInfo.phone"
               />
             </div>
             <div>
-              <select name="subject" class="form-control">
+              <select
+                name="subject"
+                class="form-control"
+                v-model="contactUsInfo.myitems"
+              >
                 <option disabled="disabled" selected="">事项</option>
                 <option>旅游定制</option>
                 <option>问题咨询</option>
@@ -202,10 +231,17 @@
                 name="note"
                 id="note"
                 placeholder="请描述..."
+                v-model="contactUsInfo.remark"
               ></textarea>
             </div>
             <div class="submit-area">
-              <button type="submit" class="theme-btn-s4">现在发送</button>
+              <button
+                type="submit"
+                class="theme-btn-s4"
+                style="cursor: pointer"
+              >
+                现在发送
+              </button>
               <div id="loader">
                 <i class="ti-reload"></i>
               </div>
@@ -318,5 +354,10 @@
 }
 .theme-travel2 {
   padding-top: 0;
+}
+.image {
+  width: 287px;
+  height: 350px;
+  display: block;
 }
 </style>
